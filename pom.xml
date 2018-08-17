@@ -4,7 +4,7 @@
   <artifactId>dtfs-ni</artifactId>
   <version>1.0.0</version>
   <name>DTFS-NI</name>
-  <description>North Interfaces on Distributed Tiny File System.</description>
+  <description>North Interfaces on Distributed Tiny-File System.</description>
   
   <properties>
   	<default.encoding>UTF-8</default.encoding>
