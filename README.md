@@ -1,2 +1,2 @@
 # DTFS-NI
-North Interfaces on Distributed Tiny File System.
+North Interfaces on Distributed Tiny-File System.
