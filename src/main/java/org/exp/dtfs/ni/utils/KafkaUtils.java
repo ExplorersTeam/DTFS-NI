@@ -1,6 +1,5 @@
 package org.exp.dtfs.ni.utils;
 
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.Callback;
@@ -21,22 +20,20 @@ public class KafkaUtils {
         // Do nothing.
     }
 
-    public static void producerUtil(String message) throws InterruptedException, ExecutionException {
-        Properties props = KafkaContext.getProps();
-        String topicName = KafkaConfigs.getKafkaTopicName();
-        Producer<String, String> producer = new KafkaProducer<String, String>(props);
-        ProducerRecord<String, String> records = new ProducerRecord<String, String>(topicName, message);
+    public static void produce(String message) throws InterruptedException, ExecutionException {
+        Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProps());
+        ProducerRecord<String, String> records = new ProducerRecord<>(KafkaConfigs.getKafkaTopicName(), message);
         // producer.send(records).get();
         producer.send(records, new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 if (null == exception) {
-                    LOG.info("***[message sent successfully!]***");
+                    LOG.info("Message sent successfully, offset is [" + metadata.offset() + "].");
                 } else {
                     if (exception instanceof RetriableException) {
-                        LOG.error("Kafka_RetriableException---------->>" + exception);
+                        LOG.error("Retriable exception occurred.", exception);
                     } else {
-                        LOG.error("Kafka_NoRetriableException---------->>" + exception);
+                        LOG.error("Exception occurred.", exception);
                     }
                 }
 
@@ -45,10 +42,11 @@ public class KafkaUtils {
         producer.close();
     }
 
-    // TODO:To be deleted below code. Just for test.
+    // For test.
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        producerUtil("zzzzzzzzz");
-        producerUtil("fffffffff");
-        producerUtil("wwwwwwwww");
+        produce("Hello world!");
+        produce("Hello DTFS!");
+        produce("Hello DTFS-NI!");
     }
+
 }
