@@ -13,6 +13,12 @@ import org.exp.dtfs.ni.common.KafkaContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Operations to Kafka.
+ * 
+ * @author ZhangQingliang
+ *
+ */
 public class KafkaUtils {
     private static final Logger LOG = LoggerFactory.getLogger(KafkaUtils.class);
 
@@ -20,6 +26,13 @@ public class KafkaUtils {
         // Do nothing.
     }
 
+    /**
+     * Produce message into Kafka queue.
+     * 
+     * @param message
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public static void produce(String message) throws InterruptedException, ExecutionException {
         Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProps());
         ProducerRecord<String, String> records = new ProducerRecord<>(KafkaConfigs.getKafkaTopicName(), message);
