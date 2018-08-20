@@ -1,7 +1,6 @@
 package org.exp.dtfs.ni.utils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.commons.codec.binary.Base64;
@@ -23,12 +22,21 @@ public class AmbariRESTUtils {
         // Do nothing.
     }
 
+    private static String buildHTTPRequestPath(String path) {
+        return new StringBuffer(API_PATH + Constants.SLASH_DELIMITER + V1_PATH + Constants.SLASH_DELIMITER + CLUSTERS_PATH)
+                .append(path.startsWith(Constants.SLASH_DELIMITER) ? "" : Constants.SLASH_DELIMITER).append(path).toString();
+    }
+
+    public static String getMetrics(String path) throws URISyntaxException, IOException {
+        return HTTPUtils.sendGETRequest(HTTPUtils.buildURI(AmbariConfigs.getServerIP(), AmbariConfigs.getServerPort(), path), new BasicHeader(AUTH_HEADER_KEY,
+                AUTH_HEADER_VALUE_BASIC_PREFIX
+                        + Base64.encodeBase64String((AmbariConfigs.getServerUserName() + Constants.COLON_DELIMITER + AmbariConfigs.getServerUserPassword())
+                                .getBytes(Constants.DEFAULT_CHARSET))));
+    }
+
     public static String getServiceComponentMetrics(String serviceName, String componentName) throws URISyntaxException, IOException {
-        String path = HTTPUtils.buildRequetPath(API_PATH, V1_PATH, CLUSTERS_PATH, AmbariConfigs.getClusterName(), SERVICES_PATH, serviceName, COMPONENTS_PATH,
-                componentName);
-        URI uri = HTTPUtils.buildURI(AmbariConfigs.getServerIP(), AmbariConfigs.getServerPort(), path);
-        return HTTPUtils.sendGETRequest(uri, new BasicHeader(AUTH_HEADER_KEY, AUTH_HEADER_VALUE_BASIC_PREFIX + Base64.encodeBase64String(
-                (AmbariConfigs.getServerUserName() + Constants.COLON_DELIMITER + AmbariConfigs.getServerUserPassword()).getBytes(Constants.DEFAULT_CHARSET))));
+        return getMetrics(
+                buildHTTPRequestPath(HTTPUtils.buildRequetPath(AmbariConfigs.getClusterName(), SERVICES_PATH, serviceName, COMPONENTS_PATH, componentName)));
     }
 
 }

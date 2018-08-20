@@ -6,6 +6,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -23,6 +25,8 @@ import org.exp.dtfs.ni.common.Constants;
  *
  */
 public class HTTPUtils {
+    private static final Log LOG = LogFactory.getLog(HTTPUtils.class);
+
     private static HttpClient client = HttpClientBuilder.create().build();
 
     private HTTPUtils() {
@@ -87,6 +91,7 @@ public class HTTPUtils {
      * @throws IOException
      */
     public static String sendGETRequest(URI uri, Header... headers) throws IOException {
+        LOG.info("Send HTTP GET request, URI is [" + uri.toString() + "].");
         HttpGet get = new HttpGet();
         get.setURI(uri);
         if (null != headers) {
