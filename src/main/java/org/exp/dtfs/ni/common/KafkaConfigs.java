@@ -3,11 +3,11 @@ package org.exp.dtfs.ni.common;
 import org.apache.hadoop.conf.Configuration;
 
 public class KafkaConfigs {
-    // Configuration file name
+    // Configuration file name.
     private static final String CONF_FILENAME = "dtfs-ni-kafka-site.xml";
 
     /*
-     * Kafka properties configurations
+     * Kafka configurations.
      */
     private static final String KAFKA_BOOTSTRAP_SERVERS_CONFIG_KEY = "kafka.props.bootstrap.servers";
     private static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS_CONFIG_VALUE = "134.108.3.27:9092,134.108.3.28:9092,134.108.3.29:9092";
@@ -46,12 +46,13 @@ public class KafkaConfigs {
     private static final int DEFAULT_KAFKA_MAX_BLOCK_MS_CONFIG_VALUE = 3000;
 
     /*
-     * Kafka topic name
+     * Kafka topic name.
      */
     private static final String KAFKA_TOPIC_NAME_KEY = "kafka.topic.name";
     private static final String DEFAULT_KAFKA_TOPIC_NAME_VALUE = "ETE_CTDFS_01";
 
     private static final Configuration CONF = new Configuration();
+
     static {
         CONF.addResource(CONF_FILENAME);
     }
