@@ -18,17 +18,26 @@ public class KafkaConfigs {
     private static final String KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY = "kafka.props.value.serializer";
     private static final String DEFAULT_KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_VALUE = "org.apache.kafka.common.serialization.StringSerializer";
 
-    private static final String KAFKA_ACKS_CONF_KEY = "kafka.props.acks";
-    private static final String DEFAULT_KAFKA_ACKS_CONF_VALUE = "-1";
+    private static final String KAFKA_COMPRESSION_TYPE_CONFIG_KEY = "kafka.props.compression.type";
+    private static final String DEFAULT_KAFKA_COMPRESSION_TYPE_CONFIG_VALUE = "gzip";
+
+    private static final String KAFKA_MAX_REQUEST_SIZE_CONFIG_KEY = "kafka.props.max.request.size";
+    private static final int DEFAULT_KAFKA_MAX_REQUEST_SIZE_CONFIG_VALUE = 5242880;
 
     private static final String KAFKA_RETRIES_CONFIG_KEY = "kafka.props.retries";
     private static final int DEFAULT_KAFKA_RETRIES_CONFIG_VALUE = 3;
 
     private static final String KAFKA_BATCH_SIZE_CONFIG_KEY = "kafka.props.batch.size";
-    private static final int DEFAULT_KAFKA_BATCH_SIZE_CONFIG_VALUE = 323840;
+    private static final int DEFAULT_KAFKA_BATCH_SIZE_CONFIG_VALUE = 5000000;
 
     private static final String KAFKA_LINGER_MS_CONFIG_KEY = "kafka.props.linger.ms";
-    private static final int DEFAULT_KAFKA_LINGER_MS_CONFIG_VALUE = 10;
+    private static final int DEFAULT_KAFKA_LINGER_MS_CONFIG_VALUE = 60000;
+
+    /*
+     * Below 3 configurations no used.
+     */
+    private static final String KAFKA_ACKS_CONF_KEY = "kafka.props.acks";
+    private static final String DEFAULT_KAFKA_ACKS_CONF_VALUE = "1";
 
     private static final String KAFKA_BUFFER_MEMORY_CONFIG_KEY = "kafka.props.buffer.memory";
     private static final int DEFAULT_KAFKA_BUFFER_MEMORY_CONFIG_VALUE = 33554432;
@@ -67,8 +76,12 @@ public class KafkaConfigs {
         return getConf().getTrimmed(KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY, DEFAULT_KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_VALUE);
     }
 
-    public static String getKafkaAcks() {
-        return getConf().getTrimmed(KAFKA_ACKS_CONF_KEY, DEFAULT_KAFKA_ACKS_CONF_VALUE);
+    public static String getKafkaCompressionType() {
+        return getConf().getTrimmed(KAFKA_COMPRESSION_TYPE_CONFIG_KEY, DEFAULT_KAFKA_COMPRESSION_TYPE_CONFIG_VALUE);
+    }
+
+    public static int getKafkaMaxRequestSize() {
+        return getConf().getInt(KAFKA_MAX_REQUEST_SIZE_CONFIG_KEY, DEFAULT_KAFKA_MAX_REQUEST_SIZE_CONFIG_VALUE);
     }
 
     public static int getKafkaRetries() {
@@ -81,6 +94,10 @@ public class KafkaConfigs {
 
     public static int getKafkaLingerMs() {
         return getConf().getInt(KAFKA_LINGER_MS_CONFIG_KEY, DEFAULT_KAFKA_LINGER_MS_CONFIG_VALUE);
+    }
+
+    public static String getKafkaAcks() {
+        return getConf().getTrimmed(KAFKA_ACKS_CONF_KEY, DEFAULT_KAFKA_ACKS_CONF_VALUE);
     }
 
     public static int getKafkaBufferMemory() {

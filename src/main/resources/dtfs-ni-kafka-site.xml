@@ -13,8 +13,12 @@
 		<value>org.apache.kafka.common.serialization.StringSerializer</value>
 	</property>
 	<property>
-		<name>kafka.props.acks</name>
-		<value>-1</value>
+		<name>kafka.props.compression.type</name>
+		<value>gzip</value>
+	</property>
+	<property>
+		<name>kafka.props.max.request.size</name>
+		<value>5242880</value>
 	</property>
 	<property>
 		<name>kafka.props.retries</name>
@@ -22,11 +26,15 @@
 	</property>
 	<property>
 		<name>kafka.props.batch.size</name>
-		<value>323840</value>
+		<value>5000000</value>
 	</property>
 	<property>
 		<name>kafka.props.linger.ms</name>
-		<value>10</value>
+		<value>60000</value>
+	</property>
+	<property>
+		<name>kafka.props.acks</name>
+		<value>-1</value>
 	</property>
 	<property>
 		<name>kafka.props.buffer.memory</name>
