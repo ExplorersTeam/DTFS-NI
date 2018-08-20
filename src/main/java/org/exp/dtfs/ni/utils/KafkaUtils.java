@@ -24,6 +24,7 @@ public class KafkaUtils {
         producer.close();
     }
 
+    // TODO:To be deleted below code. Just for test.
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         producerUtil("zzzzzzzzz");
         producerUtil("fffffffff");
