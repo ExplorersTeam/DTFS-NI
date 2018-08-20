@@ -24,6 +24,9 @@ public class AmbariConfigs {
     private static final String SERVER_USER_PASSWORD_KEY = "dtfs.ni.ambari.server.user.password";
     private static final String DEFAULT_SERVER_USER_PASSWORD_VALUE = "admin";
 
+    private static final String CLUSTER_NAME_KEY = "dtfs.ni.ambari.cluster.name";
+    private static final String DEFAULT_CLUSTER_NAME_VALUE = "dtfs";
+
     private AmbariConfigs() {
         // Do nothing.
     }
@@ -42,6 +45,10 @@ public class AmbariConfigs {
 
     public static String getServerUserPassword() {
         return PROPERTIES.get(SERVER_USER_PASSWORD_KEY, DEFAULT_SERVER_USER_PASSWORD_VALUE);
+    }
+
+    public static String getClusterName() {
+        return PROPERTIES.get(CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME_VALUE);
     }
 
 }
