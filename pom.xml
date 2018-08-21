@@ -33,6 +33,12 @@
     	<artifactId>spring-beans</artifactId>
     	<version>${spring.version}</version>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.springframework/spring-jcl -->
+	<dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-jcl</artifactId>
+    	<version>${spring.version}</version>
+    </dependency>
   
   	<!-- Google Dependencies -->
   	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
@@ -67,12 +73,6 @@
 	</dependency>
   
   	<!-- Apache Dependencies -->
-  	<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
-	<dependency>
-    	<groupId>commons-logging</groupId>
-    	<artifactId>commons-logging</artifactId>
-    	<version>1.2</version>
-	</dependency>
 	<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 	<dependency>
     	<groupId>commons-io</groupId>
@@ -86,14 +86,6 @@
 	    <groupId>org.apache.kafka</groupId>
 	    <artifactId>kafka-clients</artifactId>
 	    <version>${kafka.version}</version>
-	</dependency>
-	
-	<!-- Hadoop Dependencies -->
-	<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
-	<dependency>
-    	<groupId>org.apache.hadoop</groupId>
-    	<artifactId>hadoop-common</artifactId>
-    	<version>3.1.1</version>
 	</dependency>
   </dependencies>
   

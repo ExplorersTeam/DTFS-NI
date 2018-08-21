@@ -1,4 +1,4 @@
-package org.exp.dtfs.ni.common;
+package org.exp.dtfs.ni.common.kafka;
 
 import java.util.Properties;
 

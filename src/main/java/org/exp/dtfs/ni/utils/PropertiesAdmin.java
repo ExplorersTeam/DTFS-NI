@@ -36,4 +36,12 @@ public class PropertiesAdmin {
         return properties.getProperty(key, defaultValue);
     }
 
+    public int getInt(String key) {
+        return Integer.parseInt(get(key));
+    }
+
+    public int getInt(String key, int defaultValue) {
+        return Integer.parseInt(get(key, Integer.toString(defaultValue)));
+    }
+
 }

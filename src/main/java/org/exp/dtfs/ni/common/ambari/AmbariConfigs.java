@@ -1,5 +1,6 @@
-package org.exp.dtfs.ni.common;
+package org.exp.dtfs.ni.common.ambari;
 
+import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.utils.PropertiesAdmin;
 
 /**
@@ -10,7 +11,7 @@ import org.exp.dtfs.ni.utils.PropertiesAdmin;
  *
  */
 public class AmbariConfigs {
-    private static final PropertiesAdmin PROPERTIES = new PropertiesAdmin("dtfs-ni-ambari.properties");
+    private static final PropertiesAdmin PROPERTIES = new PropertiesAdmin(Constants.AMBARI_PROPS_FILENAME);
 
     private static final String SERVER_IP_KEY = "dtfs.ni.ambari.server.ip";
     private static final String DEFAULT_SERVER_IP_VALUE = "127.0.0.1";
