@@ -8,6 +8,13 @@ import org.apache.http.message.BasicHeader;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.common.ambari.AmbariConfigs;
 
+/**
+ * 
+ * Operations to Ambari Server with RESTful APIs.
+ * 
+ * @author ChenJintong
+ *
+ */
 public class AmbariRESTUtils {
     private static final String API_PATH = "api";
     private static final String V1_PATH = "v1";
@@ -22,6 +29,9 @@ public class AmbariRESTUtils {
         // Do nothing.
     }
 
+    /*
+     * Add component information into HTTP request path string.
+     */
     private static String buildHTTPRequestPath(String path) {
         return new StringBuffer(API_PATH + Constants.SLASH_DELIMITER + V1_PATH + Constants.SLASH_DELIMITER + CLUSTERS_PATH)
                 .append(path.startsWith(Constants.SLASH_DELIMITER) ? "" : Constants.SLASH_DELIMITER).append(path).toString();

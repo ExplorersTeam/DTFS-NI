@@ -9,6 +9,14 @@ import org.apache.ambari.server.api.resources.ResourceInstanceFactory;
 import org.apache.ambari.server.api.resources.ResourceInstanceFactoryImpl;
 import org.apache.ambari.server.controller.spi.Resource.Type;
 
+/**
+ * 
+ * Operations to Ambari Server.
+ * 
+ * @author ChenJintong
+ * @remark For test.
+ *
+ */
 public class AmbariUtils {
     private static final ResourceInstanceFactory INSTANCE_FACTORY = new ResourceInstanceFactoryImpl();
 
