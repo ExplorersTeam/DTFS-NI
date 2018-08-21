@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.exp.dtfs.ni.common.conf.HDFSConfigs;
+import org.exp.dtfs.ni.conf.HDFSConfigs;
 
 public class HDFSUtils {
     private static final Log LOG = LogFactory.getLog(HDFSUtils.class);

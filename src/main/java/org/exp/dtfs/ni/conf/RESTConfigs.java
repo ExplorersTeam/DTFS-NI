@@ -1,4 +1,4 @@
-package org.exp.dtfs.ni.common.conf;
+package org.exp.dtfs.ni.conf;
 
 public class RESTConfigs {
     private static final String SERVER_PORT_KEY = "dtfs.ni.rest.server.port";

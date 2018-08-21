@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exp.dtfs.ni.common.conf.RESTConfigs;
+import org.exp.dtfs.ni.conf.RESTConfigs;
 import org.exp.dtfs.ni.rest.service.MetricService;
 import org.exp.dtfs.ni.utils.HTTPUtils;
 import org.glassfish.grizzly.http.server.HttpServer;

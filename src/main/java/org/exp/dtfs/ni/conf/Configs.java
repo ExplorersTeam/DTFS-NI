@@ -1,4 +1,4 @@
-package org.exp.dtfs.ni.common.conf;
+package org.exp.dtfs.ni.conf;
 
 import org.apache.hadoop.conf.Configuration;
 import org.exp.dtfs.ni.common.Constants;
