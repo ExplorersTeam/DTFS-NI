@@ -1,6 +1,8 @@
-package org.exp.dtfs.ni.common.kafka;
+package org.exp.dtfs.ni.common.context;
 
 import java.util.Properties;
+
+import org.exp.dtfs.ni.common.conf.KafkaConfigs;
 
 public class KafkaContext {
     private static Properties producerProps = new Properties();

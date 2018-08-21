@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.message.BasicHeader;
 import org.exp.dtfs.ni.common.Constants;
-import org.exp.dtfs.ni.common.ambari.AmbariConfigs;
+import org.exp.dtfs.ni.common.conf.AmbariConfigs;
 
 /**
  * 

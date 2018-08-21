@@ -8,8 +8,8 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.RetriableException;
-import org.exp.dtfs.ni.common.kafka.KafkaConfigs;
-import org.exp.dtfs.ni.common.kafka.KafkaContext;
+import org.exp.dtfs.ni.common.conf.KafkaConfigs;
+import org.exp.dtfs.ni.common.context.KafkaContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

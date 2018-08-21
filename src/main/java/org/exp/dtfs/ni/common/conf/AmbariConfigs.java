@@ -1,6 +1,5 @@
-package org.exp.dtfs.ni.common.ambari;
+package org.exp.dtfs.ni.common.conf;
 
-import org.exp.dtfs.ni.common.Configs;
 import org.exp.dtfs.ni.common.Constants;
 
 /**

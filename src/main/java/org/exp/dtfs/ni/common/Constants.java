@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 public class Constants {
     public static final String HTTP_SHCEME = "http";
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    public static final String REST_SERVER_PATH = "paas/v1/cmd";
 
     /**
      * Delimiters.

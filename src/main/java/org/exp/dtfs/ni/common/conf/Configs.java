@@ -1,4 +1,4 @@
-package org.exp.dtfs.ni.common;
+package org.exp.dtfs.ni.common.conf;
 
 import org.apache.hadoop.conf.Configuration;
 
@@ -10,10 +10,12 @@ public class Configs {
      */
     private static final String AMBARI_CONF_FILENAME = "dtfs-ni-ambari-site.xml";
     private static final String KAFKA_CONF_FILENAME = "dtfs-ni-kafka-site.xml";
+    private static final String REST_CONF_FILENAME = "dtfs-ni-rest-site.xml";
 
     static {
         CONF.addResource(AMBARI_CONF_FILENAME);
         CONF.addResource(KAFKA_CONF_FILENAME);
+        CONF.addResource(REST_CONF_FILENAME);
     }
 
     private Configs() {
