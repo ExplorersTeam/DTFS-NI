@@ -18,9 +18,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.exp.dtfs.ni.common.Constants;
 
 /**
- * 
+ *
  * Operations through HTTP protocol.
- * 
+ *
  * @author ChenJintong
  *
  */
@@ -35,7 +35,7 @@ public class HTTPUtils {
 
     /**
      * Build HTTP request path string.
-     * 
+     *
      * @param pathStrs
      * @return
      */
@@ -49,7 +49,7 @@ public class HTTPUtils {
 
     /**
      * Build a HTTP URI with parameters.
-     * 
+     *
      * @param host
      * @param port
      * @param path
@@ -57,7 +57,7 @@ public class HTTPUtils {
      * @return
      * @throws URISyntaxException
      */
-    public static URI buildURI(String host, int port, String path, NameValuePair[] params) throws URISyntaxException {
+    public static URI buildURI(String host, int port, String path, NameValuePair... params) throws URISyntaxException {
         URIBuilder builder = new URIBuilder();
         builder.setCharset(Constants.DEFAULT_CHARSET);
         builder.setScheme(Constants.HTTP_SHCEME);
@@ -66,12 +66,12 @@ public class HTTPUtils {
         if (null != path) {
             builder.setPath(path);
         }
-        return (null == params ? builder.build() : builder.setParameters(params).build());
+        return (null == params || 0 >= params.length ? builder.build() : builder.setParameters(params).build());
     }
 
     /**
      * Build a HTTP URI without parameter.
-     * 
+     *
      * @param host
      * @param port
      * @param path
@@ -79,12 +79,24 @@ public class HTTPUtils {
      * @throws URISyntaxException
      */
     public static URI buildURI(String host, int port, String path) throws URISyntaxException {
-        return buildURI(host, port, path, null);
+        return buildURI(host, port, path, new NameValuePair[] {});
     }
 
     /**
-     * Send a HTTP GET request.
-     * 
+     * Build a HTTP URI just with host address and port.
+     *
+     * @param host
+     * @param port
+     * @return
+     * @throws URISyntaxException
+     */
+    public static URI buildURI(String host, int port) throws URISyntaxException {
+        return buildURI(host, port, null, new NameValuePair[] {});
+    }
+
+    /**
+     * Send a HTTP GET request and get response body string.
+     *
      * @param uri
      * @param headers
      * @return
@@ -94,7 +106,7 @@ public class HTTPUtils {
         LOG.info("Send HTTP GET request, URI is [" + uri.toString() + "].");
         HttpGet get = new HttpGet();
         get.setURI(uri);
-        if (null != headers) {
+        if (null != headers && 0 < headers.length) {
             for (Header header : headers) {
                 get.setHeader(header);
             }
@@ -105,6 +117,20 @@ public class HTTPUtils {
             result = IOUtils.toString(stream, Constants.DEFAULT_CHARSET);
         }
         return result;
+    }
+
+    /**
+     * Send a HTTP GET request and get status code.
+     *
+     * @param uri
+     * @return
+     * @throws IOException
+     */
+    public static int sendGETRequest(URI uri) throws IOException {
+        LOG.info("Send HTTP GET request, URI is [" + uri.toString() + "].");
+        HttpGet get = new HttpGet();
+        get.setURI(uri);
+        return client.execute(get).getStatusLine().getStatusCode();
     }
 
 }

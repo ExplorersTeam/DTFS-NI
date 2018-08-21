@@ -1,0 +1,10 @@
+<configuration>
+    <property>
+        <name>dtfs.ni.hadoop.conf.main.path.parent</name>
+        <value>/etc/hadoop/conf/</value>
+    </property>
+    <property>
+        <name>dtfs.ni.hadoop.conf.main.path.parent</name>
+        <value>/etc/hbase/conf/</value>
+    </property>
+</configuration>

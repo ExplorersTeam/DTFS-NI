@@ -14,8 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ *
  * Operations to Kafka.
- * 
+ *
  * @author ZhangQingliang
  *
  */
@@ -28,7 +29,7 @@ public class KafkaUtils {
 
     /**
      * Produce message into Kafka queue.
-     * 
+     *
      * @param message
      * @throws InterruptedException
      * @throws ExecutionException

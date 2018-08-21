@@ -9,10 +9,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
+ *
  * XML analysis.
  *
  * @author ZhangQingliang
@@ -29,11 +28,14 @@ import org.slf4j.LoggerFactory;
 // <value>5242880</value>
 // </property>
 // </configuration>
-public class XmlDocumentUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(XmlDocumentUtils.class);
+public class XMLUtils {
+    // Not used.
+    // private static final Logger LOG =
+    // LoggerFactory.getLogger(XMLUtils.class);
 
     private static String CONF_FILENAME = "src/main/resources/dtfs-ni-kafka-site.xml";
 
+    @SuppressWarnings("rawtypes")
     private static final Map<String, String> init() {
         Map<String, String> properties = new HashMap<>();
         String key = null;
