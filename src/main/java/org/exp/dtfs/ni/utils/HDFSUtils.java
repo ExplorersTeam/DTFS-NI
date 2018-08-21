@@ -16,13 +16,13 @@ public class HDFSUtils {
         // Do nothing.
     }
 
-    public static boolean checkNameNodeAliveStatus(URI uri) throws IOException {
-        LOG.info("Check HDFS NameNode is alive or not, URI is [" + uri.toString() + "].");
+    public static boolean checkNameNodeAlive(URI uri) throws IOException {
+        LOG.info("Check if HDFS NameNode is alive, URI is [" + uri.toString() + "].");
         return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(uri);
     }
 
-    public static boolean checkNameNodeAliveStatus(String host) throws IOException, URISyntaxException {
-        LOG.info("Check HDFS NameNode is alive or not, host is [" + host + "].");
+    public static boolean checkNameNodeAlive(String host) throws IOException, URISyntaxException {
+        LOG.info("Check if HDFS NameNode is alive, host is [" + host + "].");
         return !(HttpStatus.SC_OK != HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode1HTTPAddrPort()))
                 && HttpStatus.SC_OK != HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode2HTTPAddrPort())));
     }

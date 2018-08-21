@@ -47,7 +47,7 @@ public class MetricService {
                 String ip = keys[0];
                 // TODO Check component and subcomponent value.
                 try {
-                    result = Boolean.toString(HDFSUtils.checkNameNodeAliveStatus(ip));
+                    result = Boolean.toString(HDFSUtils.checkNameNodeAlive(ip));
                 } catch (IOException | URISyntaxException e) {
                     result = e.getMessage();
                     status = ResultStatus.FAILED.value();
