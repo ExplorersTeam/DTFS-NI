@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 // <value>5242880</value>
 // </property>
 // </configuration>
-public class XmlDocumentUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(XmlDocumentUtil.class);
+public class XmlDocumentUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(XmlDocumentUtils.class);
 
     private static String CONF_FILENAME = "src/main/resources/dtfs-ni-kafka-site.xml";
 

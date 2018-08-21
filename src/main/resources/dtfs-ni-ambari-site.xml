@@ -1,0 +1,22 @@
+<configuration>
+    <property>
+        <name>dtfs.ni.ambari.server.ip</name>
+        <value>134.96.253.159</value>
+    </property>
+    <property>
+        <name>dtfs.ni.ambari.server.port</name>
+        <value>8080</value>
+    </property>
+    <property>
+        <name>dtfs.ni.ambari.server.user.name</name>
+        <value>admin</value>
+    </property>
+    <property>
+        <name>dtfs.ni.ambari.server.user.password</name>
+        <value>admin</value>
+    </property>
+    <property>
+        <name>dtfs.ni.ambari.cluster.name</name>
+        <value>dcs</value>
+    </property>
+</configuration>
