@@ -1,7 +1,7 @@
 package org.exp.dtfs.ni.common.ambari;
 
+import org.exp.dtfs.ni.common.Configs;
 import org.exp.dtfs.ni.common.Constants;
-import org.exp.dtfs.ni.utils.PropertiesAdmin;
 
 /**
  * 
@@ -11,13 +11,10 @@ import org.exp.dtfs.ni.utils.PropertiesAdmin;
  *
  */
 public class AmbariConfigs {
-    private static final PropertiesAdmin PROPERTIES = new PropertiesAdmin(Constants.AMBARI_PROPS_FILENAME);
-
     private static final String SERVER_IP_KEY = "dtfs.ni.ambari.server.ip";
-    private static final String DEFAULT_SERVER_IP_VALUE = "127.0.0.1";
 
     private static final String SERVER_PORT_KEY = "dtfs.ni.ambari.server.port";
-    private static final String DEFAULT_SERVER_PORT_VALUE = "8080";
+    private static final int DEFAULT_SERVER_PORT_VALUE = 8080;
 
     private static final String SERVER_USER_NAME_KEY = "dtfs.ni.ambari.server.user.name";
     private static final String DEFAULT_SERVER_USER_NAME_VALUE = "admin";
@@ -26,30 +23,29 @@ public class AmbariConfigs {
     private static final String DEFAULT_SERVER_USER_PASSWORD_VALUE = "admin";
 
     private static final String CLUSTER_NAME_KEY = "dtfs.ni.ambari.cluster.name";
-    private static final String DEFAULT_CLUSTER_NAME_VALUE = "dtfs";
 
     private AmbariConfigs() {
         // Do nothing.
     }
 
     public static String getServerIP() {
-        return PROPERTIES.get(SERVER_IP_KEY, DEFAULT_SERVER_IP_VALUE);
+        return Configs.get(SERVER_IP_KEY, Constants.DEFAULT_ADDR_STR);
     }
 
     public static int getServerPort() {
-        return Integer.parseInt(PROPERTIES.get(SERVER_PORT_KEY, DEFAULT_SERVER_PORT_VALUE));
+        return Configs.getInt(SERVER_PORT_KEY, DEFAULT_SERVER_PORT_VALUE);
     }
 
     public static String getServerUserName() {
-        return PROPERTIES.get(SERVER_USER_NAME_KEY, DEFAULT_SERVER_USER_NAME_VALUE);
+        return Configs.get(SERVER_USER_NAME_KEY, DEFAULT_SERVER_USER_NAME_VALUE);
     }
 
     public static String getServerUserPassword() {
-        return PROPERTIES.get(SERVER_USER_PASSWORD_KEY, DEFAULT_SERVER_USER_PASSWORD_VALUE);
+        return Configs.get(SERVER_USER_PASSWORD_KEY, DEFAULT_SERVER_USER_PASSWORD_VALUE);
     }
 
     public static String getClusterName() {
-        return PROPERTIES.get(CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME_VALUE);
+        return Configs.get(CLUSTER_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
     }
 
 }

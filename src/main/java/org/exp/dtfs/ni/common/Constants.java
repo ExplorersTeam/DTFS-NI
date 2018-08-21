@@ -14,10 +14,10 @@ public class Constants {
     public static final String COLON_DELIMITER = ":";
 
     /**
-     * Configuration file name.
+     * Configuration default values.
      */
-    public static final String AMBARI_PROPS_FILENAME = "dtfs-ni-ambari.properties";
-    public static final String KAFKA_PROPS_FILENAME = "dtfs-ni-kafka.properties";
+    public static final String DEFAULT_ADDR_STR = "127.0.0.1";
+    public static final String DEFAULT_SERVICE_NAME = "dtfs";
 
     private Constants() {
         // Do nothing.
