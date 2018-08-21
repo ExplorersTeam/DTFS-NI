@@ -20,7 +20,7 @@ public class KafkaContext {
         // Do nothing
     }
 
-    public static Properties getProps() {
+    public static Properties getProducerProps() {
         return producerProps;
     }
 

@@ -3,6 +3,13 @@ package org.exp.dtfs.ni.common.kafka;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.utils.PropertiesAdmin;
 
+/**
+ * 
+ * Kafka configurations.
+ * 
+ * @author ZhangQingliang
+ *
+ */
 public class KafkaConfigs {
     private static final PropertiesAdmin PROPS = new PropertiesAdmin(Constants.KAFKA_PROPS_FILENAME);
 

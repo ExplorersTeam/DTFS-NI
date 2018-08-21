@@ -34,7 +34,7 @@ public class KafkaUtils {
      * @throws ExecutionException
      */
     public static void produce(String message) throws InterruptedException, ExecutionException {
-        Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProps());
+        Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProducerProps());
         ProducerRecord<String, String> records = new ProducerRecord<>(KafkaConfigs.getKafkaTopicName(), message);
         // producer.send(records).get();
         producer.send(records, new Callback() {
