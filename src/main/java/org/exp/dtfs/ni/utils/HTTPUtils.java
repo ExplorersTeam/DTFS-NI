@@ -116,4 +116,20 @@ public class HTTPUtils {
         return client.execute(get).getStatusLine().getStatusCode();
     }
 
+    /**
+     * Send a HTTP GET request and get status code with host and port.
+     * 
+     * @param host
+     * @param port
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static int sendGETRequest(String host, int port) throws IOException, URISyntaxException {
+        LOG.info("Send HTTP GET request, host is [" + host + "], port is [" + port + "].");
+        HttpGet get = new HttpGet();
+        get.setURI(buildURI(host, port));
+        return client.execute(get).getStatusLine().getStatusCode();
+    }
+
 }

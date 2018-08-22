@@ -8,6 +8,7 @@ public class Configs {
     /*
      * Configuration file name.
      */
+    private static final String COMMON_CONF_FILENAME = "dtfs-ni-common-site.xml";
     private static final String AMBARI_CONF_FILENAME = "dtfs-ni-ambari-site.xml";
     private static final String KAFKA_CONF_FILENAME = "dtfs-ni-kafka-site.xml";
     private static final String REST_CONF_FILENAME = "dtfs-ni-rest-site.xml";
@@ -27,6 +28,7 @@ public class Configs {
     // "dtfs.ni.hbase.conf.main.path.parent";
 
     static {
+        CONF.addResource(COMMON_CONF_FILENAME);
         CONF.addResource(AMBARI_CONF_FILENAME);
         CONF.addResource(KAFKA_CONF_FILENAME);
         CONF.addResource(REST_CONF_FILENAME);

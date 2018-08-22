@@ -3,6 +3,8 @@ package org.exp.dtfs.ni.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.exp.dtfs.ni.conf.CommonConfigs;
+
 @XmlRootElement
 public class BaseBody {
     private static final String ID_KEY = "ID";
@@ -10,7 +12,7 @@ public class BaseBody {
     private static final String COMMAND_KEY = "Command";
 
     @XmlElement(name = ID_KEY)
-    private String id;
+    private String id = CommonConfigs.getComponentID();
 
     @XmlElement(name = COMP_KEY)
     private String componentKey;

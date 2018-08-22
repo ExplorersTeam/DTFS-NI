@@ -1,5 +1,6 @@
 package org.exp.dtfs.ni.entity;
 
+import org.exp.dtfs.ni.conf.CommonConfigs;
 import org.exp.dtfs.ni.utils.DateUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MetricMessage {
     @JsonProperty("ID")
-    private String id = "40000"; // 唯一序列号
+    private String id = CommonConfigs.getComponentID(); // 唯一序列号
     @JsonProperty("CompKey")
     private String compKey; // 组件实例名称
     @JsonProperty("HOSTIP")

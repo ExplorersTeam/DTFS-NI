@@ -1,0 +1,6 @@
+<configuration>
+    <property>
+        <name>dtfs.ni.component.id</name>
+        <value>40000</value>
+    </property>
+</configuration>

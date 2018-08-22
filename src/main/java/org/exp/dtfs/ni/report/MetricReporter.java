@@ -10,11 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpStatus;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HDFSConfigs;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
-import org.exp.dtfs.ni.utils.HDFSUtils;
 import org.exp.dtfs.ni.utils.HTTPUtils;
 import org.exp.dtfs.ni.utils.JSONUtils;
 import org.exp.dtfs.ni.utils.KafkaUtils;
@@ -23,6 +23,12 @@ public class MetricReporter {
     private static final Log LOG = LogFactory.getLog(MetricReporter.class);
 
     private ScheduledExecutorService manager = Executors.newScheduledThreadPool(17);
+
+    /*
+     * TODO Changed them.
+     */
+    private static final String TEST_COMP_KEY = "Test CompKey";
+    private static final String TEST_METRIC_CODE = "Test Code";
 
     /*
      * @Type 基础运行类
@@ -57,37 +63,37 @@ public class MetricReporter {
     };
 
     private static void HDFSNameNodeProcessReport() {
-        String nn1 = HDFSConfigs.getNameNode1HTTPAddr();
-        String nn2 = HDFSConfigs.getNameNode2HTTPAddr();
-        LOG.info("HDFS NameNodes are [" + nn1 + "] and [" + nn2 + "].");
-        String nn1Hostname = nn1.split(Constants.COLON_DELIMITER)[0];
-        String nn2Hostname = nn2.split(Constants.COLON_DELIMITER)[0];
-        int nn1Port = Integer.parseInt(nn1.split(Constants.COLON_DELIMITER)[1]);
-        int nn2Port = Integer.parseInt(nn2.split(Constants.COLON_DELIMITER)[1]);
-
-        MetricMessage nn1Msg = new MetricMessage();
-        MetricMessage nn2Msg = new MetricMessage();
-
         try {
-            nn1Msg.setCompKey("Test CompKey");
-            nn1Msg.setHostIP(InetAddress.getByName(nn1Hostname).getHostAddress());
-            nn1Msg.setMetricCode("Test Code");
-            nn1Msg.setMetricType(MetricType.STATUS);
-            nn1Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNodeAlive(HTTPUtils.buildURI(nn1Hostname, nn1Port))));
+            String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
 
-            nn2Msg.setCompKey("Test CompKey");
-            nn2Msg.setHostIP(InetAddress.getByName(nn2Hostname).getHostAddress());
-            nn2Msg.setMetricCode("Test Code");
-            nn2Msg.setMetricType(MetricType.STATUS);
-            nn2Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNodeAlive(HTTPUtils.buildURI(nn2Hostname, nn2Port))));
-        } catch (IOException | URISyntaxException e) {
+            MetricMessage nn1Msg = new MetricMessage();
+            nn1Msg.setCompKey(TEST_COMP_KEY);
+            nn1Msg.setHostIP(InetAddress.getByName(nn1Addrs[0]).getHostAddress());
+            nn1Msg.setMetricCode(TEST_METRIC_CODE);
+            nn1Msg.setMetricType(MetricType.STATUS);
+            nn1Msg.setMetricValue(Boolean.toString(HttpStatus.SC_OK == HTTPUtils.sendGETRequest(nn1Addrs[0], Integer.parseInt(nn1Addrs[1]))));
+
+            String nn1MsgStr = JSONUtils.buildJSONString(nn1Msg);
+            LOG.info("Send message [" + nn1MsgStr + "] into Kafka queue.");
+            KafkaUtils.produce(nn1MsgStr);
+        } catch (IOException | URISyntaxException | InterruptedException | ExecutionException e) {
             LOG.error(e.getMessage(), e);
         }
 
         try {
-            KafkaUtils.produce(JSONUtils.buildJSONString(nn1Msg));
-            KafkaUtils.produce(JSONUtils.buildJSONString(nn2Msg));
-        } catch (InterruptedException | ExecutionException | IOException e) {
+            String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
+
+            MetricMessage nn2Msg = new MetricMessage();
+            nn2Msg.setCompKey(TEST_COMP_KEY);
+            nn2Msg.setHostIP(InetAddress.getByName(nn2Addrs[0]).getHostAddress());
+            nn2Msg.setMetricCode(TEST_METRIC_CODE);
+            nn2Msg.setMetricType(MetricType.STATUS);
+            nn2Msg.setMetricValue(Boolean.toString(HttpStatus.SC_OK == HTTPUtils.sendGETRequest(nn2Addrs[0], Integer.parseInt(nn2Addrs[1]))));
+
+            String nn2MsgStr = JSONUtils.buildJSONString(nn2Msg);
+            LOG.info("Send message [" + nn2MsgStr + "] into Kafka queue.");
+            KafkaUtils.produce(nn2MsgStr);
+        } catch (InterruptedException | ExecutionException | IOException | NumberFormatException | URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
     }
