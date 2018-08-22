@@ -2,4 +2,4 @@
 North Interfaces on Distributed Tiny-File System.
 
 ## Preparations
-* Add `hdfs-site.xml` into configuration path.
+* Add `hdfs-site.xml`, `hbase-site.xml` into configuration path.
