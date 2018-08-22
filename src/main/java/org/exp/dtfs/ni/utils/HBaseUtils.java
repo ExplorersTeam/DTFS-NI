@@ -18,7 +18,7 @@ public class HBaseUtils {
         // Do nothing.
     }
 
-    public static List<String> listRegionServers() throws Exception {
+    public static List<String> listAliveRegionServers() throws Exception {
         List<String> rss = ZKUtils.list(ZNODE_PARENT + (ZNODE_PARENT.endsWith(Constants.SLASH_DELIMITER) ? "" : Constants.SLASH_DELIMITER) + RS_ZNODE);
         LOG.info("Now there are [" + rss.size() + "] HBase RegionServers alive.");
         return rss;
@@ -28,7 +28,7 @@ public class HBaseUtils {
         LOG.info("Check if HBase RegionServer is alive, host is [" + ip + "].");
         String hostname = InetAddress.getByName(ip).getCanonicalHostName();
         LOG.info("Check RegionServer alive status, hostname is [" + hostname + "].");
-        for (String rs : listRegionServers()) {
+        for (String rs : listAliveRegionServers()) {
             if (rs.startsWith(hostname)) {
                 return true;
             }

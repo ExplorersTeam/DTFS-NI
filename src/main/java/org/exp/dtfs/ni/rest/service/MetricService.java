@@ -43,12 +43,12 @@ public class MetricService {
         String[] keys = compKey.split(Constants.TRANSFER_VERTICAL_DELIMITER);
         PCommand pcmd = PCommand.valueOf(command.toUpperCase());
 
+        // TODO Check component and subcomponent value.
         switch (pcmd) {
         case P_HB_NNPROC: // 基础运行类 - 数据管理节点服务进程是否存在
         case P_HB_CONSTATUS: // 基础运行类 - NameNode连接状态是否正常
             if (3 == keys.length) {
                 String ip = keys[0];
-                // TODO Check component and subcomponent value.
                 try {
                     result = Boolean.toString(HDFSUtils.checkNameNodeAlive(ip));
                 } catch (IOException | URISyntaxException e) {
@@ -65,7 +65,6 @@ public class MetricService {
         case P_HB_REGPROC: // 基础运行类 - 元数据节点服务进程是否存在
             if (3 == keys.length) {
                 String ip = keys[0];
-                // TODO Check component and subcomponent value.
                 try {
                     result = Boolean.toString(HBaseUtils.checkRegionServerAlive(ip));
                 } catch (Exception e) {
@@ -91,7 +90,13 @@ public class MetricService {
 
         case P_HB_CONNUM: // 基础运行类 - NameNode客户端连接数
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
+                try {
+                    result = Integer.toString(HDFSUtils.rpcClientConnNum());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
@@ -100,7 +105,13 @@ public class MetricService {
 
         case P_HB_SAFEMOD: // 基础运行类 - NameNode是否启用安全模式
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
+                try {
+                    result = Boolean.toString(HDFSUtils.isSafeMode());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
@@ -119,15 +130,13 @@ public class MetricService {
 
         case P_HB_CLRFILES: // 基础运行类 - 集群总文件数（FilesTotal）
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
-                /*
-                 * XXX Does this result include directories' number? I incline
-                 * to include it here.
-                 *
-                 * @By ChenJintong
-                 *
-                 * @Date 2018-04-20 10:00
-                 */
+                try {
+                    result = Long.toString(HDFSUtils.totalFilesNum());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
@@ -186,7 +195,13 @@ public class MetricService {
 
         case P_HB_CLRMEM: // 基础运行类 - 集群占用内存总数
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
+                try {
+                    result = Long.toString(HDFSUtils.heapMemoryUsed());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
@@ -213,8 +228,13 @@ public class MetricService {
 
         case P_HB_CLRDISK: // 基础运行类 - 集群磁盘空间占用(率)
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
-                // result = collector.getDiskPercentage() + "%";
+                try {
+                    result = Float.toString(HDFSUtils.capacityUsage());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
@@ -223,7 +243,13 @@ public class MetricService {
 
         case P_HB_CLRCPU: // 基础运行类 - 集群CPU占用率
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
+                try {
+                    result = Float.toString(HDFSUtils.cpuUsage());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();

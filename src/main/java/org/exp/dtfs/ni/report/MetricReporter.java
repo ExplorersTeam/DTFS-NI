@@ -10,12 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpStatus;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HDFSConfigs;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
-import org.exp.dtfs.ni.utils.HTTPUtils;
+import org.exp.dtfs.ni.utils.HDFSUtils;
 import org.exp.dtfs.ni.utils.JSONUtils;
 import org.exp.dtfs.ni.utils.KafkaUtils;
 
@@ -64,14 +63,12 @@ public class MetricReporter {
 
     private static void HDFSNameNodeProcessReport() {
         try {
-            String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
-
             MetricMessage nn1Msg = new MetricMessage();
             nn1Msg.setCompKey(TEST_COMP_KEY);
-            nn1Msg.setHostIP(InetAddress.getByName(nn1Addrs[0]).getHostAddress());
+            nn1Msg.setHostIP(InetAddress.getByName(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]).getHostAddress());
             nn1Msg.setMetricCode(TEST_METRIC_CODE);
             nn1Msg.setMetricType(MetricType.STATUS);
-            nn1Msg.setMetricValue(Boolean.toString(HttpStatus.SC_OK == HTTPUtils.sendGETRequest(nn1Addrs[0], Integer.parseInt(nn1Addrs[1]))));
+            nn1Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNode1Alive()));
 
             String nn1MsgStr = JSONUtils.buildJSONString(nn1Msg);
             LOG.info("Send message [" + nn1MsgStr + "] into Kafka queue.");
@@ -81,14 +78,12 @@ public class MetricReporter {
         }
 
         try {
-            String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
-
             MetricMessage nn2Msg = new MetricMessage();
             nn2Msg.setCompKey(TEST_COMP_KEY);
-            nn2Msg.setHostIP(InetAddress.getByName(nn2Addrs[0]).getHostAddress());
+            nn2Msg.setHostIP(InetAddress.getByName(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]).getHostAddress());
             nn2Msg.setMetricCode(TEST_METRIC_CODE);
             nn2Msg.setMetricType(MetricType.STATUS);
-            nn2Msg.setMetricValue(Boolean.toString(HttpStatus.SC_OK == HTTPUtils.sendGETRequest(nn2Addrs[0], Integer.parseInt(nn2Addrs[1]))));
+            nn2Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNode2Alive()));
 
             String nn2MsgStr = JSONUtils.buildJSONString(nn2Msg);
             LOG.info("Send message [" + nn2MsgStr + "] into Kafka queue.");

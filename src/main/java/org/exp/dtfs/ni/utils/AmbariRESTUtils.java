@@ -67,6 +67,10 @@ public class AmbariRESTUtils {
                 fields);
     }
 
+    public static String getHostsMetrics() throws URISyntaxException, IOException {
+        return getMetrics(buildHTTPRequestPath(HTTPUtils.buildRequetPath(AmbariConfigs.getClusterName(), HOSTS_PATH)));
+    }
+
     public static String getHostComponentMetrics(String hostName, String componentName) throws URISyntaxException, IOException {
         return getMetrics(
                 buildHTTPRequestPath(HTTPUtils.buildRequetPath(AmbariConfigs.getClusterName(), HOSTS_PATH, hostName, HOST_COMPONENTS_PATH, componentName)));
