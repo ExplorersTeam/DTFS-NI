@@ -106,10 +106,8 @@ public class HTTPUtils {
         LOG.info("Send HTTP GET request, URI is [" + uri.toString() + "].");
         HttpGet get = new HttpGet();
         get.setURI(uri);
-        if (null != headers && 0 < headers.length) {
-            for (Header header : headers) {
-                get.setHeader(header);
-            }
+        for (Header header : headers) {
+            get.setHeader(header);
         }
         HttpResponse response = client.execute(get);
         String result = null;
