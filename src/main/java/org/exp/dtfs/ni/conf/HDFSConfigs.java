@@ -34,6 +34,10 @@ public class HDFSConfigs {
         return addr;
     }
 
+    public static String getNameNode1HTTPAddrHostname() {
+        return getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0];
+    }
+
     public static int getNameNode1HTTPAddrPort() {
         return Integer.parseInt(getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[1]);
     }
@@ -42,6 +46,10 @@ public class HDFSConfigs {
         String addr = Configs.get(NN2_HTTP_ADDR_KEY, Constants.DEFAULT_ADDR_STR);
         LOG.info("HDFS NN2 HTTP address configuration item key is [" + NN2_HTTP_ADDR_KEY + "], result  is [" + addr + "].");
         return addr;
+    }
+
+    public static String getNameNode2HTTPAddrHostname() {
+        return getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0];
     }
 
     public static int getNameNode2HTTPAddrPort() {
