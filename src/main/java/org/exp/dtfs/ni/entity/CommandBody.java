@@ -39,10 +39,4 @@ public class CommandBody extends BaseBody {
         this.params = params;
     }
 
-    @Override
-    public String toString() {
-        return "Command: [ ID = " + getID() + ", Component Key = " + getComponentKey() + ", Command = " + getCommand() + ", Parameters = " + getParams()
-                + " ].";
-    }
-
 }

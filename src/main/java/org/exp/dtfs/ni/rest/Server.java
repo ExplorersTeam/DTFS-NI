@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.RESTConfigs;
 import org.exp.dtfs.ni.rest.service.MetricService;
 import org.exp.dtfs.ni.utils.HTTPUtils;
@@ -47,6 +48,7 @@ public class Server {
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
             this.server = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
+            LOG.info("REST server initialized, address is [" + getHostAddress() + Constants.COLON_DELIMITER + getPort() + "].");
         } catch (UnknownHostException | URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }

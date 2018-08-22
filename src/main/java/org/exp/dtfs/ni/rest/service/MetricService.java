@@ -29,15 +29,17 @@ public class MetricService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public ResponseBody exec(CommandBody cmd) {
-        LOG.info(cmd.toString());
+        String id = cmd.getID();
+        String compKey = cmd.getComponentKey();
+        String command = cmd.getCommand();
+        String params = cmd.getParams();
+
+        LOG.info("Received command, ID is [" + id + "], component key is [" + compKey + "], command is [" + command + "], parameters is [" + params + "].");
 
         String result = null;
         String status = ResultStatus.SUCCESS.value();
 
-        String compKey = cmd.getComponentKey();
         String[] keys = compKey.split(Constants.VERTICAL_DELIMITER);
-
-        String command = cmd.getCommand();
         PCommand pcmd = PCommand.valueOf(command.toUpperCase());
 
         switch (pcmd) {
