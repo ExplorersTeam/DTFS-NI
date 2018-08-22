@@ -16,6 +16,7 @@ import org.exp.dtfs.ni.entity.CommandBody;
 import org.exp.dtfs.ni.entity.ResponseBody;
 import org.exp.dtfs.ni.entity.ResponseBody.ResultStatus;
 import org.exp.dtfs.ni.utils.DateUtils;
+import org.exp.dtfs.ni.utils.HBaseUtils;
 import org.exp.dtfs.ni.utils.HDFSUtils;
 
 import com.sun.jersey.spi.resource.Singleton;
@@ -65,6 +66,13 @@ public class MetricService {
             if (3 == keys.length) {
                 String ip = keys[0];
                 // TODO Check component and subcomponent value.
+                try {
+                    result = Boolean.toString(HBaseUtils.checkRegionServerAlive(ip));
+                } catch (Exception e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
