@@ -16,7 +16,7 @@ public class Configs {
 
     // private static final String HADOOP_CORE_CONF_FILENAME = "core-site.xml";
     private static final String HDFS_CONF_FILENAME = "hdfs-site.xml";
-    // private static final String HBASE_CONF_FILENAME = "hbase-site.xml";
+    private static final String HBASE_CONF_FILENAME = "hbase-site.xml";
 
     /*
      * Hadoop configurations.
@@ -31,6 +31,7 @@ public class Configs {
         CONF.addResource(KAFKA_CONF_FILENAME);
         CONF.addResource(REST_CONF_FILENAME);
         CONF.addResource(HDFS_CONF_FILENAME);
+        CONF.addResource(HBASE_CONF_FILENAME);
     }
 
     private Configs() {
