@@ -12,9 +12,9 @@ import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.AmbariConfigs;
 
 /**
- * 
+ *
  * Operations to Ambari Server with RESTful APIs.
- * 
+ *
  * @author ChenJintong
  *
  */
@@ -26,6 +26,9 @@ public class AmbariRESTUtils {
     private static final String COMPONENTS_PATH = "components";
 
     private static final String FIELDS_PARAM = "fields";
+
+    private static final String HOSTS_PATH = "hosts";
+    private static final String HOST_COMPONENTS_PATH = "host_components";
 
     private static final String AUTH_HEADER_KEY = "Authorization";
     private static final String AUTH_HEADER_VALUE_BASIC_PREFIX = "Basic ";
@@ -63,6 +66,11 @@ public class AmbariRESTUtils {
         return getMetrics(
                 buildHTTPRequestPath(HTTPUtils.buildRequetPath(AmbariConfigs.getClusterName(), SERVICES_PATH, serviceName, COMPONENTS_PATH, componentName)),
                 fields);
+    }
+
+    public static String getHostComponentMetrics(String hostName, String componentName) throws URISyntaxException, IOException {
+        return getMetrics(
+                buildHTTPRequestPath(HTTPUtils.buildRequetPath(AmbariConfigs.getClusterName(), HOSTS_PATH, hostName, HOST_COMPONENTS_PATH, componentName)));
     }
 
 }
