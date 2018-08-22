@@ -63,23 +63,8 @@ public class HTTPUtils {
         builder.setScheme(Constants.HTTP_SHCEME);
         builder.setHost(host);
         builder.setPort(port);
-        if (null != path) {
-            builder.setPath(path);
-        }
-        return (null == params || 0 >= params.length ? builder.build() : builder.setParameters(params).build());
-    }
-
-    /**
-     * Build a HTTP URI without parameter.
-     *
-     * @param host
-     * @param port
-     * @param path
-     * @return
-     * @throws URISyntaxException
-     */
-    public static URI buildURI(String host, int port, String path) throws URISyntaxException {
-        return buildURI(host, port, path, new NameValuePair[] {});
+        builder.setParameters(params);
+        return null == path ? builder.build() : builder.setPath(path).build();
     }
 
     /**
@@ -91,7 +76,7 @@ public class HTTPUtils {
      * @throws URISyntaxException
      */
     public static URI buildURI(String host, int port) throws URISyntaxException {
-        return buildURI(host, port, null, new NameValuePair[] {});
+        return buildURI(host, port, null);
     }
 
     /**
