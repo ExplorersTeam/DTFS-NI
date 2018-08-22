@@ -39,7 +39,7 @@ public class MetricService {
         String result = null;
         String status = ResultStatus.SUCCESS.value();
 
-        String[] keys = compKey.split(Constants.VERTICAL_DELIMITER);
+        String[] keys = compKey.split(Constants.TRANSFER_VERTICAL_DELIMITER);
         PCommand pcmd = PCommand.valueOf(command.toUpperCase());
 
         switch (pcmd) {
@@ -51,6 +51,7 @@ public class MetricService {
                 try {
                     result = Boolean.toString(HDFSUtils.checkNameNodeAlive(ip));
                 } catch (IOException | URISyntaxException e) {
+                    LOG.error(e.getMessage(), e);
                     result = e.getMessage();
                     status = ResultStatus.FAILED.value();
                 }

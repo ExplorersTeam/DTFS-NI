@@ -23,8 +23,10 @@ public class HDFSUtils {
 
     public static boolean checkNameNodeAlive(String host) throws IOException, URISyntaxException {
         LOG.info("Check if HDFS NameNode is alive, host is [" + host + "].");
-        return !(HttpStatus.SC_OK != HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode1HTTPAddrPort()))
-                && HttpStatus.SC_OK != HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode2HTTPAddrPort())));
+        int nn1Code = HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode1HTTPAddrPort()));
+        int nn2Code = HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode2HTTPAddrPort()));
+        LOG.info("Check network, NN1 status code is [" + nn1Code + "], NN2 status code is [" + nn2Code + "].");
+        return !(HttpStatus.SC_OK != nn1Code && HttpStatus.SC_OK != nn2Code);
     }
 
 }

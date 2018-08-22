@@ -13,7 +13,7 @@ public class Constants {
      */
     public static final String SLASH_DELIMITER = "/";
     public static final String COLON_DELIMITER = ":";
-    public static final String VERTICAL_DELIMITER = "|";
+    public static final String TRANSFER_VERTICAL_DELIMITER = "\\|";
 
     /**
      * Configuration default values.
