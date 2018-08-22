@@ -22,7 +22,7 @@ public class Configs {
      * Hadoop configurations.
      */
     private static final String HADOOP_CONF_MAIN_PATH_PARENT_KEY = "dtfs.ni.hadoop.conf.main.path.parent";
-    private static final String HBASE_CONF_PATH_PARENT_KEY = "dtfs.ni.hadoop.conf.main.path.parent";
+    private static final String HBASE_CONF_PATH_PARENT_KEY = "dtfs.ni.hbase.conf.main.path.parent";
 
     static {
         CONF.addResource(AMBARI_CONF_FILENAME);
