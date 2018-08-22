@@ -1,6 +1,7 @@
 package org.exp.dtfs.ni.utils;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -23,10 +24,13 @@ public class HDFSUtils {
 
     public static boolean checkNameNodeAlive(String host) throws IOException, URISyntaxException {
         LOG.info("Check if HDFS NameNode is alive, host is [" + host + "].");
-        int nn1Code = HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode1HTTPAddrPort()));
-        int nn2Code = HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode2HTTPAddrPort()));
-        LOG.info("Check network, NN1 status code is [" + nn1Code + "], NN2 status code is [" + nn2Code + "].");
-        return !(HttpStatus.SC_OK != nn1Code && HttpStatus.SC_OK != nn2Code);
+        if (InetAddress.getByName(host).getCanonicalHostName().equals(HDFSConfigs.getNameNode1HTTPAddrHostname())) {
+            return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode1HTTPAddrPort()));
+        } else if (InetAddress.getByName(host).getCanonicalHostName().equals(HDFSConfigs.getNameNode2HTTPAddrHostname())) {
+            return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, HDFSConfigs.getNameNode2HTTPAddrPort()));
+        } else {
+            return false;
+        }
     }
 
 }
