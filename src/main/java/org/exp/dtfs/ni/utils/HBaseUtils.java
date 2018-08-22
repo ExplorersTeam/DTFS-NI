@@ -20,9 +20,9 @@ public class HBaseUtils {
 
     public static boolean checkRegionServerAlive(String ip) throws Exception {
         String hostname = InetAddress.getByAddress(ip.getBytes()).getCanonicalHostName();
-        LOG.info("Check if HBase Region Server is alive, host is [" + ip + "], hostname is [" + hostname + "].");
+        LOG.info("Check if HBase RegionServer is alive, host is [" + ip + "], hostname is [" + hostname + "].");
         List<String> rss = ZKUtils.list(ZNODE_PARENT + (ZNODE_PARENT.endsWith(Constants.SLASH_DELIMITER) ? "" : Constants.SLASH_DELIMITER) + RS_ZNODE);
-        LOG.info("Now there are [" + rss.size() + "] HBase Region Servers alive.");
+        LOG.info("Now there are [" + rss.size() + "] HBase RegionServers alive.");
         for (String rs : rss) {
             if (rs.startsWith(hostname)) {
                 return true;
