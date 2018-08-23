@@ -1,4 +1,4 @@
-package org.exp.dtfs.ni.utils;
+package org.exp.dtfs.ni.trash;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.dtfs.ni.common.Constants;
+import org.exp.dtfs.ni.utils.AmbariRESTUtils;
 
 import com.alibaba.fastjson.JSONObject;
 

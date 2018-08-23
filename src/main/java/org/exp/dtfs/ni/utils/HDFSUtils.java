@@ -28,9 +28,133 @@ public class HDFSUtils {
     private static final String STATE_KEY = "state";
     private static final String DFS_KEY = "dfs";
     private static final String FS_NAME_SYSTEM_KEY = "FSNamesystem";
+    private static final String DATANODE_KEY = "datanode";
+    private static final String READ_BLOCK_AVG_TIME_KEY = "readBlockOp_avg_time";
+    private static final String WRITE_BLOCK_AVG_TIME_KEY = "writeBlockOp_avg_time";
+    private static final String STARTED_COUNT_KEY = "started_count";
+    private static final String UNKNOWN_COUNT_KEY = "unknown_count";
 
     private HDFSUtils() {
         // Do nothing.
+    }
+
+    private static JSONObject getDataNodeServiceComponentKeyResponse(String key) throws URISyntaxException, IOException {
+        String metricStr = AmbariRESTUtils.getServiceComponentMetrics(SERVICE_NAME, DN_COMP_NAME, key);
+        return null == metricStr ? null : JSONObject.parseObject(metricStr);
+    }
+
+    /**
+     * Get DataNode average read time
+     *
+     * @param host
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+
+    public static float getDataNodeAvgReadTime(String host) throws URISyntaxException, IOException {
+        /*
+         * Example.
+         *
+         * @URI
+         * http://10.142.90.152:8080/api/v1/clusters/ctdfs/hosts/dfs1a1.ecld.com
+         * /host_components/DATANODE?fields=metrics/dfs/datanode/
+         * readBlockOp_avg_time
+         *
+         * @Reponse { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/hosts/dfs1a1.ecld.com/host_components/DATANODE?fields=metrics/dfs/datanode/readBlockOp_avg_time",
+         * "HostRoles" : { "cluster_name" : "ctdfs", "component_name" :
+         * "DATANODE", "host_name" : "dfs1a1.ecld.com" }, "host" : { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/hosts/dfs1a1.ecld.com"
+         * }, "metrics" : { "dfs" : { "datanode" : { "readBlockOp_avg_time" :
+         * 0.0 } } } }
+         */
+        String hostname = InetAddress.getByName(host).getCanonicalHostName();
+        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME, METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY
+                + Constants.SLASH_DELIMITER + DATANODE_KEY + Constants.SLASH_DELIMITER + READ_BLOCK_AVG_TIME_KEY);
+        if (null == response) {
+            return 0;
+        }
+        Object num = JSONObject.parseObject(response).getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(DATANODE_KEY)
+                .get(READ_BLOCK_AVG_TIME_KEY);
+        return null == num ? 0 : Float.parseFloat(num.toString());
+    }
+
+    /**
+     * Get DataNode average write time
+     *
+     * @param host
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+
+    public static float getDataNodeAvgWriteTime(String host) throws URISyntaxException, IOException {
+        /*
+         * Example.
+         *
+         * @URI
+         * http://10.142.90.152:8080/api/v1/clusters/ctdfs/hosts/dfs1a1.ecld.com
+         * /host_components/DATANODE?fields=metrics/dfs/datanode/
+         * writeBlockOp_avg_time
+         *
+         * @Reponse { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/hosts/dfs1a1.ecld.com/host_components/DATANODE?fields=metrics/dfs/datanode/writeBlockOp_avg_time",
+         * "HostRoles" : { "cluster_name" : "ctdfs", "component_name" :
+         * "DATANODE", "host_name" : "dfs1a1.ecld.com" }, "host" : { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/hosts/dfs1a1.ecld.com"
+         * }, "metrics" : { "dfs" : { "datanode" : { "writeBlockOp_avg_time" :
+         * 13.0 } } } }
+         */
+        String hostname = InetAddress.getByName(host).getCanonicalHostName();
+        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME, METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY
+                + Constants.SLASH_DELIMITER + DATANODE_KEY + Constants.SLASH_DELIMITER + WRITE_BLOCK_AVG_TIME_KEY);
+        if (null == response) {
+            return 0;
+        }
+        Object num = JSONObject.parseObject(response).getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(DATANODE_KEY)
+                .get(WRITE_BLOCK_AVG_TIME_KEY);
+        return null == num ? 0 : Float.parseFloat(num.toString());
+    }
+
+    public static int getAliveDataNodeNum() throws URISyntaxException, IOException {
+        /*
+         * Example.
+         *
+         * @URI http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/
+         * components/DATANODE?fields=ServiceComponentInfo/started_count
+         *
+         * * @Reponse { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/components/DATANODE?fields=ServiceComponentInfo/started_count",
+         * "ServiceComponentInfo" : { "cluster_name" : "ctdfs", "component_name"
+         * : "DATANODE", "service_name" : "HDFS", "started_count" : 3 } }
+         */
+        JSONObject response = getDataNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + STARTED_COUNT_KEY);
+        if (null == response) {
+            return 0;
+        }
+        Object num = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(STARTED_COUNT_KEY);
+        return null == num ? 0 : Integer.parseInt(num.toString());
+    }
+
+    public static int getAbnormalDataNodeNum() throws URISyntaxException, IOException {
+        /*
+         * Example.
+         *
+         * @URI http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/
+         * components/DATANODE?fields=ServiceComponentInfo/unknown_count
+         *
+         * * @Reponse { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/components/DATANODE?fields=ServiceComponentInfo/unknown_count",
+         * "ServiceComponentInfo" : { "cluster_name" : "ctdfs", "component_name"
+         * : "DATANODE", "service_name" : "HDFS", "unknown_count" : 0 } }
+         */
+        JSONObject response = getDataNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + UNKNOWN_COUNT_KEY);
+        if (null == response) {
+            return 0;
+        }
+        Object num = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(UNKNOWN_COUNT_KEY);
+        return null == num ? 0 : Integer.parseInt(num.toString());
     }
 
     private static JSONObject getNameNodeServiceComponentKeyResponse(String key) throws URISyntaxException, IOException {
@@ -99,58 +223,42 @@ public class HDFSUtils {
     }
 
     /**
-     * Get capacity usage.
-     *
+     * Get capacity usage(GB).
+     * 
      * @return
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static float capacityUsage() throws URISyntaxException, IOException {
-        String totalKey = "CapacityTotal";
+    public static float capacityUsageGB() throws URISyntaxException, IOException {
         String usedKey = "CapacityUsed";
         /*
          * Example.
          *
          * @URI http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/
-         * components/NAMENODE?fields=ServiceComponentInfo
+         * components/NAMENODE?fields=ServiceComponentInfo/CapacityUsed
          *
          * @Reponse { "href" :
-         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/components/NAMENODE?fields=ServiceComponentInfo",
-         * "ServiceComponentInfo" : { "CapacityRemaining" : 43524960768996,
-         * "CapacityTotal" : 44991355305984, "CapacityUsed" : 1432005382144,
-         * "DeadNodes" : "{}", "DecomNodes" : "{}", "HeapMemoryMax" :
-         * 31809601536, "HeapMemoryUsed" : 2566347176, "LiveNodes" :
-         * "{\"dfs1m1.ecld.com:1019\":{\"infoAddr\":\"10.142.90.153:1022\",\"infoSecureAddr\":\"10.142.90.153:0\",\"xferaddr\":\"10.142.90.153:1019\",\"lastContact\":1,\"usedSpace\":477335101440,\"adminState\":\"In Service\",\"nonDfsUsedSpace\":10314698420,\"capacity\":14247521370112,\"numBlocks\":4252,\"version\":\"2.7.3.2.5.3.0-37\",\"used\":477335101440,\"remaining\":13759871570252,\"blockScheduled\":0,\"blockPoolUsed\":477335101440,\"blockPoolUsedPercent\":3.3503027,\"volfails\":0},\"dfs1a1.ecld.com:1019\":{\"infoAddr\":\"10.142.90.152:1022\",\"infoSecureAddr\":\"10.142.90.152:0\",\"xferaddr\":\"10.142.90.152:1019\",\"lastContact\":1,\"usedSpace\":477335138304,\"adminState\":\"In Service\",\"nonDfsUsedSpace\":20315381428,\"capacity\":15371916967936,\"numBlocks\":4252,\"version\":\"2.7.3.2.5.3.0-37\",\"used\":477335138304,\"remaining\":14874266448204,\"blockScheduled\":0,\"blockPoolUsed\":477335138304,\"blockPoolUsedPercent\":3.1052413,\"volfails\":0},\"dfs1m2.ecld.com:1019\":{\"infoAddr\":\"10.142.90.154:1022\",\"infoSecureAddr\":\"10.142.90.154:0\",\"xferaddr\":\"10.142.90.154:1019\",\"lastContact\":1,\"usedSpace\":477335142400,\"adminState\":\"In Service\",\"nonDfsUsedSpace\":3759074996,\"capacity\":15371916967936,\"numBlocks\":4252,\"version\":\"2.7.3.2.5.3.0-37\",\"used\":477335142400,\"remaining\":14890822750540,\"blockScheduled\":0,\"blockPoolUsed\":477335142400,\"blockPoolUsedPercent\":3.1052413,\"volfails\":0}}"
-         * , "NonDfsUsedSpace" : 34389154844, "NonHeapMemoryMax" : -1,
-         * "NonHeapMemoryUsed" : 86055896, "PercentRemaining" : 96.740715,
-         * "PercentUsed" : 3.1828456, "Safemode" : "", "StartTime" :
-         * 1531462009655, "TotalFiles" : 1683, "UpgradeFinalized" : true,
-         * "Version" :
-         * "2.7.3.2.5.3.0-37, r9828acfdec41a121f0121f556b09e2d112259e92",
-         * "category" : "MASTER", "cluster_name" : "ctdfs", "component_name" :
-         * "NAMENODE", "display_name" : "NameNode", "init_count" : 0,
-         * "install_failed_count" : 0, "installed_count" : 0, "recovery_enabled"
-         * : "false", "service_name" : "HDFS", "started_count" : 2, "state" :
-         * "STARTED", "total_count" : 2, "unknown_count" : 0 } }
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/components/NAMENODE?fields=ServiceComponentInfo/CapacityUsed",
+         * "ServiceComponentInfo" : { "CapacityUsed" : 1432013767472,
+         * "cluster_name" : "ctdfs", "component_name" : "NAMENODE",
+         * "service_name" : "HDFS" } }
          */
-        JSONObject response = getNameNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + usedKey);
         if (null == response) {
             return 0;
         }
-        JSONObject info = response.getJSONObject(SERVICE_COMP_INFO_KEY);
-        Object total = info.get(totalKey);
-        Object used = info.get(usedKey);
-        return (null == total || null == used) ? 0 : Long.parseLong(used.toString()) / Long.parseLong(total.toString());
+        Object used = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(usedKey);
+        return null == used ? 0 : Long.parseLong(used.toString()) / 1024 / 1024 / 1024;
     }
 
     /**
-     * Get NameNode heap memory usage.
+     * Get NameNode heap memory usage(MB).
      *
      * @return
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static long heapMemoryUsed() throws URISyntaxException, IOException {
+    public static float heapMemoryUsageMB() throws URISyntaxException, IOException {
         String heapMemUsedKey = "HeapMemoryUsed";
         /*
          * Example.
@@ -169,7 +277,7 @@ public class HDFSUtils {
             return 0;
         }
         Object hmu = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(heapMemUsedKey);
-        return null == hmu ? 0 : Long.parseLong(hmu.toString());
+        return null == hmu ? 0 : Long.parseLong(hmu.toString()) / 1024 / 1024;
     }
 
     /**

@@ -1,8 +1,6 @@
 package org.exp.dtfs.ni.rest.service;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URISyntaxException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -51,149 +49,89 @@ public class MetricService {
         PCommand pcmd = PCommand.valueOf(command.toUpperCase());
         String ip = keys[0];
 
-        // TODO Check component and subcomponent value.
-        switch (pcmd) {
-        case P_HB_NNPROC: // 基础运行类 - 数据管理节点服务进程是否存在
-        case P_HB_CONSTATUS: // 基础运行类 - NameNode连接状态是否正常
-            try {
+        try {
+            // TODO Check component and subcomponent value.
+            switch (pcmd) {
+            case P_HB_NNPROC: // 基础运行类 - 数据管理节点服务进程是否存在
+            case P_HB_CONSTATUS: // 基础运行类 - NameNode连接状态是否正常
                 result = Boolean.toString(HDFSUtils.checkNameNodeAlive(ip));
-            } catch (IOException | URISyntaxException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_REGPROC: // 基础运行类 - 元数据节点服务进程是否存在
-            try {
+            case P_HB_REGPROC: // 基础运行类 - 元数据节点服务进程是否存在
                 result = Boolean.toString(HBaseUtils.checkRegionServerAlive(ip));
-            } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_DMPROC: // 基础运行类 - 数据节点服务进程是否存在
-            try {
+            case P_HB_DMPROC: // 基础运行类 - 数据节点服务进程是否存在
                 result = Boolean.toString(HDFSUtils.checkDataNodeAlive(ip));
-            } catch (IOException | URISyntaxException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_CONNUM: // 基础运行类 - NameNode客户端连接数
-            try {
+            case P_HB_CONNUM: // 基础运行类 - NameNode客户端连接数
                 result = Integer.toString(HDFSUtils.rpcClientConnNum());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_SAFEMOD: // 基础运行类 - NameNode是否启用安全模式
-            try {
+            case P_HB_SAFEMOD: // 基础运行类 - NameNode是否启用安全模式
                 result = Boolean.toString(HDFSUtils.isSafeMode());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_ROLE: // 基础运行类 - NameNode主备角色
-            if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]))
-                    && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]))) {
-                result = "Host [" + ip + "] is not HDFS NameNode.";
-                status = ResultStatus.FAILED.value();
-            } else {
-                try {
-                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "master" : "slave";
-                } catch (Exception e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
+            case P_HB_ROLE: // 基础运行类 - NameNode主备角色
+                if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]))
+                        && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]))) {
+                    result = "Host [" + ip + "] is not HDFS NameNode.";
                     status = ResultStatus.FAILED.value();
+                } else {
+                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "master" : "slave";
                 }
-            }
-            break;
+                break;
 
-        case P_HB_CLRFILES: // 基础运行类 - 集群总文件数（FilesTotal）
-            try {
+            case P_HB_CLRFILES: // 基础运行类 - 集群总文件数（FilesTotal）
                 result = Long.toString(HDFSUtils.totalFilesNum());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_CLRBKDAM: // 基础运行类 - 集群中已损坏block总个数
-            try {
+            case P_HB_CLRBKDAM: // 基础运行类 - 集群中已损坏block总个数
                 result = Long.toString(HDFSUtils.totalCorruptBlocksNum());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+                break;
 
-        case P_HB_DNREAD: // 性能类 - 单个数据节点的平均读取时间
-            // TODO Check component and subcomponent value.
-            break;
+            case P_HB_DNREAD: // 性能类 - 单个数据节点的平均读取时间
+                result = Float.toString(HDFSUtils.getDataNodeAvgReadTime(ip));
+                break;
 
-        case P_HB_DNWRITE: // 性能类 - 单个数据节点的平均写入时间
-            // TODO Check component and subcomponent value.
-            break;
+            case P_HB_DNWRITE: // 性能类 - 单个数据节点的平均写入时间
+                result = Float.toString(HDFSUtils.getDataNodeAvgWriteTime(ip));
+                break;
 
-        case P_HB_CLRMEM: // 基础运行类 - 集群占用内存总数
-            try {
-                result = Long.toString(HDFSUtils.heapMemoryUsed());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+            case P_HB_CLRMEM: // 基础运行类 - 集群占用内存总数
+                result = Float.toString(HDFSUtils.heapMemoryUsageMB());
+                break;
 
-        case P_HB_DNVALID: // 基础运行类 - 存活数据节点的个数
-            // TODO Check component and subcomponent value.
-            break;
+            case P_HB_DNVALID: // 基础运行类 - 存活数据节点的个数
+                result = Integer.toString(HDFSUtils.getAliveDataNodeNum());
+                break;
 
-        case P_HB_DNEXPNUM: // 基础运行类 - 异常数据节点的个数
-            // TODO Check component and subcomponent value.
-            break;
+            case P_HB_DNEXPNUM: // 基础运行类 - 异常数据节点的个数
+                result = Integer.toString(HDFSUtils.getAbnormalDataNodeNum());
+                break;
 
-        case P_HB_CLRDISK: // 基础运行类 - 集群磁盘空间占用(率)
-            try {
-                result = Float.toString(HDFSUtils.capacityUsage());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
-                status = ResultStatus.FAILED.value();
-            }
-            break;
+            case P_HB_CLRDISK: // 基础运行类 - 集群磁盘空间占用(率)
+                result = Float.toString(HDFSUtils.capacityUsageGB());
+                break;
 
-        case P_HB_CLRCPU: // 基础运行类 - 集群CPU占用率
-            try {
+            case P_HB_CLRCPU: // 基础运行类 - 集群CPU占用率
                 result = Float.toString(HDFSUtils.cpuUsage());
-            } catch (URISyntaxException | IOException e) {
-                LOG.error(e.getMessage(), e);
-                result = e.getMessage();
+                break;
+
+            case P_HB_SFILEPERC: // 基础运行类 - 小文件(≤2MB)数占比
+                // TODO Check component and subcomponent value.
+                break;
+
+            default:
+                result = "Illegal command: [" + command + "].";
                 status = ResultStatus.FAILED.value();
+                break;
             }
-            break;
-
-        case P_HB_SFILEPERC: // 基础运行类 - 小文件(≤2MB)数占比
-            // TODO Check component and subcomponent value.
-            break;
-
-        default:
-            result = "Illegal command: [" + command + "].";
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            result = e.getMessage();
             status = ResultStatus.FAILED.value();
-            break;
         }
 
         LOG.info("Built response, result content is [" + result + "].");
