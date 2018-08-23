@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -95,6 +96,10 @@ public class HTTPUtils {
             get.setHeader(header);
         }
         HttpResponse response = client.execute(get);
+        if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
+            LOG.info("Connect to server failed.");
+            return null;
+        }
         String result = null;
         try (InputStream stream = response.getEntity().getContent()) {
             result = IOUtils.toString(stream, Constants.DEFAULT_CHARSET);

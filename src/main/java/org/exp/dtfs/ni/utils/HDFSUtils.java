@@ -18,15 +18,20 @@ public class HDFSUtils {
     private static final String SERVICE_NAME = "HDFS";
     private static final String NN_COMP_NAME = "NAMENODE";
 
+    private static final String STARTED_STATUS = "STARTED";
+
     private static final String SERVICE_COMP_INFO_KEY = "ServiceComponentInfo";
     private static final String METRICS_KEY = "metrics";
+    private static final String HOST_ROLES_KEY = "HostRoles";
+    private static final String STATE_KEY = "state";
 
     private HDFSUtils() {
         // Do nothing.
     }
 
-    private static JSONObject getNNKeyResponse(String key) throws URISyntaxException, IOException {
-        return JSONObject.parseObject(AmbariRESTUtils.getServiceComponentMetrics(SERVICE_NAME, NN_COMP_NAME, key));
+    private static JSONObject getNameNodeServiceComponentKeyResponse(String key) throws URISyntaxException, IOException {
+        String metricStr = AmbariRESTUtils.getServiceComponentMetrics(SERVICE_NAME, NN_COMP_NAME, key);
+        return null == metricStr ? null : JSONObject.parseObject(metricStr);
     }
 
     /**
@@ -49,7 +54,11 @@ public class HDFSUtils {
          * "ServiceComponentInfo" : { "TotalFiles" : 1683, "cluster_name" :
          * "ctdfs", "component_name" : "NAMENODE", "service_name" : "HDFS" } }
          */
-        Object num = getNNKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + numKey).getJSONObject(SERVICE_COMP_INFO_KEY).get(numKey);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + numKey);
+        if (null == response) {
+            return 0;
+        }
+        Object num = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(numKey);
         return null == num ? 0 : Long.parseLong(num.toString());
     }
 
@@ -76,9 +85,12 @@ public class HDFSUtils {
          * : "NAMENODE", "service_name" : "HDFS" }, "metrics" : { "rpc" : {
          * "client" : { "NumOpenConnections" : 4 } } } }
          */
-        Object num = getNNKeyResponse(
-                METRICS_KEY + Constants.SLASH_DELIMITER + rpcKey + Constants.SLASH_DELIMITER + clientKey + Constants.SLASH_DELIMITER + numKey)
-                        .getJSONObject(METRICS_KEY).getJSONObject(rpcKey).getJSONObject(clientKey).get(numKey);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(
+                METRICS_KEY + Constants.SLASH_DELIMITER + rpcKey + Constants.SLASH_DELIMITER + clientKey + Constants.SLASH_DELIMITER + numKey);
+        if (null == response) {
+            return 0;
+        }
+        Object num = response.getJSONObject(METRICS_KEY).getJSONObject(rpcKey).getJSONObject(clientKey).get(numKey);
         return null == num ? 0 : Integer.parseInt(num.toString());
     }
 
@@ -117,9 +129,13 @@ public class HDFSUtils {
          * : "false", "service_name" : "HDFS", "started_count" : 2, "state" :
          * "STARTED", "total_count" : 2, "unknown_count" : 0 } }
          */
-        JSONObject response = getNNKeyResponse(SERVICE_COMP_INFO_KEY).getJSONObject(SERVICE_COMP_INFO_KEY);
-        Object total = response.get(totalKey);
-        Object used = response.get(usedKey);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY);
+        if (null == response) {
+            return 0;
+        }
+        JSONObject info = response.getJSONObject(SERVICE_COMP_INFO_KEY);
+        Object total = info.get(totalKey);
+        Object used = info.get(usedKey);
         return (null == total || null == used) ? 0 : Long.parseLong(used.toString()) / Long.parseLong(total.toString());
     }
 
@@ -144,7 +160,11 @@ public class HDFSUtils {
          * "cluster_name" : "ctdfs", "component_name" : "NAMENODE",
          * "service_name" : "HDFS" } }
          */
-        Object hmu = getNNKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + heapMemUsedKey);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + heapMemUsedKey);
+        if (null == response) {
+            return 0;
+        }
+        Object hmu = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(heapMemUsedKey);
         return null == hmu ? 0 : Long.parseLong(hmu.toString());
     }
 
@@ -170,8 +190,11 @@ public class HDFSUtils {
          * : "NAMENODE", "service_name" : "HDFS" }, "metrics" : { "cpu" : {
          * "cpu_system" : 0.35555555555555557 } } }
          */
-        Object cpuUsage = getNNKeyResponse(METRICS_KEY + Constants.SLASH_DELIMITER + cpuKey + Constants.SLASH_DELIMITER + cpuSysKey).getJSONObject(METRICS_KEY)
-                .getJSONObject(cpuKey).get(cpuSysKey);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(METRICS_KEY + Constants.SLASH_DELIMITER + cpuKey + Constants.SLASH_DELIMITER + cpuSysKey);
+        if (null == response) {
+            return 0;
+        }
+        Object cpuUsage = response.getJSONObject(METRICS_KEY).getJSONObject(cpuKey).get(cpuSysKey);
         return null == cpuUsage ? 0 : Float.parseFloat(cpuUsage.toString());
     }
 
@@ -195,7 +218,11 @@ public class HDFSUtils {
          * "ServiceComponentInfo" : { "Safemode" : "", "cluster_name" : "ctdfs",
          * "component_name" : "NAMENODE", "service_name" : "HDFS" } }
          */
-        Object sm = getNNKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + safeModeKey).getJSONObject(SERVICE_COMP_INFO_KEY).get(safeModeKey);
+        JSONObject response = getNameNodeServiceComponentKeyResponse(SERVICE_COMP_INFO_KEY + Constants.SLASH_DELIMITER + safeModeKey);
+        if (null == response) {
+            return false;
+        }
+        Object sm = response.getJSONObject(SERVICE_COMP_INFO_KEY).get(safeModeKey);
         LOG.info("Check if HDFS is in safe mode, response is [" + String.valueOf(sm) + "].");
         return !(null == sm || ((String) sm).isEmpty());
     }
@@ -212,16 +239,13 @@ public class HDFSUtils {
 
     public static boolean checkNameNodeAlive(String host) throws IOException, URISyntaxException {
         LOG.info("Check if HDFS NameNode is alive, host is [" + host + "].");
-        String[] nn1 = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
-        String[] nn2 = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
-        LOG.info("HDFS NameNode hostnames are [" + nn1[0] + "] and [" + nn2[0] + "].");
-        if (InetAddress.getByName(host).getCanonicalHostName().equals(nn1[0])) {
-            return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, Integer.parseInt(nn1[1])));
-        } else if (InetAddress.getByName(host).getCanonicalHostName().equals(nn2[0])) {
-            return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(HTTPUtils.buildURI(host, Integer.parseInt(nn2[1])));
-        } else {
-            throw new IllegalArgumentException("This host is not HDFS NameNode.");
+        String hostname = InetAddress.getByName(host).getCanonicalHostName();
+        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, NN_COMP_NAME, HOST_ROLES_KEY + Constants.SLASH_DELIMITER + STATE_KEY);
+        if (null == response) {
+            return false;
         }
+        Object state = JSONObject.parseObject(response).getJSONObject(HOST_ROLES_KEY).get(STATE_KEY);
+        return STARTED_STATUS.equals(String.valueOf(state));
     }
 
 }
