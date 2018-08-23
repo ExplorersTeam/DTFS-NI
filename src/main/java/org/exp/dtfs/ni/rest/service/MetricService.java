@@ -39,256 +39,155 @@ public class MetricService {
 
         LOG.info("Received command, ID is [" + id + "], component key is [" + compKey + "], command is [" + command + "], parameters is [" + params + "].");
 
+        String[] keys = compKey.split(Constants.TRANSFER_VERTICAL_DELIMITER);
+        if (2 > keys.length) {
+            return new ResponseBody(id, compKey, command, DateUtils.getNowTime(), "Illegal arguments number: [" + keys.length + "].",
+                    ResultStatus.FAILED.value());
+        }
+
         String result = null;
         String status = ResultStatus.SUCCESS.value();
 
-        String[] keys = compKey.split(Constants.TRANSFER_VERTICAL_DELIMITER);
         PCommand pcmd = PCommand.valueOf(command.toUpperCase());
+        String ip = keys[0];
 
         // TODO Check component and subcomponent value.
         switch (pcmd) {
         case P_HB_NNPROC: // 基础运行类 - 数据管理节点服务进程是否存在
         case P_HB_CONSTATUS: // 基础运行类 - NameNode连接状态是否正常
-            if (3 == keys.length) {
-                String ip = keys[0];
-                try {
-                    result = Boolean.toString(HDFSUtils.checkNameNodeAlive(ip));
-                } catch (IOException | URISyntaxException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Boolean.toString(HDFSUtils.checkNameNodeAlive(ip));
+            } catch (IOException | URISyntaxException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_REGPROC: // 基础运行类 - 元数据节点服务进程是否存在
-            if (3 == keys.length) {
-                String ip = keys[0];
-                try {
-                    result = Boolean.toString(HBaseUtils.checkRegionServerAlive(ip));
-                } catch (Exception e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Boolean.toString(HBaseUtils.checkRegionServerAlive(ip));
+            } catch (Exception e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_DMPROC: // 基础运行类 - 数据节点服务进程是否存在
-            if (3 == keys.length) {
-                String ip = keys[0];
-                try {
-                    result = Boolean.toString(HDFSUtils.checkDataNodeAlive(ip));
-                } catch (IOException | URISyntaxException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Boolean.toString(HDFSUtils.checkDataNodeAlive(ip));
+            } catch (IOException | URISyntaxException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_CONNUM: // 基础运行类 - NameNode客户端连接数
-            if (2 == keys.length) {
-                try {
-                    result = Integer.toString(HDFSUtils.rpcClientConnNum());
-                } catch (URISyntaxException | IOException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Integer.toString(HDFSUtils.rpcClientConnNum());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_SAFEMOD: // 基础运行类 - NameNode是否启用安全模式
-            if (2 == keys.length) {
-                try {
-                    result = Boolean.toString(HDFSUtils.isSafeMode());
-                } catch (URISyntaxException | IOException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Boolean.toString(HDFSUtils.isSafeMode());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_ROLE: // 基础运行类 - NameNode主备角色
-            if (3 == keys.length) {
-                String ip = keys[0];
-                if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]))
-                        && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]))) {
-                    result = "Host [" + ip + "] is not HDFS NameNode.";
-                    status = ResultStatus.FAILED.value();
-                } else {
-                    try {
-                        result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "active" : "standby";
-                    } catch (Exception e) {
-                        LOG.error(e.getMessage(), e);
-                        result = e.getMessage();
-                        status = ResultStatus.FAILED.value();
-                    }
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]))
+                    && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]))) {
+                result = "Host [" + ip + "] is not HDFS NameNode.";
                 status = ResultStatus.FAILED.value();
-            }
-            break;
-
-        case P_HB_CLRFILES: // 基础运行类 - 集群总文件数（FilesTotal）
-            if (2 == keys.length) {
+            } else {
                 try {
-                    result = Long.toString(HDFSUtils.totalFilesNum());
-                } catch (URISyntaxException | IOException e) {
+                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "active" : "standby";
+                } catch (Exception e) {
                     LOG.error(e.getMessage(), e);
                     result = e.getMessage();
                     status = ResultStatus.FAILED.value();
                 }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            }
+            break;
+
+        case P_HB_CLRFILES: // 基础运行类 - 集群总文件数（FilesTotal）
+            try {
+                result = Long.toString(HDFSUtils.totalFilesNum());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_CLRBKDAM: // 基础运行类 - 集群中已损坏block总个数
-            if (2 == keys.length) {
-                try {
-                    result = Long.toString(HDFSUtils.totalCorruptBlocksNum());
-                } catch (URISyntaxException | IOException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Long.toString(HDFSUtils.totalCorruptBlocksNum());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_DNREAD: // 性能类 - 单个数据节点的平均读取时间
-            if (3 == keys.length) {
-                String ip = keys[0];
-                // TODO Check component and subcomponent value.
-                /*
-                 * XXX Result returned before is time spent by reading a Byte,
-                 * then I changed it to be which by reading a HDFS block, using
-                 * result before multiplied by block size.
-                 *
-                 * @By ChenJintong
-                 *
-                 * @Date 2018-04-25 16:00
-                 */
-                // result = colllector.getHDFSDataNodeReadTime(ip) + "ms/byte";
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
-                status = ResultStatus.FAILED.value();
-            }
+            // TODO Check component and subcomponent value.
             break;
 
         case P_HB_DNWRITE: // 性能类 - 单个数据节点的平均写入时间
-            if (3 == keys.length) {
-                String ip = keys[0];
-                // TODO Check component and subcomponent value.
-                /*
-                 * XXX Result returned before is time spent by writing a Byte,
-                 * then I changed it to be which by writing a HDFS block, using
-                 * result before multiplied by block size.
-                 *
-                 * @By ChenJintong
-                 *
-                 * @Date 2018-04-25 16:02
-                 */
-                // result = collector.getHDFSDataNodeWriteTime(ip) + "ms/Byte";
-
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
-                status = ResultStatus.FAILED.value();
-            }
+            // TODO Check component and subcomponent value.
             break;
 
         case P_HB_CLRMEM: // 基础运行类 - 集群占用内存总数
-            if (2 == keys.length) {
-                try {
-                    result = Long.toString(HDFSUtils.heapMemoryUsed());
-                } catch (URISyntaxException | IOException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Long.toString(HDFSUtils.heapMemoryUsed());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_DNVALID: // 基础运行类 - 存活数据节点的个数
-            if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
-                status = ResultStatus.FAILED.value();
-            }
+            // TODO Check component and subcomponent value.
             break;
 
         case P_HB_DNEXPNUM: // 基础运行类 - 异常数据节点的个数
-            if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
-                status = ResultStatus.FAILED.value();
-            }
+            // TODO Check component and subcomponent value.
             break;
 
         case P_HB_CLRDISK: // 基础运行类 - 集群磁盘空间占用(率)
-            if (2 == keys.length) {
-                try {
-                    result = Float.toString(HDFSUtils.capacityUsage());
-                } catch (URISyntaxException | IOException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Float.toString(HDFSUtils.capacityUsage());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_CLRCPU: // 基础运行类 - 集群CPU占用率
-            if (2 == keys.length) {
-                try {
-                    result = Float.toString(HDFSUtils.cpuUsage());
-                } catch (URISyntaxException | IOException e) {
-                    LOG.error(e.getMessage(), e);
-                    result = e.getMessage();
-                    status = ResultStatus.FAILED.value();
-                }
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
+            try {
+                result = Float.toString(HDFSUtils.cpuUsage());
+            } catch (URISyntaxException | IOException e) {
+                LOG.error(e.getMessage(), e);
+                result = e.getMessage();
                 status = ResultStatus.FAILED.value();
             }
             break;
 
         case P_HB_SFILEPERC: // 基础运行类 - 小文件(≤2MB)数占比
-            if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
-            } else {
-                result = "Illegal arguments number: [" + keys.length + "].";
-                status = ResultStatus.FAILED.value();
-            }
+            // TODO Check component and subcomponent value.
             break;
 
         default:
@@ -298,7 +197,7 @@ public class MetricService {
         }
 
         LOG.info("Built response, result content is [" + result + "].");
-        return new ResponseBody(cmd.getID(), compKey, command, DateUtils.getNowTime(), result, status);
+        return new ResponseBody(id, compKey, command, DateUtils.getNowTime(), result, status);
 
     }
 
