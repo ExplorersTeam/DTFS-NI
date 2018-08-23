@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeRPCClientConnectionNumberReportThread;
+import org.exp.dtfs.ni.report.thread.HDFSNameNodeSafeModeReportThread;
 
 public class MetricReporter {
     private static final Log LOG = LogFactory.getLog(MetricReporter.class);
@@ -39,6 +40,17 @@ public class MetricReporter {
          * @Period 1分钟
          */
         manager.scheduleAtFixedRate(new HDFSNameNodeProcessReportThread(), 0, 1, TimeUnit.MINUTES);
+
+        /*
+         * @Type 基础运行类
+         *
+         * @Name NameNode是否启用安全模式
+         *
+         * @Comment 检查NameNode是否处于安全模式，启用安全模式说明不能写入
+         *
+         * @Period 1分钟
+         */
+        manager.scheduleAtFixedRate(new HDFSNameNodeSafeModeReportThread(), 0, 1, TimeUnit.MINUTES);
 
         /*
          * @Type 基础运行类

@@ -10,7 +10,7 @@ import org.exp.dtfs.ni.utils.HDFSUtils;
 import org.exp.dtfs.ni.utils.JSONUtils;
 import org.exp.dtfs.ni.utils.KafkaUtils;
 
-public class HDFSNameNodeRPCClientConnectionNumberReportThread extends HDFSReportThread {
+public class HDFSNameNodeSafeModeReportThread extends HDFSReportThread {
 
     @Override
     public void work() {
@@ -22,7 +22,7 @@ public class HDFSNameNodeRPCClientConnectionNumberReportThread extends HDFSRepor
             message.setHostIP(activeNNIP);
             message.setMetricCode(HDFS_STATUS_CODE);
             message.setMetricType(MetricType.STATUS);
-            message.setMetricValue(Integer.toString(HDFSUtils.rpcClientConnNum()));
+            message.setMetricValue(Boolean.toString(HDFSUtils.isSafeMode()));
 
             String messageStr = JSONUtils.buildJSONString(message);
             LOG.info("Send message [" + messageStr + "] into Kafka queue.");
