@@ -169,7 +169,7 @@ public class HDFSUtils {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static long totalFilesNum() throws URISyntaxException, IOException {
+    public static long getTotalFilesNum() throws URISyntaxException, IOException {
         String numKey = "TotalFiles";
         /*
          * Example.
@@ -197,7 +197,7 @@ public class HDFSUtils {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static int rpcClientConnNum() throws URISyntaxException, IOException {
+    public static int getRPCClientConnNum() throws URISyntaxException, IOException {
         String rpcKey = "rpc";
         String clientKey = "client";
         String numKey = "NumOpenConnections";
@@ -229,7 +229,7 @@ public class HDFSUtils {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static float capacityUsageGB() throws URISyntaxException, IOException {
+    public static float getCapacityUsageGB() throws URISyntaxException, IOException {
         String usedKey = "CapacityUsed";
         /*
          * Example.
@@ -258,7 +258,7 @@ public class HDFSUtils {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static float heapMemoryUsageMB() throws URISyntaxException, IOException {
+    public static float getHeapMemoryUsageMB() throws URISyntaxException, IOException {
         String heapMemUsedKey = "HeapMemoryUsed";
         /*
          * Example.
@@ -287,7 +287,7 @@ public class HDFSUtils {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static float cpuUsage() throws URISyntaxException, IOException {
+    public static float getCPUUsage() throws URISyntaxException, IOException {
         String cpuKey = "cpu";
         String cpuSysKey = "cpu_system";
         /*
@@ -366,13 +366,13 @@ public class HDFSUtils {
      * @return
      * @throws Exception
      */
-    public static String activeNameNodeHostname() throws Exception {
+    public static String getActiveNameNodeHostname() throws Exception {
         String znodeContent = new String(ZKUtils.get(HDFSConfigs.getHAZNodePath())).split(" ")[0];
         String delimiter = HDFSConfigs.getNameService() + "nn";
         return znodeContent.substring(znodeContent.indexOf(delimiter) + delimiter.length() + 8);
     }
 
-    public static int nnRPCPort(String hostname) throws UnknownHostException {
+    public static int getNameNodeRPCPort(String hostname) throws UnknownHostException {
         String[] nn1Addrs = HDFSConfigs.getNameNode1RPCAddr().split(Constants.COLON_DELIMITER);
         String[] nn2Addrs = HDFSConfigs.getNameNode2RPCAddr().split(Constants.COLON_DELIMITER);
         int port = 8020;
@@ -384,7 +384,7 @@ public class HDFSUtils {
         return port;
     }
 
-    public static int nnHTTPPort(String hostname) throws UnknownHostException {
+    public static int getNameNodeHTTPPort(String hostname) throws UnknownHostException {
         String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
         String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
         int port = 50070;
@@ -414,7 +414,7 @@ public class HDFSUtils {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static long totalCorruptBlocksNum() throws URISyntaxException, IOException {
+    public static long getCorruptBlockNum() throws URISyntaxException, IOException {
         String numKey = "CorruptBlocks";
         /*
          * Example.

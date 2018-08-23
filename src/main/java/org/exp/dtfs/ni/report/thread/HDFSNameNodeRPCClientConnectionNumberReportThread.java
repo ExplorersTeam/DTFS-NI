@@ -15,14 +15,14 @@ public class HDFSNameNodeRPCClientConnectionNumberReportThread extends HDFSRepor
     @Override
     public void work() {
         try {
-            String activeNNHostname = HDFSUtils.activeNameNodeHostname();
+            String activeNNHostname = HDFSUtils.getActiveNameNodeHostname();
             String activeNNIP = InetAddress.getByName(activeNNHostname).getHostAddress();
             MetricMessage message = new MetricMessage();
-            message.setCompKey(activeNNIP + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSUtils.nnRPCPort(activeNNHostname));
+            message.setCompKey(activeNNIP + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSUtils.getNameNodeRPCPort(activeNNHostname));
             message.setHostIP(activeNNIP);
             message.setMetricCode(HDFS_STATUS_CODE);
             message.setMetricType(MetricType.STATUS);
-            message.setMetricValue(Integer.toString(HDFSUtils.rpcClientConnNum()));
+            message.setMetricValue(Integer.toString(HDFSUtils.getRPCClientConnNum()));
 
             String messageStr = JSONUtils.buildJSONString(message);
             LOG.info("Send message [" + messageStr + "] into Kafka queue.");

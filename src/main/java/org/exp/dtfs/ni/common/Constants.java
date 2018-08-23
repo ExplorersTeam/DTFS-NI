@@ -8,6 +8,9 @@ public class Constants {
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     public static final String REST_SERVER_PATH = "paas/v1/cmd";
 
+    public static final String TINY_FILE_KEY = "tiny";
+    public static final String TOTAL_FILE_KEY = "total";
+
     /**
      * Delimiters.
      */

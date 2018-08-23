@@ -66,7 +66,7 @@ public class MetricService {
                 break;
 
             case P_HB_CONNUM: // 基础运行类 - NameNode客户端连接数
-                result = Integer.toString(HDFSUtils.rpcClientConnNum());
+                result = Integer.toString(HDFSUtils.getRPCClientConnNum());
                 break;
 
             case P_HB_SAFEMOD: // 基础运行类 - NameNode是否启用安全模式
@@ -79,16 +79,16 @@ public class MetricService {
                     result = "Host [" + ip + "] is not HDFS NameNode.";
                     status = ResultStatus.FAILED.value();
                 } else {
-                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "master" : "slave";
+                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.getActiveNameNodeHostname()) ? "master" : "slave";
                 }
                 break;
 
             case P_HB_CLRFILES: // 基础运行类 - 集群总文件数（FilesTotal）
-                result = Long.toString(HDFSUtils.totalFilesNum());
+                result = Long.toString(HDFSUtils.getTotalFilesNum());
                 break;
 
             case P_HB_CLRBKDAM: // 基础运行类 - 集群中已损坏block总个数
-                result = Long.toString(HDFSUtils.totalCorruptBlocksNum());
+                result = Long.toString(HDFSUtils.getCorruptBlockNum());
                 break;
 
             case P_HB_DNREAD: // 性能类 - 单个数据节点的平均读取时间
@@ -100,7 +100,7 @@ public class MetricService {
                 break;
 
             case P_HB_CLRMEM: // 基础运行类 - 集群占用内存总数
-                result = Float.toString(HDFSUtils.heapMemoryUsageMB());
+                result = Float.toString(HDFSUtils.getHeapMemoryUsageMB());
                 break;
 
             case P_HB_DNVALID: // 基础运行类 - 存活数据节点的个数
@@ -112,11 +112,11 @@ public class MetricService {
                 break;
 
             case P_HB_CLRDISK: // 基础运行类 - 集群磁盘空间占用(率)
-                result = Float.toString(HDFSUtils.capacityUsageGB());
+                result = Float.toString(HDFSUtils.getCapacityUsageGB());
                 break;
 
             case P_HB_CLRCPU: // 基础运行类 - 集群CPU占用率
-                result = Float.toString(HDFSUtils.cpuUsage());
+                result = Float.toString(HDFSUtils.getCPUUsage());
                 break;
 
             case P_HB_SFILEPERC: // 基础运行类 - 小文件(≤2MB)数占比

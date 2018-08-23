@@ -15,10 +15,10 @@ public class HDFSNameNodeSafeModeReportThread extends HDFSReportThread {
     @Override
     public void work() {
         try {
-            String activeNNHostname = HDFSUtils.activeNameNodeHostname();
+            String activeNNHostname = HDFSUtils.getActiveNameNodeHostname();
             String activeNNIP = InetAddress.getByName(activeNNHostname).getHostAddress();
             MetricMessage message = new MetricMessage();
-            message.setCompKey(activeNNIP + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSUtils.nnRPCPort(activeNNHostname));
+            message.setCompKey(activeNNIP + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSUtils.getNameNodeRPCPort(activeNNHostname));
             message.setHostIP(activeNNIP);
             message.setMetricCode(HDFS_STATUS_CODE);
             message.setMetricType(MetricType.STATUS);

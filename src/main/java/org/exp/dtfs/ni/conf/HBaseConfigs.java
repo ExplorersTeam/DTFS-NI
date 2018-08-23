@@ -5,6 +5,7 @@ import org.exp.dtfs.ni.common.Constants;
 public class HBaseConfigs {
     private static final String ZNODE_PARENT_KEY = "zookeeper.znode.parent";
     private static final String ZK_QUORUM_KEY = "hbase.zookeeper.quorum";
+    private static final String FILE_TABLE_NAME_KEY = "dtfs.ni.hbase.file.table.name";
 
     private static final String ZK_SESSION_TIMEOUT_KEY = "zookeeper.session.timeout";
     private static final int DEFAULT_ZK_SESSION_TIMEOUT_VALUE = 90000;
@@ -23,6 +24,10 @@ public class HBaseConfigs {
 
     public static int getZKSessionTimeoutMS() {
         return Configs.getInt(ZK_SESSION_TIMEOUT_KEY, DEFAULT_ZK_SESSION_TIMEOUT_VALUE);
+    }
+
+    public static String getDTFSFileTableName() {
+        return Configs.get(FILE_TABLE_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
     }
 
 }

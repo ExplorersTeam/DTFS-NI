@@ -31,7 +31,7 @@ public class HDFSNameNodeRoleReportThread extends HDFSReportThread {
         nn1Msg.setHostIP(nn1IP);
         nn1Msg.setMetricCode(HDFS_STATUS_CODE);
         nn1Msg.setMetricType(MetricType.STATUS);
-        nn1Msg.setMetricValue(Boolean.toString(HDFSUtils.activeNameNodeHostname().equals(nn1Addrs[0])));
+        nn1Msg.setMetricValue(Boolean.toString(HDFSUtils.getActiveNameNodeHostname().equals(nn1Addrs[0])));
 
         String nn1MsgStr = JSONUtils.buildJSONString(nn1Msg);
         LOG.info("Send message [" + nn1MsgStr + "] into Kafka queue.");
@@ -46,7 +46,7 @@ public class HDFSNameNodeRoleReportThread extends HDFSReportThread {
         nn2Msg.setHostIP(nn2IP);
         nn2Msg.setMetricCode(HDFS_STATUS_CODE);
         nn2Msg.setMetricType(MetricType.STATUS);
-        nn2Msg.setMetricValue(Boolean.toString(HDFSUtils.activeNameNodeHostname().equals(nn2Addrs[0])));
+        nn2Msg.setMetricValue(Boolean.toString(HDFSUtils.getActiveNameNodeHostname().equals(nn2Addrs[0])));
 
         String nn2MsgStr = JSONUtils.buildJSONString(nn2Msg);
         LOG.info("Send message [" + nn2MsgStr + "] into Kafka queue.");
