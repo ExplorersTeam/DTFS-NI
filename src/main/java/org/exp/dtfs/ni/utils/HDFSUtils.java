@@ -17,6 +17,7 @@ public class HDFSUtils {
 
     private static final String SERVICE_NAME = "HDFS";
     private static final String NN_COMP_NAME = "NAMENODE";
+    private static final String DN_COMP_NAME = "DATANODE";
 
     private static final String STARTED_STATUS = "STARTED";
 
@@ -36,7 +37,7 @@ public class HDFSUtils {
 
     /**
      * Get total files number.
-     * 
+     *
      * @return
      * @throws URISyntaxException
      * @throws IOException
@@ -241,6 +242,17 @@ public class HDFSUtils {
         LOG.info("Check if HDFS NameNode is alive, host is [" + host + "].");
         String hostname = InetAddress.getByName(host).getCanonicalHostName();
         String response = AmbariRESTUtils.getHostComponentMetrics(hostname, NN_COMP_NAME, HOST_ROLES_KEY + Constants.SLASH_DELIMITER + STATE_KEY);
+        if (null == response) {
+            return false;
+        }
+        Object state = JSONObject.parseObject(response).getJSONObject(HOST_ROLES_KEY).get(STATE_KEY);
+        return STARTED_STATUS.equals(String.valueOf(state));
+    }
+
+    public static boolean checkDataNodeAlive(String host) throws IOException, URISyntaxException {
+        LOG.info("Check if HDFS DataNode is alive, host is [" + host + "].");
+        String hostname = InetAddress.getByName(host).getCanonicalHostName();
+        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME, HOST_ROLES_KEY + Constants.SLASH_DELIMITER + STATE_KEY);
         if (null == response) {
             return false;
         }

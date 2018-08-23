@@ -81,7 +81,13 @@ public class MetricService {
         case P_HB_DMPROC: // 基础运行类 - 数据节点服务进程是否存在
             if (3 == keys.length) {
                 String ip = keys[0];
-                // TODO Check component and subcomponent value.
+                try {
+                    result = Boolean.toString(HDFSUtils.checkDataNodeAlive(ip));
+                } catch (IOException | URISyntaxException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();
