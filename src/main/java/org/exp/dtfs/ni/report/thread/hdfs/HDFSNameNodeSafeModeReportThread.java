@@ -1,4 +1,4 @@
-package org.exp.dtfs.ni.report.thread;
+package org.exp.dtfs.ni.report.thread.hdfs;
 
 import java.net.InetAddress;
 

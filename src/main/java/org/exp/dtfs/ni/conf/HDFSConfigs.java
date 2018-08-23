@@ -23,6 +23,7 @@ public class HDFSConfigs {
     private static final String NN2_HTTP_ADDR_KEY = "dfs.namenode.http-address." + getNameService() + ".nn2";
     private static final String NN1_RPC_ADDR_KEY = "dfs.namenode.rpc-address." + getNameService() + ".nn1";
     private static final String NN2_RPC_ADDR_KEY = "dfs.namenode.rpc-address." + getNameService() + ".nn2";
+    private static final String DN_HTTP_ADDR_KEY = "dfs.datanode.http.address";
 
     private HDFSConfigs() {
         // Do nothing.
@@ -69,6 +70,10 @@ public class HDFSConfigs {
             path.append(Constants.SLASH_DELIMITER);
         }
         return path.append(getNameService()).append(Constants.SLASH_DELIMITER).append(HA_ZNODE_ASL_PATH).toString();
+    }
+
+    public static String getDataNodeHTTPAddr() {
+        return Configs.get(DN_HTTP_ADDR_KEY, Constants.DEFAULT_ADDR_STR);
     }
 
 }

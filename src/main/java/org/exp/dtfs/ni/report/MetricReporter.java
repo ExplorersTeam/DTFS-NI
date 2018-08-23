@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exp.dtfs.ni.report.thread.HDFSNameNodeProcessReportThread;
-import org.exp.dtfs.ni.report.thread.HDFSNameNodeRPCClientConnectionNumberReportThread;
-import org.exp.dtfs.ni.report.thread.HDFSNameNodeRoleReportThread;
-import org.exp.dtfs.ni.report.thread.HDFSNameNodeSafeModeReportThread;
-import org.exp.dtfs.ni.report.thread.HDFSTotalFileNumberReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeProcessReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRPCClientConnectionNumberReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRoleReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeSafeModeReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSTotalFileNumberReportThread;
 
 public class MetricReporter {
     private static final Log LOG = LogFactory.getLog(MetricReporter.class);
@@ -72,6 +72,9 @@ public class MetricReporter {
          * @Period 1分钟
          */
         manager.scheduleAtFixedRate(new HDFSTotalFileNumberReportThread(), 0, 1, TimeUnit.MINUTES);
+
+        // TODO HBaseRegionServerProcessReportThread
+        // TODO HDFSDataNodeProcessReportThread
 
         /*
          * @Type 基础运行类

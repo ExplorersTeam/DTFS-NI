@@ -1,7 +1,8 @@
-package org.exp.dtfs.ni.report.thread;
+package org.exp.dtfs.ni.report.thread.hbase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.exp.dtfs.ni.report.thread.ReportThread;
 
 public abstract class HBaseReportThread extends ReportThread {
     protected static final Log LOG = LogFactory.getLog(HBaseReportThread.class);
