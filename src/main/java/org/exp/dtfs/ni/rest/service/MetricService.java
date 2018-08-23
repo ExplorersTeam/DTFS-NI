@@ -111,7 +111,7 @@ public class MetricService {
                 status = ResultStatus.FAILED.value();
             } else {
                 try {
-                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "active" : "standby";
+                    result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.activeNameNodeHostname()) ? "master" : "slave";
                 } catch (Exception e) {
                     LOG.error(e.getMessage(), e);
                     result = e.getMessage();

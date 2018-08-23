@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeRPCClientConnectionNumberReportThread;
+import org.exp.dtfs.ni.report.thread.HDFSNameNodeRoleReportThread;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeSafeModeReportThread;
 
 public class MetricReporter {
@@ -51,6 +52,17 @@ public class MetricReporter {
          * @Period 1分钟
          */
         manager.scheduleAtFixedRate(new HDFSNameNodeSafeModeReportThread(), 0, 1, TimeUnit.MINUTES);
+
+        /*
+         * @Type 基础运行类
+         *
+         * @Name NameNode主备角色
+         *
+         * @Comment 检查NameNode主备状态(master：主，slave：备)
+         *
+         * @Period 1分钟
+         */
+        manager.scheduleAtFixedRate(new HDFSNameNodeRoleReportThread(), 0, 1, TimeUnit.MINUTES);
 
         /*
          * @Type 基础运行类
