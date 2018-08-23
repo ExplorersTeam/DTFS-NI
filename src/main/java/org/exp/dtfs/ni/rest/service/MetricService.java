@@ -151,7 +151,13 @@ public class MetricService {
 
         case P_HB_CLRBKDAM: // 基础运行类 - 集群中已损坏block总个数
             if (2 == keys.length) {
-                // TODO Check component and subcomponent value.
+                try {
+                    result = Long.toString(HDFSUtils.totalCorruptBlocksNum());
+                } catch (URISyntaxException | IOException e) {
+                    LOG.error(e.getMessage(), e);
+                    result = e.getMessage();
+                    status = ResultStatus.FAILED.value();
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();

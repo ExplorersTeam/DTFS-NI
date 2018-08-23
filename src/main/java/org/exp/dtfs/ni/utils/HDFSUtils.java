@@ -25,6 +25,8 @@ public class HDFSUtils {
     private static final String METRICS_KEY = "metrics";
     private static final String HOST_ROLES_KEY = "HostRoles";
     private static final String STATE_KEY = "state";
+    private static final String DFS_KEY = "dfs";
+    private static final String FS_NAME_SYSTEM_KEY = "FSNamesystem";
 
     private HDFSUtils() {
         // Do nothing.
@@ -260,4 +262,33 @@ public class HDFSUtils {
         return STARTED_STATUS.equals(String.valueOf(state));
     }
 
+    /**
+     * Get total files number.
+     *
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public static long totalCorruptBlocksNum() throws URISyntaxException, IOException {
+        String numKey = "CorruptBlocks";
+        /*
+         * Example.
+         *
+         * @URI http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/
+         * components/NAMENODE?fields=metrics/dfs/FSNamesystem/CorruptBlocks
+         *
+         * @Reponse { "href" :
+         * "http://10.142.90.152:8080/api/v1/clusters/ctdfs/services/HDFS/components/NAMENODE?fields=metrics/dfs/FSNamesystem/CorruptBlocks",
+         * "ServiceComponentInfo" : { "cluster_name" : "ctdfs", "component_name"
+         * : "NAMENODE", "service_name" : "HDFS" }, "metrics" : { "dfs" : {
+         * "FSNamesystem" : { "CorruptBlocks" : 0 } } } }
+         */
+        JSONObject response = getNameNodeServiceComponentKeyResponse(
+                METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY + Constants.SLASH_DELIMITER + FS_NAME_SYSTEM_KEY + Constants.SLASH_DELIMITER + numKey);
+        if (null == response) {
+            return 0;
+        }
+        Object num = response.getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(FS_NAME_SYSTEM_KEY).get(numKey);
+        return null == num ? 0 : Long.parseLong(num.toString());
+    }
 }
