@@ -10,6 +10,9 @@ public class HBaseConfigs {
     private static final String ZK_SESSION_TIMEOUT_KEY = "zookeeper.session.timeout";
     private static final int DEFAULT_ZK_SESSION_TIMEOUT_VALUE = 90000;
 
+    private static final String RS_PORT_KEY = "hbase.regionserver.port";
+    private static final int DEFAULT_RS_PORT_VALUE = 16020;
+
     private HBaseConfigs() {
         // Do nothing.
     }
@@ -28,6 +31,10 @@ public class HBaseConfigs {
 
     public static String getDTFSFileTableName() {
         return Configs.get(FILE_TABLE_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
+    }
+
+    public static int getRegionServerPort() {
+        return Configs.getInt(RS_PORT_KEY, DEFAULT_RS_PORT_VALUE);
     }
 
 }
