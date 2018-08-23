@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +14,7 @@ import org.apache.http.HttpStatus;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HDFSConfigs;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class HDFSUtils {
@@ -29,10 +33,10 @@ public class HDFSUtils {
     private static final String DFS_KEY = "dfs";
     private static final String FS_NAME_SYSTEM_KEY = "FSNamesystem";
     private static final String DATANODE_KEY = "datanode";
-    private static final String READ_BLOCK_AVG_TIME_KEY = "readBlockOp_avg_time";
-    private static final String WRITE_BLOCK_AVG_TIME_KEY = "writeBlockOp_avg_time";
     private static final String STARTED_COUNT_KEY = "started_count";
     private static final String UNKNOWN_COUNT_KEY = "unknown_count";
+    private static final String HOST_COMPS_KEY = "host_components";
+    private static final String HOST_NAME_KEY = "host_name";
 
     private HDFSUtils() {
         // Do nothing.
@@ -53,6 +57,7 @@ public class HDFSUtils {
      */
 
     public static float getDataNodeAvgReadTime(String host) throws URISyntaxException, IOException {
+        String readBlkAvgTimeKey = "readBlockOp_avg_time";
         /*
          * Example.
          *
@@ -70,13 +75,12 @@ public class HDFSUtils {
          * 0.0 } } } }
          */
         String hostname = InetAddress.getByName(host).getCanonicalHostName();
-        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME, METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY
-                + Constants.SLASH_DELIMITER + DATANODE_KEY + Constants.SLASH_DELIMITER + READ_BLOCK_AVG_TIME_KEY);
+        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME,
+                METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY + Constants.SLASH_DELIMITER + DATANODE_KEY + Constants.SLASH_DELIMITER + readBlkAvgTimeKey);
         if (null == response) {
             return 0;
         }
-        Object num = JSONObject.parseObject(response).getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(DATANODE_KEY)
-                .get(READ_BLOCK_AVG_TIME_KEY);
+        Object num = JSONObject.parseObject(response).getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(DATANODE_KEY).get(readBlkAvgTimeKey);
         return null == num ? 0 : Float.parseFloat(num.toString());
     }
 
@@ -90,6 +94,7 @@ public class HDFSUtils {
      */
 
     public static float getDataNodeAvgWriteTime(String host) throws URISyntaxException, IOException {
+        String writeBlkAvgTimeKey = "writeBlockOp_avg_time";
         /*
          * Example.
          *
@@ -107,13 +112,12 @@ public class HDFSUtils {
          * 13.0 } } } }
          */
         String hostname = InetAddress.getByName(host).getCanonicalHostName();
-        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME, METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY
-                + Constants.SLASH_DELIMITER + DATANODE_KEY + Constants.SLASH_DELIMITER + WRITE_BLOCK_AVG_TIME_KEY);
+        String response = AmbariRESTUtils.getHostComponentMetrics(hostname, DN_COMP_NAME,
+                METRICS_KEY + Constants.SLASH_DELIMITER + DFS_KEY + Constants.SLASH_DELIMITER + DATANODE_KEY + Constants.SLASH_DELIMITER + writeBlkAvgTimeKey);
         if (null == response) {
             return 0;
         }
-        Object num = JSONObject.parseObject(response).getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(DATANODE_KEY)
-                .get(WRITE_BLOCK_AVG_TIME_KEY);
+        Object num = JSONObject.parseObject(response).getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(DATANODE_KEY).get(writeBlkAvgTimeKey);
         return null == num ? 0 : Float.parseFloat(num.toString());
     }
 
@@ -224,7 +228,7 @@ public class HDFSUtils {
 
     /**
      * Get capacity usage(GB).
-     * 
+     *
      * @return
      * @throws URISyntaxException
      * @throws IOException
@@ -362,7 +366,7 @@ public class HDFSUtils {
 
     /**
      * Get active NameNode hostname.
-     * 
+     *
      * @return
      * @throws Exception
      */
@@ -435,6 +439,37 @@ public class HDFSUtils {
         }
         Object num = response.getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(FS_NAME_SYSTEM_KEY).get(numKey);
         return null == num ? 0 : Long.parseLong(num.toString());
+    }
+
+    /**
+     * List DataNode hostnames.
+     *
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public static List<String> listDataNodeHostnames() throws URISyntaxException, IOException {
+        JSONObject response = getDataNodeServiceComponentKeyResponse(
+                HOST_COMPS_KEY + Constants.SLASH_DELIMITER + HOST_ROLES_KEY + Constants.SLASH_DELIMITER + HOST_NAME_KEY);
+        if (null == response) {
+            return null;
+        }
+        List<String> dns = new ArrayList<>();
+        JSONArray array = response.getJSONArray(HOST_COMPS_KEY);
+        array.parallelStream().forEach(new Consumer<Object>() {
+            @Override
+            public void accept(Object t) {
+                if (!(t instanceof JSONObject)) {
+                    return;
+                }
+                Object hostname = ((JSONObject) t).getJSONObject(HOST_ROLES_KEY).get(HOST_NAME_KEY);
+                if (null == hostname) {
+                    return;
+                }
+                dns.add(hostname.toString());
+            }
+        });
+        return dns;
     }
 
 }
