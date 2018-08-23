@@ -276,6 +276,18 @@ public class HDFSUtils {
         return port;
     }
 
+    public static int nnHTTPPort(String hostname) throws UnknownHostException {
+        String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
+        String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
+        int port = 50070;
+        if (hostname.equals(nn1Addrs[0])) {
+            port = Integer.parseInt(nn1Addrs[1]);
+        } else if (hostname.equals(nn2Addrs[0])) {
+            port = Integer.parseInt(nn2Addrs[1]);
+        }
+        return port;
+    }
+
     public static boolean checkDataNodeAlive(String host) throws IOException, URISyntaxException {
         LOG.info("Check if HDFS DataNode is alive, host is [" + host + "].");
         String hostname = InetAddress.getByName(host).getCanonicalHostName();
