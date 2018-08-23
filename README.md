@@ -9,5 +9,6 @@ North Interfaces on Distributed Tiny-File System.
 * `dtfs-ni-rest-site.xml`
 * `dtfs-ni-kafka-site.xml`
 * `dtfs-ni-ambari-site.xml`
+* `dtfs-ni-hadoop-site.xml`
 * `dtfs-ni-zookeeper-site.xml`
 * `hdfs-site.xml` and `hbase-site.xml`
