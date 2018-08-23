@@ -19,7 +19,15 @@ public class HBaseUtils {
     }
 
     public static List<String> listAliveRegionServers() throws Exception {
-        List<String> rss = ZKUtils.list(ZNODE_PARENT + (ZNODE_PARENT.endsWith(Constants.SLASH_DELIMITER) ? "" : Constants.SLASH_DELIMITER) + RS_ZNODE);
+        StringBuffer path = new StringBuffer();
+        if (!ZNODE_PARENT.startsWith(Constants.SLASH_DELIMITER)) {
+            path.append(Constants.SLASH_DELIMITER);
+        }
+        path.append(ZNODE_PARENT);
+        if (!ZNODE_PARENT.endsWith(Constants.SLASH_DELIMITER)) {
+            path.append(Constants.SLASH_DELIMITER);
+        }
+        List<String> rss = ZKUtils.list(path.append(RS_ZNODE).toString());
         LOG.info("Now there are [" + rss.size() + "] HBase RegionServers alive.");
         return rss;
     }

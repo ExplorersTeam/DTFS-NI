@@ -1,6 +1,7 @@
 package org.exp.dtfs.ni.rest.service;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
 
 import javax.ws.rs.Consumes;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.dtfs.ni.common.Constants;
+import org.exp.dtfs.ni.conf.HDFSConfigs;
 import org.exp.dtfs.ni.entity.CommandBody;
 import org.exp.dtfs.ni.entity.ResponseBody;
 import org.exp.dtfs.ni.entity.ResponseBody.ResultStatus;
@@ -127,7 +129,19 @@ public class MetricService {
         case P_HB_ROLE: // 基础运行类 - NameNode主备角色
             if (3 == keys.length) {
                 String ip = keys[0];
-                // TODO Check component and subcomponent value.
+                if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]))
+                        && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]))) {
+                    result = "Host [" + ip + "] is not HDFS NameNode.";
+                    status = ResultStatus.FAILED.value();
+                } else {
+                    try {
+                        result = InetAddress.getByName(ip).getCanonicalHostName().equals(HDFSUtils.getActiveNameNodeHostname()) ? "active" : "standby";
+                    } catch (Exception e) {
+                        LOG.error(e.getMessage(), e);
+                        result = e.getMessage();
+                        status = ResultStatus.FAILED.value();
+                    }
+                }
             } else {
                 result = "Illegal arguments number: [" + keys.length + "].";
                 status = ResultStatus.FAILED.value();

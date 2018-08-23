@@ -1,0 +1,6 @@
+<configuration>
+    <property>
+        <name>dtfs.ni.hadoop.ha.znode.parent</name>
+        <value>/hadoop-ha</value>
+    </property>
+</configuration>

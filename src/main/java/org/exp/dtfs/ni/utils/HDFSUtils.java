@@ -250,6 +250,19 @@ public class HDFSUtils {
         Object state = JSONObject.parseObject(response).getJSONObject(HOST_ROLES_KEY).get(STATE_KEY);
         return STARTED_STATUS.equals(String.valueOf(state));
     }
+    
+    /**
+     * Get active NameNode hostname.
+     * 
+     * @return
+     * @throws Exception
+     */
+    public static String getActiveNameNodeHostname() throws Exception {
+        String znodeContent = new String(ZKUtils.get(HDFSConfigs.getHAZNodePath())).split(" ")[0];
+        String delimiter = HDFSConfigs.getNameService() + "nn";
+        return znodeContent.substring(znodeContent.indexOf(delimiter) + delimiter.length() + 8);
+    }
+    
 
     public static boolean checkDataNodeAlive(String host) throws IOException, URISyntaxException {
         LOG.info("Check if HDFS DataNode is alive, host is [" + host + "].");
@@ -291,4 +304,5 @@ public class HDFSUtils {
         Object num = response.getJSONObject(METRICS_KEY).getJSONObject(DFS_KEY).getJSONObject(FS_NAME_SYSTEM_KEY).get(numKey);
         return null == num ? 0 : Long.parseLong(num.toString());
     }
+    
 }
