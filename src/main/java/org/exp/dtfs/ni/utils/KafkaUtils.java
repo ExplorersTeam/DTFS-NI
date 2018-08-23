@@ -8,7 +8,6 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.RetriableException;
-import org.exp.dtfs.ni.conf.KafkaConfigs;
 import org.exp.dtfs.ni.context.KafkaContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,10 @@ public class KafkaUtils {
      * @throws InterruptedException
      * @throws ExecutionException
      */
-    public static void produce(String message) throws InterruptedException, ExecutionException {
+    public static void produce(String topic, String message) throws InterruptedException, ExecutionException {
         Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProducerProps());
-        ProducerRecord<String, String> records = new ProducerRecord<>(KafkaConfigs.getKafkaTopicName(), message);
+        // Record with no key.
+        ProducerRecord<String, String> records = new ProducerRecord<>(topic, message);
         // producer.send(records).get();
         producer.send(records, new Callback() {
             @Override
@@ -54,13 +54,6 @@ public class KafkaUtils {
             }
         }).get();
         producer.close();
-    }
-
-    // For test.
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
-        produce("Hello world!");
-        produce("Hello DTFS!");
-        produce("Hello DTFS-NI!");
     }
 
 }

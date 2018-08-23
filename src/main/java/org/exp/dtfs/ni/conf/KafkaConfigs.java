@@ -51,7 +51,8 @@ public class KafkaConfigs {
     /*
      * Kafka topic name.
      */
-    private static final String KAFKA_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.name";
+    private static final String KAFKA_METRIC_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.metric.name";
+    private static final String KAFKA_LOG_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.log.name";
 
     private KafkaConfigs() {
         // Do nothing
@@ -101,8 +102,12 @@ public class KafkaConfigs {
         return Configs.getInt(KAFKA_MAX_BLOCK_MS_CONFIG_KEY, DEFAULT_KAFKA_MAX_BLOCK_MS_CONFIG_VALUE);
     }
 
-    public static String getKafkaTopicName() {
-        return Configs.get(KAFKA_TOPIC_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
+    public static String getKafkaMetricTopicName() {
+        return Configs.get(KAFKA_METRIC_TOPIC_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
+    }
+
+    public static String getKafkaLogTopicName() {
+        return Configs.get(KAFKA_LOG_TOPIC_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
     }
 
 }

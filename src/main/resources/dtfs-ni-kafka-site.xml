@@ -44,7 +44,11 @@
         <value>3000</value>
     </property>
     <property>
-        <name>dtfs.ni.kafka.topic.name</name>
+        <name>dtfs.ni.kafka.topic.metric.name</name>
         <value>ETE_CTDFS_01</value>
+    </property>
+    <property>
+        <name>dtfs.ni.kafka.topic.log.name</name>
+        <value>ETE_CTDFS_02</value>
     </property>
 </configuration>
