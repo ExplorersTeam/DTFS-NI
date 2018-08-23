@@ -10,6 +10,7 @@ import org.exp.dtfs.ni.report.thread.HDFSNameNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeRPCClientConnectionNumberReportThread;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeRoleReportThread;
 import org.exp.dtfs.ni.report.thread.HDFSNameNodeSafeModeReportThread;
+import org.exp.dtfs.ni.report.thread.HDFSTotalFileNumberReportThread;
 
 public class MetricReporter {
     private static final Log LOG = LogFactory.getLog(MetricReporter.class);
@@ -60,6 +61,17 @@ public class MetricReporter {
          * @Period 1分钟
          */
         manager.scheduleAtFixedRate(new HDFSNameNodeRoleReportThread(), 0, 1, TimeUnit.MINUTES);
+
+        /*
+         * @Type 基础运行类
+         *
+         * @Name 集群总文件数（FilesTotal）
+         *
+         * @Comment 采集集群中文件及文件夹的总个数
+         *
+         * @Period 1分钟
+         */
+        manager.scheduleAtFixedRate(new HDFSTotalFileNumberReportThread(), 0, 1, TimeUnit.MINUTES);
 
         /*
          * @Type 基础运行类
