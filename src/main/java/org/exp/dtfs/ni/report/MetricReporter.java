@@ -16,9 +16,6 @@ public class MetricReporter {
 
     private ScheduledExecutorService manager = Executors.newScheduledThreadPool(17);
 
-    private static final String HBASE_SERVER_KEY = "hbase_server_";
-    private static final String HBASE_STATUS_CODE = "HBASE_STATUS";
-
     public MetricReporter() {
         /*
          * @Type 基础运行类
