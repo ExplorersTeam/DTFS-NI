@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
@@ -454,7 +454,7 @@ public class HDFSUtils {
         if (null == response) {
             return null;
         }
-        List<String> dns = new ArrayList<>();
+        List<String> dns = new Vector<>();
         JSONArray array = response.getJSONArray(HOST_COMPS_KEY);
         array.parallelStream().forEach(new Consumer<Object>() {
             @Override
