@@ -9,6 +9,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -29,9 +31,7 @@ import org.dom4j.io.SAXReader;
 // </property>
 // </configuration>
 public class XMLUtils {
-    // Not used.
-    // private static final Logger LOG =
-    // LoggerFactory.getLogger(XMLUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(XMLUtils.class);
 
     private static String CONF_FILENAME = "src/main/resources/dtfs-ni-kafka-site.xml";
 
@@ -87,9 +87,9 @@ public class XMLUtils {
         String strValue2 = getTrimmed("kafka.props.bootstrap.servers12", "222222");
         int intValue1 = getInt("kafka.props.retries", 333333);
         int intValue2 = getInt("kafka.props.retries12", 444444);
-        System.out.println(strValue1);
-        System.out.println(strValue2);
-        System.out.println(intValue1);
-        System.out.println(intValue2);
+        LOG.info(strValue1);
+        LOG.info(strValue2);
+        LOG.info(Integer.toString(intValue1));
+        LOG.info(Integer.toString(intValue2));
     }
 }

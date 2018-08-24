@@ -4,19 +4,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.utils.AmbariRESTUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
 public class TmpUtils {
-
-    private static final Log LOG = LogFactory.getLog(TmpUtils.class);
-
     private static final String SERVICE_NAME = "HDFS";
-    private static final String NN_COMP_NAME = "NAMENODE";
     private static final String DN_COMP_NAME = "DATANODE";
     private static final String SERVICE_COMP_INFO_KEY = "ServiceComponentInfo";
 

@@ -29,7 +29,7 @@ public class Server {
 
     private String hostAddress = null;
     private int port = RESTConfigs.getServerPort();
-    private HttpServer server = null;
+    private HttpServer serv = null;
 
     public Server() {
         init();
@@ -47,7 +47,7 @@ public class Server {
             config.packages(false, MetricService.class.getPackage().getName());
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
-            this.server = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
+            this.serv = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
             LOG.info("REST server initialized, address is [" + getHostAddress() + Constants.COLON + getPort() + "].");
         } catch (UnknownHostException | URISyntaxException e) {
             LOG.error(e.getMessage(), e);
@@ -68,13 +68,13 @@ public class Server {
      * @throws IOException
      */
     public void start() throws IOException {
-        if (null == server) {
+        if (null == serv) {
             throw new NullPointerException("No such server.");
         }
-        if (server.isStarted()) {
+        if (serv.isStarted()) {
             throw new IllegalStateException("Server is still running.");
         }
-        server.start();
+        serv.start();
     }
 
     public static void main(String[] args) {
