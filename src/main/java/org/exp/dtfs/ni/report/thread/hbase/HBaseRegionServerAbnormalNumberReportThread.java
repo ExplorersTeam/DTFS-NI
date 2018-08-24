@@ -1,5 +1,8 @@
 package org.exp.dtfs.ni.report.thread.hbase;
 
+import java.net.InetAddress;
+
+import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
@@ -12,15 +15,15 @@ public class HBaseRegionServerAbnormalNumberReportThread extends HBaseReportThre
     @Override
     public void work() {
         try {
-            // TODO:wait to define IP.
-            String ip = "";
+            String[] infos = HBaseUtils.listAliveRegionServerInfos().get(0).split(Constants.COMMA_DELIMITER);
+            String ip = InetAddress.getByName(infos[0]).getCanonicalHostName();
             MetricMessage message = new MetricMessage();
-            // TODO:wait to define CompKey.
-            message.setCompKey("");
+            message.setCompKey(ip + Constants.VERTICAL_DELIMITER + HBASE_SERVER_KEY + infos[1]);
             message.setHostIP(ip);
             message.setMetricCode(HBASE_STATUS_CODE);
             message.setMetricType(MetricType.STATUS);
             message.setMetricValue(Integer.toString(HBaseUtils.getAbnormalRegionServerNumber()));
+
             String msgStr = JSONUtils.buildJSONString(message);
             LOG.info("Send message [" + msgStr + "] into Kafka queue.");
             KafkaUtils.produce(KafkaConfigs.getKafkaMetricTopicName(), msgStr);

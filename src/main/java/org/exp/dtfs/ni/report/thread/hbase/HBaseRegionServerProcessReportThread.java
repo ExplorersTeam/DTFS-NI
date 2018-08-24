@@ -40,7 +40,8 @@ public class HBaseRegionServerProcessReportThread extends HBaseReportThread {
         String ip = InetAddress.getByName(hostname).getHostAddress();
 
         MetricMessage message = new MetricMessage();
-        message.setCompKey(ip + Constants.TRANSFER_VERTICAL_DELIMITER + HBASE_SERVER_KEY + HBaseConfigs.getRegionServerPort());
+        message.setCompKey(
+                ip + Constants.VERTICAL_DELIMITER + HBASE_SERVER_KEY + HBaseConfigs.getRegionServerPort() + Constants.VERTICAL_DELIMITER + HBASE_RS_KEY);
         message.setHostIP(ip);
         message.setMetricCode(HBASE_STATUS_CODE);
         message.setMetricType(MetricType.STATUS);
