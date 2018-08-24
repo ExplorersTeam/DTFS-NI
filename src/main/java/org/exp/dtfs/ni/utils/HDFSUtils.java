@@ -142,7 +142,6 @@ public class HDFSUtils {
         return null == num ? 0 : Integer.parseInt(num.toString());
     }
 
-    // TODO:wait to delete
     public static int getAbnormalDataNodeNum() throws URISyntaxException, IOException {
         /*
          * Example.

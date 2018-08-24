@@ -3,9 +3,9 @@ package org.exp.dtfs.ni.conf;
 import org.exp.dtfs.ni.common.Constants;
 
 /**
- * 
+ *
  * Ambari configurations.
- * 
+ *
  * @author ChenJintong
  *
  */
@@ -18,8 +18,10 @@ public class AmbariConfigs {
     private static final String SERVER_USER_NAME_KEY = "dtfs.ni.ambari.server.user.name";
     private static final String DEFAULT_SERVER_USER_NAME_VALUE = "admin";
 
-    private static final String SERVER_USER_PASSWORD_KEY = "dtfs.ni.ambari.server.user.password";
-    private static final String DEFAULT_SERVER_USER_PASSWORD_VALUE = "admin";
+    // User password key.
+    private static final String SERVER_USER_TOKEN_KEY = "dtfs.ni.ambari.server.user.password";
+    // Default password.
+    private static final String DEFAULT_SERVER_USER_TOKEN_VALUE = "admin";
 
     private static final String CLUSTER_NAME_KEY = "dtfs.ni.ambari.cluster.name";
 
@@ -40,7 +42,7 @@ public class AmbariConfigs {
     }
 
     public static String getServerUserPassword() {
-        return Configs.get(SERVER_USER_PASSWORD_KEY, DEFAULT_SERVER_USER_PASSWORD_VALUE);
+        return Configs.get(SERVER_USER_TOKEN_KEY, DEFAULT_SERVER_USER_TOKEN_VALUE);
     }
 
     public static String getClusterName() {
