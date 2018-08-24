@@ -9,7 +9,21 @@ import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.CompareOperator;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.filter.BinaryComparator;
+import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.exp.dtfs.ni.common.Constants;
+import org.exp.dtfs.ni.conf.Configs;
 import org.exp.dtfs.ni.conf.HBaseConfigs;
 
 import com.alibaba.fastjson.JSONArray;
@@ -28,8 +42,18 @@ public class HBaseUtils {
     private static final String HOST_COMPS_KEY = "host_components";
     private static final String HOST_NAME_KEY = "host_name";
 
+    private static final Configuration CONF = HBaseConfiguration.create();
+
+    static {
+        CONF.addResource(Configs.getHBaseConfFileName());
+    }
+
     private HBaseUtils() {
         // Do nothing.
+    }
+
+    private static Configuration getConf() {
+        return CONF;
     }
 
     private static JSONObject getRegionServerServiceComponentKeyResponse(String key) throws URISyntaxException, IOException {
@@ -85,6 +109,23 @@ public class HBaseUtils {
             }
         }
         return false;
+    }
+
+    public static List<Result> searchEqual(String tableName, String family, String qualifier, String key) throws IOException {
+        Connection connection = ConnectionFactory.createConnection(getConf());
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        Filter filter = new SingleColumnValueFilter(family.getBytes(), qualifier.getBytes(), CompareOperator.EQUAL, new BinaryComparator(key.getBytes()));
+        Scan scan = new Scan();
+        scan.setFilter(filter);
+        ResultScanner scanner = table.getScanner(scan);
+        List<Result> result = new Vector<>();
+        scanner.forEach(new Consumer<Result>() {
+            @Override
+            public void accept(Result t) {
+                result.add(t);
+            }
+        });
+        return result;
     }
 
 }

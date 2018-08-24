@@ -13,6 +13,15 @@ public class HBaseConfigs {
     private static final String RS_PORT_KEY = "hbase.regionserver.port";
     private static final int DEFAULT_RS_PORT_VALUE = 16020;
 
+    private static final String FILE_TABLE_FAMILY_NAME_KEY = "dtfs.ni.hbase.file.table.family.name";
+    private static final String DEFAULT_FILE_TABLE_FAMILY_NAME_VALUE = "f";
+
+    private static final String FILE_TABLE_DIR_COL_NAME_KEY = "dtfs.ni.hbase.file.table.family.column.dir.name";
+    private static final String DEFAULT_FILE_TABLE_DIR_COL_NAME_VALUE = "d";
+
+    private static final String FILE_TABLE_SIZE_COL_NAME_KEY = "dtfs.ni.hbase.file.table.family.column.size.name";
+    private static final String DEFAULT_FILE_TABLE_SIZE_COL_NAME_VALUE = "l";
+
     private HBaseConfigs() {
         // Do nothing.
     }
@@ -31,6 +40,18 @@ public class HBaseConfigs {
 
     public static String getDTFSFileTableName() {
         return Configs.get(FILE_TABLE_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
+    }
+
+    public static String getDTFSFileTableFamilyName() {
+        return Configs.get(FILE_TABLE_FAMILY_NAME_KEY, DEFAULT_FILE_TABLE_FAMILY_NAME_VALUE);
+    }
+
+    public static String getDTFSFileTableDirColumnName() {
+        return Configs.get(FILE_TABLE_DIR_COL_NAME_KEY, DEFAULT_FILE_TABLE_DIR_COL_NAME_VALUE);
+    }
+
+    public static String getDTFSFileTableSizeColumnName() {
+        return Configs.get(FILE_TABLE_SIZE_COL_NAME_KEY, DEFAULT_FILE_TABLE_SIZE_COL_NAME_VALUE);
     }
 
     public static int getRegionServerPort() {

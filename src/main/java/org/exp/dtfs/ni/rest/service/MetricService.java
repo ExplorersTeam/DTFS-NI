@@ -15,6 +15,7 @@ import org.exp.dtfs.ni.conf.HDFSConfigs;
 import org.exp.dtfs.ni.entity.CommandBody;
 import org.exp.dtfs.ni.entity.ResponseBody;
 import org.exp.dtfs.ni.entity.ResponseBody.ResultStatus;
+import org.exp.dtfs.ni.utils.DTFSUtils;
 import org.exp.dtfs.ni.utils.DateUtils;
 import org.exp.dtfs.ni.utils.HBaseUtils;
 import org.exp.dtfs.ni.utils.HDFSUtils;
@@ -120,7 +121,7 @@ public class MetricService {
                 break;
 
             case P_HB_SFILEPERC: // 基础运行类 - 小文件(≤2MB)数占比
-                // TODO Check component and subcomponent value.
+                result = Float.toString(DTFSUtils.getTinyFilePercentage());
                 break;
 
             default:

@@ -69,4 +69,13 @@ public class Configs {
         return getConf().getInt(key, defaultValue);
     }
 
+    /**
+     * For class HBaseUtils.
+     * 
+     * @return
+     */
+    public static String getHBaseConfFileName() {
+        return HBASE_CONF_FILENAME;
+    }
+
 }
