@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.exp.dtfs.ni.report.thread.dtfs.DTFSTinyFilePercentageReportThread;
 import org.exp.dtfs.ni.report.thread.hbase.HBaseRegionServerProcessReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSDataNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeProcessReportThread;
@@ -45,6 +46,7 @@ public class MetricReporter implements Reporter {
 
     public static void main(String[] args) {
         MetricReporter reporter = new MetricReporter();
+        TimeUnit minUnit = TimeUnit.MINUTES;
         /*
          * @Type 基础运行类
          *
@@ -54,7 +56,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSNameNodeProcessReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSNameNodeProcessReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -65,7 +67,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSNameNodeProcessReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSNameNodeProcessReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -76,7 +78,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSNameNodeSafeModeReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSNameNodeSafeModeReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -87,7 +89,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSNameNodeRoleReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSNameNodeRoleReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -98,7 +100,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSTotalFileNumberReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSTotalFileNumberReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -109,7 +111,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HBaseRegionServerProcessReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HBaseRegionServerProcessReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -120,7 +122,7 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSDataNodeProcessReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSDataNodeProcessReportThread(), 1, minUnit));
 
         /*
          * @Type 基础运行类
@@ -131,7 +133,18 @@ public class MetricReporter implements Reporter {
          *
          * @Period 1分钟
          */
-        reporter.register(new ReportEntity(new HDFSNameNodeRPCClientConnectionNumberReportThread(), 1, TimeUnit.MINUTES));
+        reporter.register(new ReportEntity(new HDFSNameNodeRPCClientConnectionNumberReportThread(), 1, minUnit));
+
+        /*
+         * @Type 基础运行类
+         *
+         * @Name 小文件(≤2MB)数占比
+         *
+         * @Comment 获取小文件数占比（百分数）
+         *
+         * @Period 10分钟
+         */
+        reporter.register(new ReportEntity(new DTFSTinyFilePercentageReportThread(), 10, minUnit));
 
         LOG.info("Start metrics reporter.");
         reporter.start();
