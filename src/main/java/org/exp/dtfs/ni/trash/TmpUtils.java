@@ -22,6 +22,10 @@ public class TmpUtils {
     private static final String STARTED_COUNT_KEY = "started_count";
     private static final String UNKNOWN_COUNT_KEY = "unknown_count";
 
+    private TmpUtils() {
+        // Do nothing.
+    }
+
     private static JSONObject getDataNodeServiceComponentKeyResponse(String key) throws URISyntaxException, IOException {
         String metricStr = AmbariRESTUtils.getServiceComponentMetrics(SERVICE_NAME, DN_COMP_NAME, key);
         return null == metricStr ? null : JSONObject.parseObject(metricStr);
