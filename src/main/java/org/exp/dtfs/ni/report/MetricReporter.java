@@ -1,8 +1,11 @@
 package org.exp.dtfs.ni.report;
 
+import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,12 +17,34 @@ import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRoleReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeSafeModeReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSTotalFileNumberReportThread;
 
-public class MetricReporter {
+public class MetricReporter implements Reporter {
     private static final Log LOG = LogFactory.getLog(MetricReporter.class);
 
-    private ScheduledExecutorService manager = Executors.newScheduledThreadPool(17);
+    private List<ReportEntity> entities = new Vector<>();
 
-    public MetricReporter() {
+    @Override
+    public void register(ReportEntity entity) {
+        entities.add(entity);
+    }
+
+    @Override
+    public void remove(ReportEntity entity) {
+        entities.remove(entity);
+    }
+
+    @Override
+    public void start() {
+        ScheduledExecutorService manager = Executors.newScheduledThreadPool(entities.size());
+        entities.parallelStream().forEach(new Consumer<ReportEntity>() {
+            @Override
+            public void accept(ReportEntity t) {
+                manager.scheduleAtFixedRate(t.getThread(), 0, t.getPeriod(), t.getTimeUnit());
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        MetricReporter reporter = new MetricReporter();
         /*
          * @Type 基础运行类
          *
@@ -29,7 +54,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSNameNodeProcessReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HDFSNameNodeProcessReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -40,7 +65,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSNameNodeProcessReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HDFSNameNodeProcessReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -51,7 +76,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSNameNodeSafeModeReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HDFSNameNodeSafeModeReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -62,7 +87,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSNameNodeRoleReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HDFSNameNodeRoleReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -73,7 +98,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSTotalFileNumberReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HDFSTotalFileNumberReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -84,7 +109,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HBaseRegionServerProcessReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HBaseRegionServerProcessReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -95,7 +120,7 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSDataNodeProcessReportThread(), 0, 1, TimeUnit.MINUTES);
+        reporter.register(new ReportEntity(new HDFSDataNodeProcessReportThread(), 1, TimeUnit.MINUTES));
 
         /*
          * @Type 基础运行类
@@ -106,12 +131,10 @@ public class MetricReporter {
          *
          * @Period 1分钟
          */
-        manager.scheduleAtFixedRate(new HDFSNameNodeRPCClientConnectionNumberReportThread(), 0, 1, TimeUnit.MINUTES);
-    }
+        reporter.register(new ReportEntity(new HDFSNameNodeRPCClientConnectionNumberReportThread(), 1, TimeUnit.MINUTES));
 
-    public static void main(String[] args) {
         LOG.info("Start metrics reporter.");
-        new MetricReporter();
+        reporter.start();
     }
 
 }
