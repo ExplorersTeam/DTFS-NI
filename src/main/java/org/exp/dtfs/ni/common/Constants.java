@@ -15,6 +15,7 @@ public class Constants {
     public static final String COLON = ":";
     public static final String TRANSFER_VERTICAL_DELIMITER = "\\|";
     public static final String PERCENT = "%";
+    public static final String MEMORY_UNIT = "MB";
 
     /**
      * Configuration default values.

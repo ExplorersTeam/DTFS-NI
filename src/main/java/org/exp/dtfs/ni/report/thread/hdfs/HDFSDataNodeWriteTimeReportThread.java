@@ -16,7 +16,7 @@ import org.exp.dtfs.ni.utils.HDFSUtils;
 import org.exp.dtfs.ni.utils.JSONUtils;
 import org.exp.dtfs.ni.utils.KafkaUtils;
 
-public class HDFSDataNodeProcessReportThread extends HDFSReportThread {
+public class HDFSDataNodeWriteTimeReportThread extends HDFSReportThread {
 
     @Override
     public void work() {
@@ -26,7 +26,7 @@ public class HDFSDataNodeProcessReportThread extends HDFSReportThread {
                 @Override
                 public void accept(String t) {
                     try {
-                        processReport(t);
+                        avgWriteTimeReport(t);
                     } catch (NumberFormatException | IOException | URISyntaxException | InterruptedException | ExecutionException e) {
                         LOG.error(e.getMessage(), e);
                     }
@@ -37,15 +37,14 @@ public class HDFSDataNodeProcessReportThread extends HDFSReportThread {
         }
     }
 
-    private static void processReport(String hostname) throws NumberFormatException, IOException, URISyntaxException, InterruptedException, ExecutionException {
+    private static void avgWriteTimeReport(String hostname) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
         String ip = InetAddress.getByName(hostname).getHostAddress();
-
         MetricMessage message = new MetricMessage();
         message.setCompKey(ip + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSConfigs.getDataNodeHTTPAddr().split(Constants.COLON)[1]);
         message.setHostIP(ip);
         message.setMetricCode(HDFS_STATUS_CODE);
-        message.setMetricType(MetricType.STATUS);
-        message.setMetricValue(Boolean.toString(HDFSUtils.checkDataNodeAlive(hostname)));
+        message.setMetricType(MetricType.PERFORMANCE);
+        message.setMetricValue(Float.toString(HDFSUtils.getDataNodeAvgWriteTime(ip)));
 
         String msgStr = JSONUtils.buildJSONString(message);
         LOG.info("Send message [" + msgStr + "] into Kafka queue.");
