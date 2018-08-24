@@ -5,7 +5,6 @@ import java.util.Vector;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,12 +43,7 @@ public class MetricReporter implements Reporter {
     @Override
     public void start() {
         ScheduledExecutorService manager = Executors.newScheduledThreadPool(entities.size());
-        entities.parallelStream().forEach(new Consumer<ReportEntity>() {
-            @Override
-            public void accept(ReportEntity t) {
-                manager.scheduleAtFixedRate(t.getThread(), 0, t.getPeriod(), t.getTimeUnit());
-            }
-        });
+        entities.parallelStream().forEach(t -> manager.scheduleAtFixedRate(t.getThread(), 0, t.getPeriod(), t.getTimeUnit()));
     }
 
     public static void main(String[] args) {
