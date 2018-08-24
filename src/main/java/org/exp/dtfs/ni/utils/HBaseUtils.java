@@ -125,20 +125,21 @@ public class HBaseUtils {
     }
 
     public static List<Result> searchEqual(String tableName, String family, String qualifier, String key) throws IOException {
-        Connection connection = ConnectionFactory.createConnection(getConf());
-        Table table = connection.getTable(TableName.valueOf(tableName));
-        Filter filter = new SingleColumnValueFilter(family.getBytes(), qualifier.getBytes(), CompareOperator.EQUAL, new BinaryComparator(key.getBytes()));
-        Scan scan = new Scan();
-        scan.setFilter(filter);
-        ResultScanner scanner = table.getScanner(scan);
-        List<Result> result = new Vector<>();
-        scanner.forEach(new Consumer<Result>() {
-            @Override
-            public void accept(Result t) {
-                result.add(t);
-            }
-        });
-        return result;
+        try (Connection connection = ConnectionFactory.createConnection(getConf()); Table table = connection.getTable(TableName.valueOf(tableName))) {
+            Filter filter = new SingleColumnValueFilter(family.getBytes(), qualifier.getBytes(), CompareOperator.EQUAL, new BinaryComparator(key.getBytes()));
+            Scan scan = new Scan();
+            scan.setFilter(filter);
+            ResultScanner scanner = table.getScanner(scan);
+            List<Result> result = new Vector<>();
+            scanner.forEach(new Consumer<Result>() {
+                @Override
+                public void accept(Result t) {
+                    result.add(t);
+                }
+            });
+            scanner.close();
+            return result;
+        }
     }
 
 }

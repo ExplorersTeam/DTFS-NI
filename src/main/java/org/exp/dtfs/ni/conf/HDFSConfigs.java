@@ -13,6 +13,7 @@ import org.exp.dtfs.ni.common.Constants;
  */
 public class HDFSConfigs {
     private static final Log LOG = LogFactory.getLog(HDFSConfigs.class);
+    private static final String LOG_RESULT_STR = "], result  is [";
 
     private static final String HA_ZNODE_PARENT_KEY = "dtfs.ni.hadoop.ha.znode.parent";
     private static final String DEFAULT_HA_ZNODE_PARENT_VALUE = "/hadoop-ha";
@@ -37,25 +38,25 @@ public class HDFSConfigs {
 
     public static String getNameNode1HTTPAddr() {
         String addr = Configs.get(NN1_HTTP_ADDR_KEY, Constants.DEFAULT_ADDR_STR);
-        LOG.info("HDFS NN1 HTTP address configuration item key is [" + NN1_HTTP_ADDR_KEY + "], result  is [" + addr + "].");
+        LOG.info("HDFS NN1 HTTP address configuration item key is [" + NN1_HTTP_ADDR_KEY + LOG_RESULT_STR + addr + "].");
         return addr;
     }
 
     public static String getNameNode2HTTPAddr() {
         String addr = Configs.get(NN2_HTTP_ADDR_KEY, Constants.DEFAULT_ADDR_STR);
-        LOG.info("HDFS NN2 HTTP address configuration item key is [" + NN2_HTTP_ADDR_KEY + "], result  is [" + addr + "].");
+        LOG.info("HDFS NN2 HTTP address configuration item key is [" + NN2_HTTP_ADDR_KEY + LOG_RESULT_STR + addr + "].");
         return addr;
     }
 
     public static String getNameNode1RPCAddr() {
         String addr = Configs.get(NN1_RPC_ADDR_KEY, Constants.DEFAULT_ADDR_STR);
-        LOG.info("HDFS NN1 RPC address configuration item key is [" + NN1_RPC_ADDR_KEY + "], result  is [" + addr + "].");
+        LOG.info("HDFS NN1 RPC address configuration item key is [" + NN1_RPC_ADDR_KEY + LOG_RESULT_STR + addr + "].");
         return addr;
     }
 
     public static String getNameNode2RPCAddr() {
         String addr = Configs.get(NN2_RPC_ADDR_KEY, Constants.DEFAULT_ADDR_STR);
-        LOG.info("HDFS NN2 RPC address configuration item key is [" + NN2_RPC_ADDR_KEY + "], result  is [" + addr + "].");
+        LOG.info("HDFS NN2 RPC address configuration item key is [" + NN2_RPC_ADDR_KEY + LOG_RESULT_STR + addr + "].");
         return addr;
     }
 

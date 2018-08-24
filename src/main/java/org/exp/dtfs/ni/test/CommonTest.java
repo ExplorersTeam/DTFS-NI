@@ -2,6 +2,7 @@ package org.exp.dtfs.ni.test;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
 
 public class CommonTest {
     private static final Log LOG = LogFactory.getLog(CommonTest.class);
@@ -10,6 +11,7 @@ public class CommonTest {
         // Do nothing.
     }
 
+    @Test
     private static void test(String... strs) {
         for (String str : strs) {
             // System.out.println("[" + str + "]");

@@ -34,26 +34,27 @@ public class KafkaUtils {
      * @throws ExecutionException
      */
     public static void produce(String topic, String message) throws InterruptedException, ExecutionException {
-        Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProducerProps());
-        // Record with no key.
-        ProducerRecord<String, String> records = new ProducerRecord<>(topic, message);
-        // producer.send(records).get();
-        producer.send(records, new Callback() {
-            @Override
-            public void onCompletion(RecordMetadata metadata, Exception exception) {
-                if (null == exception) {
-                    LOG.info("Message sent successfully, offset is [" + metadata.offset() + "].");
-                } else {
-                    if (exception instanceof RetriableException) {
-                        LOG.error("Retriable exception occurred.", exception);
+        try (Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProducerProps())) {
+            // Record with no key.
+            ProducerRecord<String, String> records = new ProducerRecord<>(topic, message);
+            // producer.send(records).get();
+            producer.send(records, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata metadata, Exception exception) {
+                    if (null == exception) {
+                        LOG.info("Message sent successfully, offset is [" + metadata.offset() + "].");
                     } else {
-                        LOG.error("Exception occurred.", exception);
+                        if (exception instanceof RetriableException) {
+                            LOG.error("Retriable exception occurred.", exception);
+                        } else {
+                            LOG.error("Exception occurred.", exception);
+                        }
                     }
-                }
 
-            }
-        }).get();
-        producer.close();
+                }
+            }).get();
+        }
+        // producer.close();
     }
 
 }

@@ -2,6 +2,7 @@ package org.exp.dtfs.ni.rest.service;
 
 import java.net.InetAddress;
 
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -19,8 +20,6 @@ import org.exp.dtfs.ni.utils.DTFSUtils;
 import org.exp.dtfs.ni.utils.DateUtils;
 import org.exp.dtfs.ni.utils.HBaseUtils;
 import org.exp.dtfs.ni.utils.HDFSUtils;
-
-import com.sun.jersey.spi.resource.Singleton;
 
 @Singleton
 @Path(Constants.REST_SERVER_PATH)
