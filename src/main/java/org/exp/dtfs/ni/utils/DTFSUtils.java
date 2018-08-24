@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -26,13 +25,10 @@ public class DTFSUtils {
         String family = HBaseConfigs.getDTFSFileTableFamilyName();
         List<Result> fileResults = HBaseUtils.searchEqual(HBaseConfigs.getDTFSFileTableName(), family, HBaseConfigs.getDTFSFileTableDirColumnName(),
                 Boolean.toString(false));
-        fileResults.parallelStream().forEach(new Consumer<Result>() {
-            @Override
-            public void accept(Result t) {
-                long size = Bytes.toLong(t.getValue(family.getBytes(), HBaseConfigs.getDTFSFileTableSizeColumnName().getBytes()));
-                if (size <= TINY_SIZE) {
-                    tinyNum.incrementAndGet();
-                }
+        fileResults.parallelStream().forEach(fileResult -> {
+            long size = Bytes.toLong(fileResult.getValue(family.getBytes(), HBaseConfigs.getDTFSFileTableSizeColumnName().getBytes()));
+            if (size <= TINY_SIZE) {
+                tinyNum.incrementAndGet();
             }
         });
 

@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Vector;
-import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,18 +81,15 @@ public class HBaseUtils {
             return rss;
         }
         JSONArray array = response.getJSONArray(HOST_COMPS_KEY);
-        array.parallelStream().forEach(new Consumer<Object>() {
-            @Override
-            public void accept(Object t) {
-                if (!(t instanceof JSONObject)) {
-                    return;
-                }
-                Object hostname = ((JSONObject) t).getJSONObject(HOST_ROLES_KEY).get(HOST_NAME_KEY);
-                if (null == hostname) {
-                    return;
-                }
-                rss.add(hostname.toString());
+        array.parallelStream().forEach(obj -> {
+            if (!(obj instanceof JSONObject)) {
+                return;
             }
+            Object hostname = ((JSONObject) obj).getJSONObject(HOST_ROLES_KEY).get(HOST_NAME_KEY);
+            if (null == hostname) {
+                return;
+            }
+            rss.add(hostname.toString());
         });
         return rss;
     }
@@ -130,15 +126,10 @@ public class HBaseUtils {
             Scan scan = new Scan();
             scan.setFilter(filter);
             ResultScanner scanner = table.getScanner(scan);
-            List<Result> result = new Vector<>();
-            scanner.forEach(new Consumer<Result>() {
-                @Override
-                public void accept(Result t) {
-                    result.add(t);
-                }
-            });
+            List<Result> results = new Vector<>();
+            scanner.forEach(result -> results.add(result));
             scanner.close();
-            return result;
+            return results;
         }
     }
 
