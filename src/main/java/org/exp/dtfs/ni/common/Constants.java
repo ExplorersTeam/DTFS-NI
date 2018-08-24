@@ -23,7 +23,6 @@ public class Constants {
      */
     public static final String DEFAULT_ADDR_STR = "127.0.0.1";
     public static final String DEFAULT_SERVICE_NAME = "DTFS";
-    public static final String DEFAULT_FILE_PATH = "/tmp/";
 
     private Constants() {
         // Do nothing.
