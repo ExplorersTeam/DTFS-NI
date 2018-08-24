@@ -104,11 +104,11 @@ public class MetricService {
                 result = Float.toString(HDFSUtils.getHeapMemoryUsageMB());
                 break;
 
-            case P_HB_DNVALID: // 基础运行类 - 存活数据节点的个数
+            case P_HB_DNVALID: // 基础运行类 - 存活元数据节点的个数
                 result = Integer.toString(HBaseUtils.listAliveRegionServerInfos().size());
                 break;
 
-            case P_HB_DNEXPNUM: // 基础运行类 - 异常数据节点的个数
+            case P_HB_DNEXPNUM: // 基础运行类 - 异常元数据节点的个数
                 result = Integer.toString(HBaseUtils.getAbnormalRegionServerNumber());
                 break;
 
@@ -153,8 +153,8 @@ public class MetricService {
         P_HB_DNREAD, // 性能类 - 单个数据节点的平均读取时间
         P_HB_DNWRITE, // 性能类 - 单个数据节点的平均写入时间
         P_HB_CLRMEM, // 基础运行类 - 集群占用内存总数
-        P_HB_DNVALID, // 基础运行类 - 存活数据节点的个数
-        P_HB_DNEXPNUM, // 基础运行类 - 异常数据节点的个数
+        P_HB_DNVALID, // 基础运行类 - 存活元数据节点的个数
+        P_HB_DNEXPNUM, // 基础运行类 - 异常元数据节点的个数
         P_HB_CLRDISK, // 基础运行类 - 集群磁盘空间占用率
         P_HB_CLRCPU, // 基础运行类 - 集群CPU占用率
         P_HB_SFILEPERC; // 基础运行类 - 小文件(≤2MB)数占比
