@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.exp.dtfs.ni.report.thread.dtfs.DTFSTinyFilePercentageReportThread;
 import org.exp.dtfs.ni.report.thread.hbase.HBaseRegionServerProcessReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSDataNodeProcessReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeCPUUsageReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRPCClientConnectionNumberReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRoleReportThread;
@@ -134,6 +135,17 @@ public class MetricReporter implements Reporter {
          * @Period 1分钟
          */
         reporter.register(new ReportEntity(new HDFSNameNodeRPCClientConnectionNumberReportThread(), 1, minUnit));
+
+        /*
+         * @Type 基础运行类
+         *
+         * @Name 集群CPU占用率
+         *
+         * @Comment 获取集群CPU占用率（百分数）
+         *
+         * @Period 5分钟
+         */
+        reporter.register(new ReportEntity(new HDFSNameNodeCPUUsageReportThread(), 5, minUnit));
 
         /*
          * @Type 基础运行类
