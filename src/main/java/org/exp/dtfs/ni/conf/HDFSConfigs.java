@@ -11,7 +11,7 @@ import org.exp.dtfs.ni.common.Constants;
  * @author ChenJintong
  *
  */
-public class HDFSConfigs {
+public final class HDFSConfigs {
     private static final Log LOG = LogFactory.getLog(HDFSConfigs.class);
     private static final String LOG_RESULT_STR = "], result  is [";
 

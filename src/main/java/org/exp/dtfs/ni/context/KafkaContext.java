@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import org.exp.dtfs.ni.conf.KafkaConfigs;
 
-public class KafkaContext {
+public final class KafkaContext {
     private static Properties producerProps = new Properties();
 
     static {
@@ -23,7 +23,7 @@ public class KafkaContext {
     }
 
     public static Properties getProducerProps() {
-        return producerProps;
+        return ((Properties) (producerProps.clone()));
     }
 
 }

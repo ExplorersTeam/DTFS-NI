@@ -3,35 +3,35 @@ package org.exp.dtfs.ni.conf;
 import org.exp.dtfs.ni.common.Constants;
 
 /**
- * 
+ *
  * Kafka configurations.
- * 
+ *
  * @author ZhangQingliang
  *
  */
-public class KafkaConfigs {
+public final class KafkaConfigs {
     /*
      * Kafka configurations.
      */
     private static final String KAFKA_BOOTSTRAP_SERVERS_CONFIG_KEY = "dtfs.ni.kafka.props.bootstrap.servers";
 
     private static final String KAFKA_KEY_SERIALIZER_CLASS_CONFIG_KEY = "dtfs.ni.kafka.props.key.serializer";
-    private static final String DEFAULT_KAFKA_KEY_SERIALIZER_CLASS_CONFIG_VALUE = "org.apache.kafka.common.serialization.StringSerializer";
+    private static final String DEFAULT_KEY_SERIALIZER_VALUE = "org.apache.kafka.common.serialization.StringSerializer";
 
     private static final String KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY = "dtfs.ni.kafka.props.value.serializer";
-    private static final String DEFAULT_KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_VALUE = "org.apache.kafka.common.serialization.StringSerializer";
+    private static final String DEFAULT_VAL_SERIALIZER_VALUE = "org.apache.kafka.common.serialization.StringSerializer";
 
     private static final String KAFKA_COMPRESSION_TYPE_CONFIG_KEY = "dtfs.ni.kafka.props.compression.type";
     private static final String DEFAULT_KAFKA_COMPRESSION_TYPE_CONFIG_VALUE = "gzip";
 
     private static final String KAFKA_MAX_REQUEST_SIZE_CONFIG_KEY = "dtfs.ni.kafka.props.max.request.size";
-    private static final int DEFAULT_KAFKA_MAX_REQUEST_SIZE_CONFIG_VALUE = 5242880;
+    private static final int DEFAULT_KAFKA_MAX_REQUEST_SIZE_CONFIG_VALUE = 5_242_880;
 
     private static final String KAFKA_RETRIES_CONFIG_KEY = "dtfs.ni.kafka.props.retries";
     private static final int DEFAULT_KAFKA_RETRIES_CONFIG_VALUE = 3;
 
     private static final String KAFKA_BATCH_SIZE_CONFIG_KEY = "dtfs.ni.kafka.props.batch.size";
-    private static final int DEFAULT_KAFKA_BATCH_SIZE_CONFIG_VALUE = 5000000;
+    private static final int DEFAULT_KAFKA_BATCH_SIZE_CONFIG_VALUE = 5_000_000;
 
     private static final String KAFKA_LINGER_MS_CONFIG_KEY = "dtfs.ni.kafka.props.linger.ms";
     private static final int DEFAULT_KAFKA_LINGER_MS_CONFIG_VALUE = 60000;
@@ -43,7 +43,7 @@ public class KafkaConfigs {
     private static final String DEFAULT_KAFKA_ACKS_CONF_VALUE = "1";
 
     private static final String KAFKA_BUFFER_MEMORY_CONFIG_KEY = "dtfs.ni.kafka.props.buffer.memory";
-    private static final int DEFAULT_KAFKA_BUFFER_MEMORY_CONFIG_VALUE = 33554432;
+    private static final int DEFAULT_KAFKA_BUFFER_MEMORY_CONFIG_VALUE = 33_554_432;
 
     private static final String KAFKA_MAX_BLOCK_MS_CONFIG_KEY = "dtfs.ni.kafka.props.max.block.ms";
     private static final int DEFAULT_KAFKA_MAX_BLOCK_MS_CONFIG_VALUE = 3000;
@@ -63,11 +63,11 @@ public class KafkaConfigs {
     }
 
     public static String getKafkaKeySerializer() {
-        return Configs.get(KAFKA_KEY_SERIALIZER_CLASS_CONFIG_KEY, DEFAULT_KAFKA_KEY_SERIALIZER_CLASS_CONFIG_VALUE);
+        return Configs.get(KAFKA_KEY_SERIALIZER_CLASS_CONFIG_KEY, DEFAULT_KEY_SERIALIZER_VALUE);
     }
 
     public static String getKafkaValueSerializer() {
-        return Configs.get(KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY, DEFAULT_KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_VALUE);
+        return Configs.get(KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY, DEFAULT_VAL_SERIALIZER_VALUE);
     }
 
     public static String getKafkaCompressionType() {

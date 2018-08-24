@@ -1,6 +1,6 @@
 package org.exp.dtfs.ni.conf;
 
-public class ZKConfigs {
+public final class ZKConfigs {
     private static final String ZK_CONN_TIMEOUT_MS_KEY = "dtfs.ni.zookeeper.connection.timeout.ms";
     private static final int DEFAULT_ZK_CONN_TIMEOUT_MS_VALUE = 30000;
 

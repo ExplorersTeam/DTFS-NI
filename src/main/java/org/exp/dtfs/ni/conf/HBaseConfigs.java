@@ -2,7 +2,7 @@ package org.exp.dtfs.ni.conf;
 
 import org.exp.dtfs.ni.common.Constants;
 
-public class HBaseConfigs {
+public final class HBaseConfigs {
     private static final String ZNODE_PARENT_KEY = "zookeeper.znode.parent";
     private static final String ZK_QUORUM_KEY = "hbase.zookeeper.quorum";
     private static final String FILE_TABLE_NAME_KEY = "dtfs.ni.hbase.file.table.name";

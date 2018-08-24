@@ -2,7 +2,7 @@ package org.exp.dtfs.ni.conf;
 
 import org.apache.hadoop.conf.Configuration;
 
-public class Configs {
+public final class Configs {
     private static final Configuration CONF = new Configuration();
 
     /*

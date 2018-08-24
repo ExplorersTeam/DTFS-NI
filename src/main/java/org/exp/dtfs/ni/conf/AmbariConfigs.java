@@ -9,7 +9,7 @@ import org.exp.dtfs.ni.common.Constants;
  * @author ChenJintong
  *
  */
-public class AmbariConfigs {
+public final class AmbariConfigs {
     private static final String SERVER_IP_KEY = "dtfs.ni.ambari.server.ip";
 
     private static final String SERVER_PORT_KEY = "dtfs.ni.ambari.server.port";
