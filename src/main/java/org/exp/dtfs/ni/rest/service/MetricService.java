@@ -109,7 +109,7 @@ public class MetricService {
                 break;
 
             case P_HB_DNEXPNUM: // 基础运行类 - 异常数据节点的个数
-                result = Integer.toString(HDFSUtils.getAbnormalDataNodeNum());
+                result = Integer.toString(HBaseUtils.getAbnormalRegionServerNumber());
                 break;
 
             case P_HB_CLRDISK: // 基础运行类 - 集群磁盘空间占用(率)

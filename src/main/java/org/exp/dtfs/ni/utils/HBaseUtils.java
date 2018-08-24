@@ -61,6 +61,19 @@ public class HBaseUtils {
         return null == metricStr ? null : JSONObject.parseObject(metricStr);
     }
 
+    public static int getAbnormalRegionServerNumber() throws Exception {
+        return getResionServerNumber() - listAliveRegionServerInfos().size();
+    }
+
+    public static int getResionServerNumber() throws URISyntaxException, IOException {
+        JSONObject response = getRegionServerServiceComponentKeyResponse(
+                HOST_COMPS_KEY + Constants.SLASH_DELIMITER + HOST_ROLES_KEY + Constants.SLASH_DELIMITER + HOST_NAME_KEY);
+        if (null == response) {
+            return 0;
+        }
+        return response.getJSONArray(HOST_COMPS_KEY).size();
+    }
+
     public static List<String> listRegionServerHostnames() throws URISyntaxException, IOException {
         JSONObject response = getRegionServerServiceComponentKeyResponse(
                 HOST_COMPS_KEY + Constants.SLASH_DELIMITER + HOST_ROLES_KEY + Constants.SLASH_DELIMITER + HOST_NAME_KEY);
