@@ -452,10 +452,10 @@ public class HDFSUtils {
     public static List<String> listDataNodeHostnames() throws URISyntaxException, IOException {
         JSONObject response = getDataNodeServiceComponentKeyResponse(
                 HOST_COMPS_KEY + Constants.SLASH_DELIMITER + HOST_ROLES_KEY + Constants.SLASH_DELIMITER + HOST_NAME_KEY);
-        if (null == response) {
-            return null;
-        }
         List<String> dns = new Vector<>();
+        if (null == response) {
+            return dns;
+        }
         JSONArray array = response.getJSONArray(HOST_COMPS_KEY);
         array.parallelStream().forEach(new Consumer<Object>() {
             @Override

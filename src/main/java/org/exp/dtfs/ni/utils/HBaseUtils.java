@@ -77,10 +77,10 @@ public class HBaseUtils {
     public static List<String> listRegionServerHostnames() throws URISyntaxException, IOException {
         JSONObject response = getRegionServerServiceComponentKeyResponse(
                 HOST_COMPS_KEY + Constants.SLASH_DELIMITER + HOST_ROLES_KEY + Constants.SLASH_DELIMITER + HOST_NAME_KEY);
-        if (null == response) {
-            return null;
-        }
         List<String> rss = new Vector<>();
+        if (null == response) {
+            return rss;
+        }
         JSONArray array = response.getJSONArray(HOST_COMPS_KEY);
         array.parallelStream().forEach(new Consumer<Object>() {
             @Override
