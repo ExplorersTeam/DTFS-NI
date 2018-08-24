@@ -104,7 +104,7 @@ public class MetricService {
                 break;
 
             case P_HB_DNVALID: // 基础运行类 - 存活数据节点的个数
-                result = Integer.toString(HDFSUtils.getAliveDataNodeNum());
+                result = Integer.toString(HBaseUtils.listAliveRegionServerInfos().size());
                 break;
 
             case P_HB_DNEXPNUM: // 基础运行类 - 异常数据节点的个数

@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.exp.dtfs.ni.report.thread.hbase.HBaseRegionServerProcessReportThread;
+import org.exp.dtfs.ni.report.thread.hdfs.HDFSDataNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeProcessReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRPCClientConnectionNumberReportThread;
 import org.exp.dtfs.ni.report.thread.hdfs.HDFSNameNodeRoleReportThread;
@@ -73,8 +75,27 @@ public class MetricReporter {
          */
         manager.scheduleAtFixedRate(new HDFSTotalFileNumberReportThread(), 0, 1, TimeUnit.MINUTES);
 
-        // TODO HBaseRegionServerProcessReportThread
-        // TODO HDFSDataNodeProcessReportThread
+        /*
+         * @Type 基础运行类
+         *
+         * @Name 元数据节点服务进程是否存在
+         *
+         * @Comment 检查进程，如果进程不在，则产生告警
+         *
+         * @Period 1分钟
+         */
+        manager.scheduleAtFixedRate(new HBaseRegionServerProcessReportThread(), 0, 1, TimeUnit.MINUTES);
+
+        /*
+         * @Type 基础运行类
+         *
+         * @Name 数据节点服务进程是否存在
+         *
+         * @Comment 检查进程，如果进程不在，则产生告警
+         *
+         * @Period 1分钟
+         */
+        manager.scheduleAtFixedRate(new HDFSDataNodeProcessReportThread(), 0, 1, TimeUnit.MINUTES);
 
         /*
          * @Type 基础运行类

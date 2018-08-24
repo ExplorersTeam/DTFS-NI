@@ -61,8 +61,7 @@ public class HBaseUtils {
         return rss;
     }
 
-    public static boolean checkRegionServerAlive(String ip) throws Exception {
-        LOG.info("Check if HBase RegionServer is alive, host is [" + ip + "].");
+    public static List<String> listAliveRegionServerInfos() throws Exception {
         StringBuffer path = new StringBuffer();
         if (!ZNODE_PARENT.startsWith(Constants.SLASH_DELIMITER)) {
             path.append(Constants.SLASH_DELIMITER);
@@ -73,10 +72,14 @@ public class HBaseUtils {
         }
         List<String> rss = ZKUtils.list(path.append(RS_ZNODE).toString());
         LOG.info("Now there are [" + rss.size() + "] HBase RegionServers alive.");
+        return rss;
+    }
 
+    public static boolean checkRegionServerAlive(String ip) throws Exception {
+        LOG.info("Check if HBase RegionServer is alive, host is [" + ip + "].");
         String hostname = InetAddress.getByName(ip).getCanonicalHostName();
         LOG.info("Check RegionServer alive status, hostname is [" + hostname + "].");
-        for (String rs : rss) {
+        for (String rs : listAliveRegionServerInfos()) {
             if (rs.startsWith(hostname)) {
                 return true;
             }
