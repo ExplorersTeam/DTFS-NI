@@ -23,7 +23,7 @@ public class DTFSTinyFilePercentageReportThread extends DTFSReportThread {
             message.setHostIP(activeNNIP);
             message.setMetricCode(DTFS_STATUS_CODE);
             message.setMetricType(MetricType.STATUS);
-            message.setMetricValue(Float.toString(DTFSUtils.getTinyFilePercentage()));
+            message.setMetricValue(Float.toString(DTFSUtils.getTinyFilePercentage() * 100) + Constants.PERCENT);
 
             String messageStr = JSONUtils.buildJSONString(message);
             LOG.info("Send message [" + messageStr + "] into Kafka queue.");

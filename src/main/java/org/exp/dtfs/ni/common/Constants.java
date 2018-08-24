@@ -11,12 +11,10 @@ public class Constants {
     public static final String TINY_FILE_KEY = "tiny";
     public static final String TOTAL_FILE_KEY = "total";
 
-    /**
-     * Delimiters.
-     */
     public static final String SLASH_DELIMITER = "/";
-    public static final String COLON_DELIMITER = ":";
+    public static final String COLON = ":";
     public static final String TRANSFER_VERTICAL_DELIMITER = "\\|";
+    public static final String PERCENT = "%";
 
     /**
      * Configuration default values.

@@ -26,7 +26,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
     }
 
     private static void nn1ProcessReport() throws NumberFormatException, IOException, URISyntaxException, InterruptedException, ExecutionException {
-        String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
+        String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON);
         String nn1IP = InetAddress.getByName(nn1Addrs[0]).getHostAddress();
 
         MetricMessage nn1Msg = new MetricMessage();
@@ -42,7 +42,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
     }
 
     private static void nn2ProcessReport() throws NumberFormatException, IOException, URISyntaxException, InterruptedException, ExecutionException {
-        String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
+        String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON);
         String nn2IP = InetAddress.getByName(nn2Addrs[0]).getHostAddress();
 
         MetricMessage nn2Msg = new MetricMessage();

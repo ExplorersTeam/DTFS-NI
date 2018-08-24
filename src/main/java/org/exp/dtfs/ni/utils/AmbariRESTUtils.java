@@ -48,7 +48,7 @@ public class AmbariRESTUtils {
         URI uri = null == fields ? HTTPUtils.buildURI(AmbariConfigs.getServerIP(), AmbariConfigs.getServerPort(), path)
                 : HTTPUtils.buildURI(AmbariConfigs.getServerIP(), AmbariConfigs.getServerPort(), path, new BasicNameValuePair(FIELDS_PARAM, fields));
         Header authHeader = new BasicHeader(AUTH_HEADER_KEY, AUTH_HEADER_VALUE_BASIC_PREFIX + Base64.encodeBase64String(
-                (AmbariConfigs.getServerUserName() + Constants.COLON_DELIMITER + AmbariConfigs.getServerUserPassword()).getBytes(Constants.DEFAULT_CHARSET)));
+                (AmbariConfigs.getServerUserName() + Constants.COLON + AmbariConfigs.getServerUserPassword()).getBytes(Constants.DEFAULT_CHARSET)));
         return HTTPUtils.sendGETRequest(uri, authHeader);
     }
 

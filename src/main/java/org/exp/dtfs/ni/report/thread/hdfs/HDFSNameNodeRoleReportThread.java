@@ -24,7 +24,7 @@ public class HDFSNameNodeRoleReportThread extends HDFSReportThread {
     }
 
     private static void nn1RoleReport() throws Exception {
-        String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER);
+        String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON);
         String nn1IP = InetAddress.getByName(nn1Addrs[0]).getHostAddress();
         MetricMessage nn1Msg = new MetricMessage();
         nn1Msg.setCompKey(nn1IP + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn1Addrs[1]);
@@ -39,7 +39,7 @@ public class HDFSNameNodeRoleReportThread extends HDFSReportThread {
     }
 
     private static void nn2RoleReport() throws Exception {
-        String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER);
+        String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON);
         String nn2IP = InetAddress.getByName(nn2Addrs[0]).getHostAddress();
         MetricMessage nn2Msg = new MetricMessage();
         nn2Msg.setCompKey(nn2IP + Constants.TRANSFER_VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn2Addrs[1]);

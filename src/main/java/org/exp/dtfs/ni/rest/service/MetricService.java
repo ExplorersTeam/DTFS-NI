@@ -75,8 +75,8 @@ public class MetricService {
                 break;
 
             case P_HB_ROLE: // 基础运行类 - NameNode主备角色
-                if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON_DELIMITER)[0]))
-                        && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON_DELIMITER)[0]))) {
+                if ((!ip.equals(HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON)[0]))
+                        && (!ip.equals(HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON)[0]))) {
                     result = "Host [" + ip + "] is not HDFS NameNode.";
                     status = ResultStatus.FAILED.value();
                 } else {
@@ -117,11 +117,11 @@ public class MetricService {
                 break;
 
             case P_HB_CLRCPU: // 基础运行类 - 集群CPU占用率
-                result = Float.toString(HDFSUtils.getCPUUsage());
+                result = Float.toString(HDFSUtils.getCPUUsage() * 100) + Constants.PERCENT;
                 break;
 
             case P_HB_SFILEPERC: // 基础运行类 - 小文件(≤2MB)数占比
-                result = Float.toString(DTFSUtils.getTinyFilePercentage());
+                result = Float.toString(DTFSUtils.getTinyFilePercentage() * 100) + Constants.PERCENT;
                 break;
 
             default:

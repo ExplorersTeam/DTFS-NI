@@ -48,7 +48,7 @@ public class Server {
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
             this.server = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
-            LOG.info("REST server initialized, address is [" + getHostAddress() + Constants.COLON_DELIMITER + getPort() + "].");
+            LOG.info("REST server initialized, address is [" + getHostAddress() + Constants.COLON + getPort() + "].");
         } catch (UnknownHostException | URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
