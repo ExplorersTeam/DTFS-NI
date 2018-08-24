@@ -30,7 +30,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         String nn1IP = InetAddress.getByName(nn1Addrs[0]).getHostAddress();
 
         MetricMessage nn1Msg = new MetricMessage();
-        nn1Msg.setCompKey(nn1IP + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn1Addrs[1] + Constants.VERTICAL_DELIMITER + NN_SERVER_KEY);
+        nn1Msg.setCompKey(nn1IP + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn1Addrs[1] + Constants.VERTICAL_DELIMITER + HDFS_NN_KEY);
         nn1Msg.setHostIP(nn1IP);
         nn1Msg.setMetricCode(HDFS_STATUS_CODE);
         nn1Msg.setMetricType(MetricType.STATUS);
@@ -46,7 +46,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         String nn2IP = InetAddress.getByName(nn2Addrs[0]).getHostAddress();
 
         MetricMessage nn2Msg = new MetricMessage();
-        nn2Msg.setCompKey(nn2IP + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn2Addrs[1] + Constants.VERTICAL_DELIMITER + NN_SERVER_KEY);
+        nn2Msg.setCompKey(nn2IP + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn2Addrs[1] + Constants.VERTICAL_DELIMITER + HDFS_NN_KEY);
         nn2Msg.setHostIP(nn2IP);
         nn2Msg.setMetricCode(HDFS_STATUS_CODE);
         nn2Msg.setMetricType(MetricType.STATUS);

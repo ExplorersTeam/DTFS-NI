@@ -42,7 +42,7 @@ public class HDFSDataNodeProcessReportThread extends HDFSReportThread {
 
         MetricMessage message = new MetricMessage();
         message.setCompKey(ip + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSConfigs.getDataNodeHTTPAddr().split(Constants.COLON)[1]
-                + Constants.VERTICAL_DELIMITER + DN_SERVER_KEY);
+                + Constants.VERTICAL_DELIMITER + HDFS_DN_KEY);
         message.setHostIP(ip);
         message.setMetricCode(HDFS_STATUS_CODE);
         message.setMetricType(MetricType.STATUS);
