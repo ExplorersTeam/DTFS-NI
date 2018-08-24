@@ -127,7 +127,7 @@ public class HBaseUtils {
             scan.setFilter(filter);
             ResultScanner scanner = table.getScanner(scan);
             List<Result> results = new Vector<>();
-            scanner.forEach(result -> results.add(result));
+            scanner.forEach(results::add);
             scanner.close();
             return results;
         }
