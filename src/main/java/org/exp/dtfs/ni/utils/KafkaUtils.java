@@ -14,6 +14,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.RetriableException;
+import org.exp.dtfs.ni.conf.KafkaConfigs;
 import org.exp.dtfs.ni.context.KafkaContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,11 +71,11 @@ public class KafkaUtils {
      * @param timeout
      * @param function
      */
-    public static void consumer(Collection<String> topics, long timeout, java.util.function.Consumer<ConsumerRecord<String, String>> function) {
+    public static void consume(Collection<String> topics, java.util.function.Consumer<ConsumerRecord<String, String>> function) {
         try (Consumer<String, String> consumer = new KafkaConsumer<>(KafkaContext.getConsumerProps())) {
             consumer.subscribe(topics);
             while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(timeout);
+                ConsumerRecords<String, String> records = consumer.poll(KafkaConfigs.getConsumerTimeout());
                 records.forEach(function);
             }
         }
@@ -82,7 +83,7 @@ public class KafkaUtils {
 
     // For test.
     public static void main(String[] args) {
-        consumer(Arrays.asList(args), 100, record -> {
+        consume(Arrays.asList(args), record -> {
             LOG.info(record.value());
         });
     }

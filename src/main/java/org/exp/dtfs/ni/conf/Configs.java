@@ -53,6 +53,10 @@ public final class Configs {
         return getConf().getBoolean(key, defaultValue);
     }
 
+    public static long getLong(String key, long defaultValue) {
+        return getConf().getLong(key, defaultValue);
+    }
+
     /**
      * For class HBaseUtils.
      *

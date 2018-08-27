@@ -7,4 +7,8 @@
         <name>dtfs.ni.seq.id</name>
         <value>100000001</value>
     </property>
+    <property>
+        <name>dtfs.ni.log.path</name>
+        <value>/var/log/ambari-agent/ambari-agent.log</value>
+    </property>
 </configuration>

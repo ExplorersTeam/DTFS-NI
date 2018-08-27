@@ -47,6 +47,9 @@ public final class KafkaConfigs {
 
     private static final String KAFKA_CONSUMER_GROUP_ID_KEY = "dtfs.ni.kafka.consumer.group.id";
 
+    private static final String CONSUMER_TIMEOUT_KEY = "dtfs.ni.kafka.consumer.timeout";
+    private static final long DEFAULT_CONSUMER_TIMEOUT_VALUE = 1000;
+
     /*
      * Below 3 configurations no used.
      */
@@ -135,6 +138,10 @@ public final class KafkaConfigs {
 
     public static String getConsumerGroupID() {
         return Configs.get(KAFKA_CONSUMER_GROUP_ID_KEY, Constants.DEFAULT_SERVICE_NAME);
+    }
+
+    public static long getConsumerTimeout() {
+        return Configs.getLong(CONSUMER_TIMEOUT_KEY, DEFAULT_CONSUMER_TIMEOUT_VALUE);
     }
 
 }
