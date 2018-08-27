@@ -3,10 +3,8 @@ package org.exp.dtfs.ni.utils;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Vector;
-import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -344,12 +342,12 @@ public class HDFSUtils {
         return !(null == sm || ((String) sm).isEmpty());
     }
 
-    public static boolean checkNameNode1Alive() throws NumberFormatException, IOException, URISyntaxException {
+    public static boolean checkNameNode1Alive() throws IOException, URISyntaxException {
         String[] nn1 = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON);
         return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(nn1[0], Integer.parseInt(nn1[1]));
     }
 
-    public static boolean checkNameNode2Alive() throws NumberFormatException, IOException, URISyntaxException {
+    public static boolean checkNameNode2Alive() throws IOException, URISyntaxException {
         String[] nn2 = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON);
         return HttpStatus.SC_OK == HTTPUtils.sendGETRequest(nn2[0], Integer.parseInt(nn2[1]));
     }
@@ -377,7 +375,7 @@ public class HDFSUtils {
         return znodeContent.substring(znodeContent.indexOf(delimiter) + delimiter.length() + 8);
     }
 
-    public static int getNameNodeRPCPort(String hostname) throws UnknownHostException {
+    public static int getNameNodeRPCPort(String hostname) {
         String[] nn1Addrs = HDFSConfigs.getNameNode1RPCAddr().split(Constants.COLON);
         String[] nn2Addrs = HDFSConfigs.getNameNode2RPCAddr().split(Constants.COLON);
         int port = 8020;
@@ -389,7 +387,7 @@ public class HDFSUtils {
         return port;
     }
 
-    public static int getNameNodeHTTPPort(String hostname) throws UnknownHostException {
+    public static int getNameNodeHTTPPort(String hostname) {
         String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON);
         String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON);
         int port = 50070;
@@ -457,18 +455,15 @@ public class HDFSUtils {
             return dns;
         }
         JSONArray array = response.getJSONArray(HOST_COMPS_KEY);
-        array.parallelStream().forEach(new Consumer<Object>() {
-            @Override
-            public void accept(Object t) {
-                if (!(t instanceof JSONObject)) {
-                    return;
-                }
-                Object hostname = ((JSONObject) t).getJSONObject(HOST_ROLES_KEY).get(HOST_NAME_KEY);
-                if (null == hostname) {
-                    return;
-                }
-                dns.add(hostname.toString());
+        array.parallelStream().forEach(t -> {
+            if (!(t instanceof JSONObject)) {
+                return;
             }
+            Object hostname = ((JSONObject) t).getJSONObject(HOST_ROLES_KEY).get(HOST_NAME_KEY);
+            if (null == hostname) {
+                return;
+            }
+            dns.add(hostname.toString());
         });
         return dns;
     }

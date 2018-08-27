@@ -60,7 +60,7 @@ public class XMLUtils {
                 }
             }
         } catch (DocumentException e) {
-            e.printStackTrace();
+            LOG.error(e.toString());
         }
         return properties;
     }

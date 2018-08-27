@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HBaseConfigs;
@@ -21,14 +20,11 @@ public class HBaseRegionServerProcessReportThread extends HBaseReportThread {
     public void work() {
         try {
             List<String> rss = HBaseUtils.listRegionServerHostnames();
-            rss.parallelStream().forEach(new Consumer<String>() {
-                @Override
-                public void accept(String t) {
-                    try {
-                        processReport(t);
-                    } catch (Exception e) {
-                        LOG.error(e.getMessage(), e);
-                    }
+            rss.parallelStream().forEach(t -> {
+                try {
+                    processReport(t);
+                } catch (Exception e) {
+                    LOG.error(e.getMessage(), e);
                 }
             });
         } catch (URISyntaxException | IOException e) {

@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HDFSConfigs;
@@ -22,14 +21,11 @@ public class HDFSDataNodeWriteTimeReportThread extends HDFSReportThread {
     public void work() {
         try {
             List<String> dns = HDFSUtils.listDataNodeHostnames();
-            dns.parallelStream().forEach(new Consumer<String>() {
-                @Override
-                public void accept(String t) {
-                    try {
-                        avgWriteTimeReport(t);
-                    } catch (NumberFormatException | IOException | URISyntaxException | InterruptedException | ExecutionException e) {
-                        LOG.error(e.getMessage(), e);
-                    }
+            dns.parallelStream().forEach(t -> {
+                try {
+                    avgWriteTimeReport(t);
+                } catch (NumberFormatException | IOException | URISyntaxException | InterruptedException | ExecutionException e) {
+                    LOG.error(e.getMessage(), e);
                 }
             });
         } catch (URISyntaxException | IOException e) {

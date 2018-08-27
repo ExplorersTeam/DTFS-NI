@@ -83,9 +83,7 @@ public class KafkaUtils {
 
     // For test.
     public static void main(String[] args) {
-        consume(Arrays.asList(args), record -> {
-            LOG.info(record.value());
-        });
+        consume(Arrays.asList(args), record -> LOG.info(record.value()));
     }
 
 }

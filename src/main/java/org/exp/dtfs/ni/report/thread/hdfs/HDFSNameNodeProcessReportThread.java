@@ -25,7 +25,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         }
     }
 
-    private static void nn1ProcessReport() throws NumberFormatException, IOException, URISyntaxException, InterruptedException, ExecutionException {
+    private static void nn1ProcessReport() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
         String[] nn1Addrs = HDFSConfigs.getNameNode1HTTPAddr().split(Constants.COLON);
         String nn1IP = InetAddress.getByName(nn1Addrs[0]).getHostAddress();
 
@@ -41,7 +41,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         KafkaUtils.produce(KafkaConfigs.getKafkaMetricTopicName(), nn1MsgStr);
     }
 
-    private static void nn2ProcessReport() throws NumberFormatException, IOException, URISyntaxException, InterruptedException, ExecutionException {
+    private static void nn2ProcessReport() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
         String[] nn2Addrs = HDFSConfigs.getNameNode2HTTPAddr().split(Constants.COLON);
         String nn2IP = InetAddress.getByName(nn2Addrs[0]).getHostAddress();
 
