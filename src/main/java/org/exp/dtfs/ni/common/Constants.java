@@ -17,6 +17,7 @@ public final class Constants {
     public static final String VERTICAL_DELIMITER = "|";
     public static final String PERCENT = "%";
     public static final String COMMA_DELIMITER = ",";
+    public static final String UNDERLINE_DELIMITER = "_";
 
     /**
      * Configuration default values.

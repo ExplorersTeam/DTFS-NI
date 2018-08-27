@@ -139,7 +139,7 @@ public class MetricService {
 
     }
 
-    private static enum PCommand {
+    private enum PCommand {
         P_HB_NNPROC, // 基础运行类 - 数据管理节点服务进程是否存在
         P_HB_REGPROC, // 基础运行类 - 元数据节点服务进程是否存在
         P_HB_DMPROC, // 基础运行类 - 数据节点服务进程是否存在

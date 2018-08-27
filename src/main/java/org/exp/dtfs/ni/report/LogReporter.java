@@ -23,7 +23,7 @@ public class LogReporter {
             for (int i = 0; i < logStrs.length; ++i) {
                 if (logStrs[i].equals("WARN") || logStrs[i].equals("ERROR") || logStrs[i].equals("FATAL")) {
                     LogMessage message = new LogMessage();
-                    message.setCompKey(ip + Constants.VERTICAL_DELIMITER + serverName + "_" + port);
+                    message.setCompKey(ip + Constants.VERTICAL_DELIMITER + serverName + Constants.UNDERLINE_DELIMITER + port);
                     message.setDueTime(0);
                     message.setHostIP(ip);
                     message.setLog(log);
@@ -38,6 +38,15 @@ public class LogReporter {
                 }
             }
         });
+    }
+
+    public static void main(String[] args) {
+        LogReporter reporter = new LogReporter();
+        // Add arguments to execute command.
+        // Arg 0 - Server IP.
+        // Arg 1 - Server port.
+        // Arg 2 - Server name.
+        reporter.start(args[0], Integer.parseInt(args[1]), args[2]);
     }
 
 }

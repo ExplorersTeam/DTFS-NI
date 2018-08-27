@@ -119,7 +119,6 @@ public class HDFSUtils {
         return null == num ? 0 : Float.parseFloat(num.toString());
     }
 
-    // TODO:wait to delete
     public static int getAliveDataNodeNum() throws URISyntaxException, IOException {
         /*
          * Example.
