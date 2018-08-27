@@ -2,6 +2,7 @@
 North Interfaces on Distributed Tiny-File System.
 
 ## Preparations
+* `Ambari`, `HDFS`, `HBase`, `ZooKeeper` and `Kafka` has been deployed.
 * Add `hdfs-site.xml` and `hbase-site.xml` into configuration path.
 
 ## Configuration File List
