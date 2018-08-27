@@ -1,7 +1,12 @@
 package org.exp.dtfs.ni.utils;
 
+import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -55,6 +60,23 @@ public class KafkaUtils {
             }).get();
         }
         // producer.close();
+    }
+
+    /**
+     * Consume message from Kafka queue.
+     * 
+     * @param topics
+     * @param timeout
+     * @param function
+     */
+    public static void consumer(Collection<String> topics, long timeout, java.util.function.Consumer<ConsumerRecord<String, String>> function) {
+        try (Consumer<String, String> consumer = new KafkaConsumer<>(KafkaContext.getConsumerProps())) {
+            consumer.subscribe(topics);
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(timeout);
+                records.forEach(function);
+            }
+        }
     }
 
 }

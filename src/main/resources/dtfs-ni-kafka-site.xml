@@ -51,4 +51,8 @@
         <name>dtfs.ni.kafka.topic.log.name</name>
         <value>ETE_CTDFS_02</value>
     </property>
+    <property>
+        <name>dtfs.ni.kafka.consumer.enable.auto.commit</name>
+        <value>true</value>
+    </property>
 </configuration>

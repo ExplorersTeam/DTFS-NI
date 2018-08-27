@@ -49,6 +49,10 @@ public final class Configs {
         return getConf().getInt(key, defaultValue);
     }
 
+    public static boolean getBoolean(String key, boolean defaultValue) {
+        return getConf().getBoolean(key, defaultValue);
+    }
+
     /**
      * For class HBaseUtils.
      *

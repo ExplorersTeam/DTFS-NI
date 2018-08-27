@@ -36,6 +36,9 @@ public final class KafkaConfigs {
     private static final String KAFKA_LINGER_MS_CONFIG_KEY = "dtfs.ni.kafka.props.linger.ms";
     private static final int DEFAULT_KAFKA_LINGER_MS_CONFIG_VALUE = 60000;
 
+    private static final String KAFKA_CONSUMER_ENABLE_AUTO_COMMIT_KEY = "dtfs.ni.kafka.consumer.enable.auto.commit";
+    private static final boolean DEFAULT_CONSUMER_ENABLE_AUTO_COMMIT_VALUE = true;
+
     /*
      * Below 3 configurations no used.
      */
@@ -108,6 +111,10 @@ public final class KafkaConfigs {
 
     public static String getKafkaLogTopicName() {
         return Configs.get(KAFKA_LOG_TOPIC_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
+    }
+
+    public static boolean getConsumerEnableAutoCommit() {
+        return Configs.getBoolean(KAFKA_CONSUMER_ENABLE_AUTO_COMMIT_KEY, DEFAULT_CONSUMER_ENABLE_AUTO_COMMIT_VALUE);
     }
 
 }

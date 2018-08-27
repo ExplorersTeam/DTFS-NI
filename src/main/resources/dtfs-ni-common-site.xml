@@ -3,4 +3,8 @@
         <name>dtfs.ni.component.id</name>
         <value>40000</value>
     </property>
+    <property>
+        <name>dtfs.ni.seq.id</name>
+        <value>100000001</value>
+    </property>
 </configuration>
