@@ -17,7 +17,7 @@ public class LogReporter {
     private static final Log LOG = LogFactory.getLog(LogReporter.class);
 
     public void start(String ip, int port, String serverName) {
-        KafkaUtils.consume(Arrays.asList(KafkaConfigs.getKafkaLogTopicName()), record -> {
+        KafkaUtils.consume(Arrays.asList(KafkaConfigs.getKafkaLogFlumeTmpTopicName()), record -> {
             String log = record.value();
             String[] logStrs = log.split(" ");
             for (int i = 0; i < logStrs.length; ++i) {
@@ -34,6 +34,7 @@ public class LogReporter {
                     } catch (InterruptedException | ExecutionException | IOException e) {
                         LOG.error(e.getMessage(), e);
                     }
+                    break;
                 }
             }
         });

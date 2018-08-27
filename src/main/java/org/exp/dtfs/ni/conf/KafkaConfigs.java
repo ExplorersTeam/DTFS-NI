@@ -67,6 +67,7 @@ public final class KafkaConfigs {
      */
     private static final String KAFKA_METRIC_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.metric.name";
     private static final String KAFKA_LOG_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.log.name";
+    private static final String KAFKA_LOG_FLUME_TMP_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.flume.tmp.name";
 
     private KafkaConfigs() {
         // Do nothing
@@ -130,6 +131,10 @@ public final class KafkaConfigs {
 
     public static String getKafkaLogTopicName() {
         return Configs.get(KAFKA_LOG_TOPIC_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
+    }
+
+    public static String getKafkaLogFlumeTmpTopicName() {
+        return Configs.get(KAFKA_LOG_FLUME_TMP_TOPIC_NAME_KEY, Constants.DEFAULT_SERVICE_NAME);
     }
 
     public static boolean getConsumerEnableAutoCommit() {
