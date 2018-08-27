@@ -21,6 +21,12 @@ public final class KafkaConfigs {
     private static final String KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY = "dtfs.ni.kafka.props.value.serializer";
     private static final String DEFAULT_VAL_SERIALIZER_VALUE = "org.apache.kafka.common.serialization.StringSerializer";
 
+    private static final String KAFKA_KEY_DESERIALIZER_CLASS_CONFIG_KEY = "dtfs.ni.kafka.props.key.deserializer";
+    private static final String DEFAULT_KEY_DESERIALIZER_VALUE = "org.apache.kafka.common.serialization.StringDeserializer";
+
+    private static final String KAFKA_VALUE_DESERIALIZER_CLASS_CONFIG_KEY = "dtfs.ni.kafka.props.value.deserializer";
+    private static final String DEFAULT_VAL_DESERIALIZER_VALUE = "org.apache.kafka.common.serialization.StringDeserializer";
+
     private static final String KAFKA_COMPRESSION_TYPE_CONFIG_KEY = "dtfs.ni.kafka.props.compression.type";
     private static final String DEFAULT_KAFKA_COMPRESSION_TYPE_CONFIG_VALUE = "gzip";
 
@@ -38,6 +44,8 @@ public final class KafkaConfigs {
 
     private static final String KAFKA_CONSUMER_ENABLE_AUTO_COMMIT_KEY = "dtfs.ni.kafka.consumer.enable.auto.commit";
     private static final boolean DEFAULT_CONSUMER_ENABLE_AUTO_COMMIT_VALUE = true;
+
+    private static final String KAFKA_CONSUMER_GROUP_ID_KEY = "dtfs.ni.kafka.consumer.group.id";
 
     /*
      * Below 3 configurations no used.
@@ -71,6 +79,14 @@ public final class KafkaConfigs {
 
     public static String getKafkaValueSerializer() {
         return Configs.get(KAFKA_VALUE_SERIALIZER_CLASS_CONFIG_KEY, DEFAULT_VAL_SERIALIZER_VALUE);
+    }
+
+    public static String getKafkaKeyDeserializer() {
+        return Configs.get(KAFKA_KEY_DESERIALIZER_CLASS_CONFIG_KEY, DEFAULT_KEY_DESERIALIZER_VALUE);
+    }
+
+    public static String getKafkaValueDeserializer() {
+        return Configs.get(KAFKA_VALUE_DESERIALIZER_CLASS_CONFIG_KEY, DEFAULT_VAL_DESERIALIZER_VALUE);
     }
 
     public static String getKafkaCompressionType() {
@@ -115,6 +131,10 @@ public final class KafkaConfigs {
 
     public static boolean getConsumerEnableAutoCommit() {
         return Configs.getBoolean(KAFKA_CONSUMER_ENABLE_AUTO_COMMIT_KEY, DEFAULT_CONSUMER_ENABLE_AUTO_COMMIT_VALUE);
+    }
+
+    public static String getConsumerGroupID() {
+        return Configs.get(KAFKA_CONSUMER_GROUP_ID_KEY, Constants.DEFAULT_SERVICE_NAME);
     }
 
 }

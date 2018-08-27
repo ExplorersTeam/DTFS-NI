@@ -1,5 +1,6 @@
 package org.exp.dtfs.ni.utils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
@@ -77,6 +78,13 @@ public class KafkaUtils {
                 records.forEach(function);
             }
         }
+    }
+
+    // For test.
+    public static void main(String[] args) {
+        consumer(Arrays.asList(args), 100, record -> {
+            LOG.info(record.value());
+        });
     }
 
 }

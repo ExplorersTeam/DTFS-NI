@@ -12,6 +12,18 @@
         <value>org.apache.kafka.common.serialization.StringSerializer</value>
     </property>
     <property>
+        <name>dtfs.ni.kafka.props.key.deserializer</name>
+        <value>org.apache.kafka.common.serialization.StringDeserializer</value>
+    </property>
+    <property>
+        <name>dtfs.ni.kafka.props.value.deserializer</name>
+        <value>org.apache.kafka.common.serialization.StringDeserializer</value>
+    </property>
+    <property>
+        <name>dtfs.ni.kafka.consumer.group.id</name>
+        <value>test-consumer-group</value>
+    </property>
+    <property>
         <name>dtfs.ni.kafka.props.compression.type</name>
         <value>gzip</value>
     </property>
