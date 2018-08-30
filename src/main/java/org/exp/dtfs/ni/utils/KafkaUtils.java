@@ -4,20 +4,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.RetriableException;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
 import org.exp.dtfs.ni.context.KafkaContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -27,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class KafkaUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaUtils.class);
+    private static final Log LOG = LogFactory.getLog(KafkaUtils.class);
 
     private KafkaUtils() {
         // Do nothing.
@@ -44,24 +42,18 @@ public class KafkaUtils {
         try (Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProducerProps())) {
             // Record with no key.
             ProducerRecord<String, String> records = new ProducerRecord<>(topic, message);
-            // producer.send(records).get();
-            producer.send(records, new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata metadata, Exception exception) {
-                    if (null == exception) {
-                        LOG.info("Message sent successfully, offset is [" + metadata.offset() + "].");
+            producer.send(records, (metadata, exception) -> {
+                if (null == exception) {
+                    LOG.info("Message sent successfully, offset is [" + metadata.offset() + "].");
+                } else {
+                    if (exception instanceof RetriableException) {
+                        LOG.error("Retriable exception occurred.", exception);
                     } else {
-                        if (exception instanceof RetriableException) {
-                            LOG.error("Retriable exception occurred.", exception);
-                        } else {
-                            LOG.error("Exception occurred.", exception);
-                        }
+                        LOG.error("Exception occurred.", exception);
                     }
-
                 }
             }).get();
         }
-        // producer.close();
     }
 
     /**
@@ -70,20 +62,42 @@ public class KafkaUtils {
      * @param topics
      * @param timeout
      * @param function
+     * @throws InterruptedException
      */
-    public static void consume(Collection<String> topics, java.util.function.Consumer<ConsumerRecord<String, String>> function) {
+    public static void consume(Collection<String> topics, java.util.function.Consumer<ConsumerRecord<String, String>> function) throws InterruptedException {
+        consume(topics, 0, function);
+    }
+
+    /**
+     * Consume message from Kafka queue.
+     * 
+     * @param topics
+     * @param period
+     * @param function
+     * @throws InterruptedException
+     */
+    public static void consume(Collection<String> topics, long period, java.util.function.Consumer<ConsumerRecord<String, String>> function)
+            throws InterruptedException {
         try (Consumer<String, String> consumer = new KafkaConsumer<>(KafkaContext.getConsumerProps())) {
             consumer.subscribe(topics);
-            while (true) {
+            while (!Thread.interrupted()) {
                 ConsumerRecords<String, String> records = consumer.poll(KafkaConfigs.getConsumerTimeout());
                 records.forEach(function);
+                if (0 < period) {
+                    Thread.sleep(period);
+                }
             }
         }
     }
 
     // For test.
     public static void main(String[] args) {
-        consume(Arrays.asList(args), record -> LOG.info(record.value()));
+        try {
+            consume(Arrays.asList(args), record -> LOG.info(record.value()));
+        } catch (InterruptedException e) {
+            LOG.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
+        }
     }
 
 }

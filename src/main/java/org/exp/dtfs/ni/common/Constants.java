@@ -22,7 +22,6 @@ public final class Constants {
     /**
      * Configuration default values.
      */
-    public static final String DEFAULT_ADDR_STR = "127.0.0.1";
     public static final String DEFAULT_SERVICE_NAME = "DTFS";
 
     private Constants() {

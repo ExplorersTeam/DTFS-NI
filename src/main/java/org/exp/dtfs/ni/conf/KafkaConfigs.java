@@ -74,7 +74,7 @@ public final class KafkaConfigs {
     }
 
     public static String getKafkaBootstrapServers() {
-        return Configs.get(KAFKA_BOOTSTRAP_SERVERS_CONFIG_KEY, Constants.DEFAULT_ADDR_STR);
+        return Configs.get(KAFKA_BOOTSTRAP_SERVERS_CONFIG_KEY);
     }
 
     public static String getKafkaKeySerializer() {

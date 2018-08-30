@@ -30,7 +30,7 @@ public final class AmbariConfigs {
     }
 
     public static String getServerIP() {
-        return Configs.get(SERVER_IP_KEY, Constants.DEFAULT_ADDR_STR);
+        return Configs.get(SERVER_IP_KEY);
     }
 
     public static int getServerPort() {

@@ -31,7 +31,7 @@ public final class HBaseConfigs {
     }
 
     public static String getZKQuorum() {
-        return Configs.get(ZK_QUORUM_KEY, Constants.DEFAULT_ADDR_STR);
+        return Configs.get(ZK_QUORUM_KEY);
     }
 
     public static int getZKSessionTimeoutMS() {
