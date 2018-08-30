@@ -9,7 +9,6 @@ public final class CommonConfigs {
     private static final String DEFAULT_SEQ_ID_VALUE = "100000001";
 
     private static final String LOG_PATH_KEY = "dtfs.ni.log.path";
-    private static final String DEFAULT_LOG_PATH_VALUE = "/var/log/ambari-agent/ambari-agent.log";
 
     private static final String LOG_REPORT_PERIOD_KEY = "dtfs.ni.log.report.period";
     private static final long DEFAULT_LOG_REPORT_PERIOD_VALUE = 300000;
@@ -27,7 +26,7 @@ public final class CommonConfigs {
     }
 
     public static String getLogPath() {
-        return Configs.get(LOG_PATH_KEY, DEFAULT_LOG_PATH_VALUE);
+        return Configs.get(LOG_PATH_KEY);
     }
 
     public static long getLogReportPeriod() {

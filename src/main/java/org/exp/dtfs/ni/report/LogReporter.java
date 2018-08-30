@@ -60,11 +60,8 @@ public class LogReporter {
         // Arg 2 - Server name.
         try {
             reporter.start(args[0], Integer.parseInt(args[1]), args[2]);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | InterruptedException e) {
             LOG.error(e.getMessage(), e);
-        } catch (InterruptedException e) {
-            LOG.error(e.getMessage(), e);
-            Thread.currentThread().interrupt();
         }
     }
 

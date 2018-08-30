@@ -41,7 +41,7 @@ public class HTTPUtils {
      * @return
      */
     public static String buildRequetPath(String... pathStrs) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (String pathStr : pathStrs) {
             buffer.append(Constants.SLASH_DELIMITER).append(pathStr);
         }

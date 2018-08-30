@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
 // </property>
 // </configuration>
 public class XMLUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(XMLUtils.class);
+    private static final Log LOG = LogFactory.getLog(XMLUtils.class);
 
-    private static String CONF_FILENAME = "src/main/resources/dtfs-ni-kafka-site.xml";
+    private static String confFilename = "src/main/resources/dtfs-ni-kafka-site.xml";
 
     @SuppressWarnings("rawtypes")
     private static final Map<String, String> init() {
@@ -42,7 +42,7 @@ public class XMLUtils {
         String value = null;
         SAXReader reader = new SAXReader();
         try {
-            Document document = reader.read(new File(CONF_FILENAME));
+            Document document = reader.read(new File(confFilename));
             Element configuration = document.getRootElement();
             Iterator configurationIt = configuration.elementIterator();
             while (configurationIt.hasNext()) {
@@ -66,7 +66,7 @@ public class XMLUtils {
     }
 
     public static void setConf(String filePath) {
-        CONF_FILENAME = filePath;
+        confFilename = filePath;
     }
 
     public static String getTrimmed(String name, String defaultValue) {

@@ -80,7 +80,8 @@ public class KafkaUtils {
             throws InterruptedException {
         try (Consumer<String, String> consumer = new KafkaConsumer<>(KafkaContext.getConsumerProps())) {
             consumer.subscribe(topics);
-            while (!Thread.interrupted()) {
+            while (true) {
+                // InterruptedException: ignore.
                 ConsumerRecords<String, String> records = consumer.poll(KafkaConfigs.getConsumerTimeout());
                 records.forEach(function);
                 if (0 < period) {

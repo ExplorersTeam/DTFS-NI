@@ -47,10 +47,6 @@ public class LogMessage {
         return sendTime;
     }
 
-    // public void setSendTime(String sendTime) {
-    // this.sendTime = sendTime;
-    // }
-
     public long getDueTime() {
         return dueTime;
     }

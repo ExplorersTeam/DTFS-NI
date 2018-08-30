@@ -95,7 +95,7 @@ public class HBaseUtils {
     }
 
     public static List<String> listAliveRegionServerInfos() throws Exception {
-        StringBuffer path = new StringBuffer();
+        StringBuilder path = new StringBuilder();
         if (!ZNODE_PARENT.startsWith(Constants.SLASH_DELIMITER)) {
             path.append(Constants.SLASH_DELIMITER);
         }

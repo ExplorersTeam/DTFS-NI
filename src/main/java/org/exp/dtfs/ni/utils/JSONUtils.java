@@ -16,9 +16,7 @@ public class JSONUtils {
     public static String buildJSONString(Object obj) throws IOException {
         try (OutputStream stream = new ByteArrayOutputStream();
                 JsonGenerator generator = new ObjectMapper().getFactory().createGenerator(stream, JsonEncoding.UTF8);) {
-            // ObjectMapper mapper = new ObjectMapper();
             generator.writeObject(obj);
-            // String reportString = mapper.writeValueAsString(report);
             return stream.toString();
         }
     }

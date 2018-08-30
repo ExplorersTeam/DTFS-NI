@@ -40,7 +40,7 @@ public class AmbariRESTUtils {
      * Add component information into HTTP request path string.
      */
     private static String buildHTTPRequestPath(String path) {
-        StringBuffer requestPath = new StringBuffer(API_PATH + Constants.SLASH_DELIMITER + V1_PATH + Constants.SLASH_DELIMITER + CLUSTERS_PATH);
+        StringBuilder requestPath = new StringBuilder(API_PATH + Constants.SLASH_DELIMITER + V1_PATH + Constants.SLASH_DELIMITER + CLUSTERS_PATH);
         return requestPath.append(path.startsWith(Constants.SLASH_DELIMITER) ? "" : Constants.SLASH_DELIMITER).append(path).toString();
     }
 

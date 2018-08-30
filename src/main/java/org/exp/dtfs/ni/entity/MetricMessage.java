@@ -30,10 +30,6 @@ public class MetricMessage {
         return id;
     }
 
-    // public void setId(String id) {
-    // this.id = id;
-    // }
-
     public String getCompKey() {
         return compKey;
     }
@@ -77,10 +73,6 @@ public class MetricMessage {
     public String getCollectTime() {
         return collectTime;
     }
-
-    // public void setCollectTime(String collectTime) {
-    // this.collectTime = collectTime;
-    // }
 
     public String getSeqID() {
         return seqID;

@@ -62,7 +62,7 @@ public final class HDFSConfigs {
 
     public static String getHAZNodePath() {
         String parent = Configs.get(HA_ZNODE_PARENT_KEY, DEFAULT_HA_ZNODE_PARENT_VALUE);
-        StringBuffer path = new StringBuffer();
+        StringBuilder path = new StringBuilder();
         if (!parent.startsWith(Constants.SLASH_DELIMITER)) {
             path.append(Constants.SLASH_DELIMITER);
         }
