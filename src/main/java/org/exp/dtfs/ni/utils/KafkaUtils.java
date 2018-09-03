@@ -83,8 +83,10 @@ public class KafkaUtils {
             while (true) {
                 // InterruptedException: ignore.
                 ConsumerRecords<String, String> records = consumer.poll(KafkaConfigs.getConsumerTimeout());
+                LOG.info("Has got [" + records.count() + "] records from Kafka queue.");
                 records.forEach(function);
                 if (0 < period) {
+                    LOG.info("Thread will sleep for [" + period + "] ms.");
                     Thread.sleep(period);
                 }
             }

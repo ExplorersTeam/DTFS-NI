@@ -24,7 +24,8 @@ public final class KafkaContext {
         consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KafkaConfigs.getKafkaKeyDeserializer());// 必须指定
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaConfigs.getKafkaValueDeserializer());// 必须指定
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConfigs.getConsumerGroupID());
-        consumerProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, KafkaConfigs.getConsumerEnableAutoCommit());
+        // consumerProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,
+        // KafkaConfigs.getConsumerEnableAutoCommit());
     }
 
     private KafkaContext() {

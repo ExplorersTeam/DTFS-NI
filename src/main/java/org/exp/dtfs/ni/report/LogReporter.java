@@ -45,7 +45,9 @@ public class LogReporter {
         message.setStatus("OK");
         message.setSrcPath(CommonConfigs.getLogPath());
         try {
-            KafkaUtils.produce(KafkaConfigs.getKafkaLogTopicName(), JSONUtils.buildJSONString(message));
+            String msgStr = JSONUtils.buildJSONString(message);
+            LOG.info("Produce message into Kafka queue, content is [" + msgStr + "].");
+            KafkaUtils.produce(KafkaConfigs.getKafkaLogTopicName(), msgStr);
         } catch (InterruptedException | ExecutionException | IOException e) {
             // InterruptedException: ignore.
             LOG.error(e.getMessage(), e);
