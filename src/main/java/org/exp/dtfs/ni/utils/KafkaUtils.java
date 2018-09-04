@@ -60,24 +60,9 @@ public class KafkaUtils {
      * Consume message from Kafka queue.
      * 
      * @param topics
-     * @param timeout
      * @param function
-     * @throws InterruptedException
      */
-    public static void consume(Collection<String> topics, java.util.function.Consumer<ConsumerRecord<String, String>> function) throws InterruptedException {
-        consume(topics, 0, function);
-    }
-
-    /**
-     * Consume message from Kafka queue.
-     * 
-     * @param topics
-     * @param period
-     * @param function
-     * @throws InterruptedException
-     */
-    public static void consume(Collection<String> topics, long period, java.util.function.Consumer<ConsumerRecord<String, String>> function)
-            throws InterruptedException {
+    public static void consume(Collection<String> topics, java.util.function.Consumer<ConsumerRecord<String, String>> function) {
         try (Consumer<String, String> consumer = new KafkaConsumer<>(KafkaContext.getConsumerProps())) {
             consumer.subscribe(topics);
             while (true) {
@@ -85,22 +70,13 @@ public class KafkaUtils {
                 ConsumerRecords<String, String> records = consumer.poll(KafkaConfigs.getConsumerTimeout());
                 LOG.info("Has got [" + records.count() + "] records from Kafka queue.");
                 records.forEach(function);
-                if (0 < period) {
-                    LOG.info("Thread will sleep for [" + period + "] ms.");
-                    Thread.sleep(period);
-                }
             }
         }
     }
 
     // For test.
     public static void main(String[] args) {
-        try {
-            consume(Arrays.asList(args), record -> LOG.info(record.value()));
-        } catch (InterruptedException e) {
-            LOG.error(e.getMessage(), e);
-            Thread.currentThread().interrupt();
-        }
+        consume(Arrays.asList(args), record -> LOG.info(record.value()));
     }
 
 }

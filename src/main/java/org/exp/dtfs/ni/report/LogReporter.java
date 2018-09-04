@@ -24,13 +24,13 @@ public class LogReporter {
     private Collection<LogMessage> warnings = new Vector<>();
     private ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
-    public void start(String ip, int port, String serverName) throws InterruptedException {
+    public void start(String ip, int port, String serverName) {
         schedule(ip, port, serverName);
         consume(ip, port, serverName);
     }
 
-    private void consume(String ip, int port, String serverName) throws InterruptedException {
-        KafkaUtils.consume(Arrays.asList(KafkaConfigs.getKafkaLogFlumeTmpTopicName()), CommonConfigs.getLogReportPeriod(), record -> {
+    private void consume(String ip, int port, String serverName) {
+        KafkaUtils.consume(Arrays.asList(KafkaConfigs.getKafkaLogFlumeTmpTopicName()), record -> {
             String log = record.value();
             String[] logStrs = log.split(" ");
             for (int i = 0; i < logStrs.length; ++i) {
@@ -85,7 +85,7 @@ public class LogReporter {
         // Arg 2 - Server name.
         try {
             reporter.start(args[0], Integer.parseInt(args[1]), args[2]);
-        } catch (NumberFormatException | InterruptedException e) {
+        } catch (NumberFormatException e) {
             LOG.error(e.getMessage(), e);
         }
     }
