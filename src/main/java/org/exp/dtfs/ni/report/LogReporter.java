@@ -2,7 +2,12 @@ package org.exp.dtfs.ni.report;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,27 +21,41 @@ import org.exp.dtfs.ni.utils.KafkaUtils;
 public class LogReporter {
     private static final Log LOG = LogFactory.getLog(LogReporter.class);
 
+    private Collection<LogMessage> warnings = new Vector<>();
+    private ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
     public void start(String ip, int port, String serverName) throws InterruptedException {
+        schedule(ip, port, serverName);
+        consume(ip, port, serverName);
+    }
+
+    private void consume(String ip, int port, String serverName) throws InterruptedException {
         KafkaUtils.consume(Arrays.asList(KafkaConfigs.getKafkaLogFlumeTmpTopicName()), CommonConfigs.getLogReportPeriod(), record -> {
-            boolean warnReported = false;
             String log = record.value();
             String[] logStrs = log.split(" ");
             for (int i = 0; i < logStrs.length; ++i) {
                 if (logStrs[i].equals("WARN") || logStrs[i].equals("ERROR") || logStrs[i].equals("FATAL")) {
-                    produceMessage(ip, port, serverName, log);
-                    if (!warnReported) {
-                        warnReported = true;
-                    }
+                    warnings.add(buildMessage(ip, port, serverName, log));
                     break;
                 }
-            }
-            if (!warnReported) {
-                produceMessage(ip, port, serverName, "Service is in normal status.");
             }
         });
     }
 
-    private static void produceMessage(String ip, int port, String serverName, String content) {
+    private void schedule(String ip, int port, String serverName) {
+        service.scheduleAtFixedRate(() -> {
+            if (warnings.isEmpty()) {
+                produceMessage(buildMessage(ip, port, serverName, "Service is in normal status."));
+            } else {
+                warnings.parallelStream().forEach(msg -> {
+                    produceMessage(msg);
+                    warnings.remove(msg);
+                });
+            }
+        }, 0, CommonConfigs.getLogReportPeriod(), TimeUnit.MILLISECONDS);
+    }
+
+    private static LogMessage buildMessage(String ip, int port, String serverName, String content) {
         LogMessage message = new LogMessage();
         message.setCompKey(ip + Constants.VERTICAL_DELIMITER + serverName + Constants.UNDERLINE_DELIMITER + port);
         message.setDueTime(0);
@@ -44,6 +63,10 @@ public class LogReporter {
         message.setLog(content);
         message.setStatus("OK");
         message.setSrcPath(CommonConfigs.getLogPath());
+        return message;
+    }
+
+    private static void produceMessage(LogMessage message) {
         try {
             String msgStr = JSONUtils.buildJSONString(message);
             LOG.info("Produce message into Kafka queue, content is [" + msgStr + "].");
