@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
+import org.exp.dtfs.ni.entity.MetricCode;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
 import org.exp.dtfs.ni.utils.HBaseUtils;
@@ -20,7 +21,7 @@ public class HBaseRegionServerAbnormalNumberReportThread extends HBaseReportThre
             MetricMessage message = new MetricMessage();
             message.setCompKey(ip + Constants.VERTICAL_DELIMITER + HBASE_SERVER_KEY + infos[1]);
             message.setHostIP(ip);
-            message.setMetricCode(HBASE_STATUS_CODE);
+            message.setMetricCode(MetricCode.P_HB_DNEXPNUM);
             message.setMetricType(MetricType.STATUS);
             message.setMetricValue(Integer.toString(HBaseUtils.getAbnormalRegionServerNumber()));
 

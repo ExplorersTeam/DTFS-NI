@@ -50,8 +50,8 @@ public class MetricMessage {
         return metricCode;
     }
 
-    public void setMetricCode(String metricCode) {
-        this.metricCode = metricCode;
+    public void setMetricCode(MetricCode metricCode) {
+        this.metricCode = metricCode.id();
     }
 
     public String getMetricType() {

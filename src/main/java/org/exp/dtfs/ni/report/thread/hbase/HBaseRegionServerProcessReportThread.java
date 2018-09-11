@@ -8,6 +8,7 @@ import java.util.List;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HBaseConfigs;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
+import org.exp.dtfs.ni.entity.MetricCode;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
 import org.exp.dtfs.ni.utils.HBaseUtils;
@@ -39,7 +40,7 @@ public class HBaseRegionServerProcessReportThread extends HBaseReportThread {
         message.setCompKey(
                 ip + Constants.VERTICAL_DELIMITER + HBASE_SERVER_KEY + HBaseConfigs.getRegionServerPort() + Constants.VERTICAL_DELIMITER + HBASE_RS_KEY);
         message.setHostIP(ip);
-        message.setMetricCode(HBASE_STATUS_CODE);
+        message.setMetricCode(MetricCode.P_HB_REGPROC);
         message.setMetricType(MetricType.STATUS);
         message.setMetricValue(Boolean.toString(HBaseUtils.checkRegionServerAlive(ip)));
 

@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HDFSConfigs;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
+import org.exp.dtfs.ni.entity.MetricCode;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
 import org.exp.dtfs.ni.utils.HDFSUtils;
@@ -39,7 +40,7 @@ public class HDFSDataNodeReadTimeReportThread extends HDFSReportThread {
         message.setCompKey(ip + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + HDFSConfigs.getDataNodeHTTPAddr().split(Constants.COLON)[1]
                 + Constants.VERTICAL_DELIMITER + HDFS_DN_KEY);
         message.setHostIP(ip);
-        message.setMetricCode(HDFS_STATUS_CODE);
+        message.setMetricCode(MetricCode.P_HB_DNREAD);
         message.setMetricType(MetricType.PERFORMANCE);
         message.setMetricValue(Float.toString(HDFSUtils.getDataNodeAvgReadTime(ip)));
 

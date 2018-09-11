@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.HDFSConfigs;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
+import org.exp.dtfs.ni.entity.MetricCode;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
 import org.exp.dtfs.ni.utils.HDFSUtils;
@@ -32,7 +33,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         MetricMessage nn1Msg = new MetricMessage();
         nn1Msg.setCompKey(nn1IP + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn1Addrs[1] + Constants.VERTICAL_DELIMITER + HDFS_NN_KEY);
         nn1Msg.setHostIP(nn1IP);
-        nn1Msg.setMetricCode(HDFS_STATUS_CODE);
+        nn1Msg.setMetricCode(MetricCode.P_HB_NNPROC);
         nn1Msg.setMetricType(MetricType.STATUS);
         nn1Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNode1Alive()));
 
@@ -48,7 +49,7 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         MetricMessage nn2Msg = new MetricMessage();
         nn2Msg.setCompKey(nn2IP + Constants.VERTICAL_DELIMITER + HDFS_SERVER_KEY + nn2Addrs[1] + Constants.VERTICAL_DELIMITER + HDFS_NN_KEY);
         nn2Msg.setHostIP(nn2IP);
-        nn2Msg.setMetricCode(HDFS_STATUS_CODE);
+        nn2Msg.setMetricCode(MetricCode.P_HB_NNPROC);
         nn2Msg.setMetricType(MetricType.STATUS);
         nn2Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNode2Alive()));
 

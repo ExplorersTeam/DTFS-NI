@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 import org.exp.dtfs.ni.common.Constants;
 import org.exp.dtfs.ni.conf.KafkaConfigs;
+import org.exp.dtfs.ni.entity.MetricCode;
 import org.exp.dtfs.ni.entity.MetricMessage;
 import org.exp.dtfs.ni.entity.MetricType;
 import org.exp.dtfs.ni.utils.DTFSUtils;
@@ -21,7 +22,7 @@ public class DTFSTinyFilePercentageReportThread extends DTFSReportThread {
             MetricMessage message = new MetricMessage();
             message.setCompKey(activeNNIP + Constants.TRANSFER_VERTICAL_DELIMITER + DTFS_SERVER_KEY + HDFSUtils.getNameNodeHTTPPort(activeNNHostname));
             message.setHostIP(activeNNIP);
-            message.setMetricCode(DTFS_STATUS_CODE);
+            message.setMetricCode(MetricCode.P_HB_SFILEPERC);
             message.setMetricType(MetricType.STATUS);
             message.setMetricValue(Float.toString(DTFSUtils.getTinyFilePercentage() * 100) + Constants.PERCENT);
 
