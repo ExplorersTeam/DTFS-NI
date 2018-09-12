@@ -40,6 +40,12 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         String nn1MsgStr = JSONUtils.buildJSONString(nn1Msg);
         LOG.info("Send message [" + nn1MsgStr + "] into Kafka queue.");
         KafkaUtils.produce(KafkaConfigs.getKafkaMetricTopicName(), nn1MsgStr);
+
+        // namenode connection status.
+        nn1Msg.setMetricCode(MetricCode.P_HB_CONSTATUS);
+        nn1MsgStr = JSONUtils.buildJSONString(nn1Msg);
+        LOG.info("Send message [" + nn1MsgStr + "] into Kafka queue.");
+        KafkaUtils.produce(KafkaConfigs.getKafkaMetricTopicName(), nn1MsgStr);
     }
 
     private static void nn2ProcessReport() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
@@ -54,6 +60,12 @@ public class HDFSNameNodeProcessReportThread extends HDFSReportThread {
         nn2Msg.setMetricValue(Boolean.toString(HDFSUtils.checkNameNode2Alive()));
 
         String nn2MsgStr = JSONUtils.buildJSONString(nn2Msg);
+        LOG.info("Send message [" + nn2MsgStr + "] into Kafka queue.");
+        KafkaUtils.produce(KafkaConfigs.getKafkaMetricTopicName(), nn2MsgStr);
+
+        // namenode connection status.
+        nn2Msg.setMetricCode(MetricCode.P_HB_CONSTATUS);
+        nn2MsgStr = JSONUtils.buildJSONString(nn2Msg);
         LOG.info("Send message [" + nn2MsgStr + "] into Kafka queue.");
         KafkaUtils.produce(KafkaConfigs.getKafkaMetricTopicName(), nn2MsgStr);
     }
