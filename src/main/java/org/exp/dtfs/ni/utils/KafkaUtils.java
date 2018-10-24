@@ -42,6 +42,7 @@ public class KafkaUtils {
         try (Producer<String, String> producer = new KafkaProducer<>(KafkaContext.getProducerProps())) {
             // Record with no key.
             ProducerRecord<String, String> records = new ProducerRecord<>(topic, message);
+            LOG.debug("Message content is [" + message + "].");
             producer.send(records, (metadata, exception) -> {
                 if (null == exception) {
                     LOG.info("Message sent successfully, offset is [" + metadata.offset() + "].");
@@ -58,7 +59,7 @@ public class KafkaUtils {
 
     /**
      * Consume message from Kafka queue.
-     * 
+     *
      * @param topics
      * @param function
      */
