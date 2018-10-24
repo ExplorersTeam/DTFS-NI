@@ -1,7 +1,7 @@
 <configuration>
     <property>
         <name>dtfs.ni.kafka.props.bootstrap.servers</name>
-        <value>134.108.3.27:9092,134.108.3.28:9092,134.108.3.29:9092</value>
+        <value>${kafka.bootstrap.servers}</value>
     </property>
     <property>
         <name>dtfs.ni.kafka.props.key.serializer</name>
@@ -61,15 +61,15 @@
     </property>
     <property>
         <name>dtfs.ni.kafka.topic.metric.name</name>
-        <value>ETE_CTDFS_01</value>
+        <value>${kafka.topic.metric.name}</value>
     </property>
     <property>
         <name>dtfs.ni.kafka.topic.log.name</name>
-        <value>ETE_CTDFS_02</value>
+        <value>${kafka.topic.log.name}</value>
     </property>
      <property>
-        <name>dtfs.ni.kafka.topic.flume.tmp.name</name>
-        <value>ETE_CTDFS_02_TMP</value>
+        <name>dtfs.ni.kafka.topic.log.tmp.name</name>
+        <value>${kafka.topic.log.tmp.name}</value>
     </property>
     <property>
         <name>dtfs.ni.kafka.consumer.enable.auto.commit</name>

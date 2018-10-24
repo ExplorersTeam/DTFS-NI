@@ -67,7 +67,7 @@ public final class KafkaConfigs {
      */
     private static final String KAFKA_METRIC_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.metric.name";
     private static final String KAFKA_LOG_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.log.name";
-    private static final String KAFKA_LOG_FLUME_TMP_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.flume.tmp.name";
+    private static final String KAFKA_LOG_FLUME_TMP_TOPIC_NAME_KEY = "dtfs.ni.kafka.topic.log.tmp.name";
 
     private KafkaConfigs() {
         // Do nothing
