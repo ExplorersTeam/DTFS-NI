@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exp</groupId>
   <artifactId>dtfs-ni</artifactId>
-  <version>1.0.0</version>
+  <version>2.4.0</version>
   <name>DTFS-NI</name>
   <description>North Interfaces on Distributed Tiny-File System.</description>
   
