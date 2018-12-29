@@ -13,6 +13,9 @@ public final class CommonConfigs {
     private static final String LOG_REPORT_PERIOD_KEY = "dtfs.ni.log.report.period";
     private static final long DEFAULT_LOG_REPORT_PERIOD_VALUE = 300000;
 
+    private static final String COMP_TYPE_KEY = "dtfs.ni.component.type";
+    private static final String DEFAULT_COMP_TYPE_VALUE = "PSHDP";
+
     private CommonConfigs() {
         // DO nothing.
     }
@@ -31,6 +34,10 @@ public final class CommonConfigs {
 
     public static long getLogReportPeriod() {
         return Configs.getLong(LOG_REPORT_PERIOD_KEY, DEFAULT_LOG_REPORT_PERIOD_VALUE);
+    }
+
+    public static String getComponentType() {
+        return Configs.get(COMP_TYPE_KEY, DEFAULT_COMP_TYPE_VALUE);
     }
 
 }

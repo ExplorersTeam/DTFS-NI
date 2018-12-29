@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MetricMessage {
     @JsonProperty("ID")
     private String id = CommonConfigs.getComponentID(); // 唯一序列号
+    @JsonProperty("CompType")
+    private String compType = CommonConfigs.getComponentType();// 组件类型
     @JsonProperty("CompKey")
     private String compKey; // 组件实例名称
     @JsonProperty("HOSTIP")
@@ -28,6 +30,10 @@ public class MetricMessage {
 
     public String getId() {
         return id;
+    }
+
+    public String getCompType() {
+        return compType;
     }
 
     public String getCompKey() {

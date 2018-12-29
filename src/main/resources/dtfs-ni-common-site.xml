@@ -15,4 +15,8 @@
         <name>dtfs.ni.log.report.period</name>
         <value>300000</value>
     </property>
+    <property>
+        <name>dtfs.ni.component.type</name>
+        <value>PSHDP</value>
+    </property>
 </configuration>
