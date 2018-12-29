@@ -3,12 +3,11 @@ package org.exp.dtfs.ni.entity;
 import org.exp.dtfs.ni.conf.CommonConfigs;
 import org.exp.dtfs.ni.utils.DateUtils;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MetricMessage {
-    @JsonProperty("ID")
-    private String id = CommonConfigs.getComponentID(); // 唯一序列号
+    // @JsonProperty("ID")
+    // private String id = CommonConfigs.getComponentID(); // 唯一序列号
     @JsonProperty("CompType")
     private String compType = CommonConfigs.getComponentType();// 组件类型
     @JsonProperty("CompKey")
@@ -24,13 +23,13 @@ public class MetricMessage {
     @JsonProperty("COLLECTTIME")
     private String collectTime = DateUtils.getNowTime(); // 具体指标值的采集时间
 
-    @JsonProperty("SEQID")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String seqID; // 时序ID，标识组件采集顺序，可选
+    // @JsonProperty("SEQID")
+    // @JsonInclude(JsonInclude.Include.NON_NULL)
+    // private String seqID; // 时序ID，标识组件采集顺序，可选
 
-    public String getId() {
-        return id;
-    }
+    // public String getId() {
+    // return id;
+    // }
 
     public String getCompType() {
         return compType;
@@ -80,12 +79,12 @@ public class MetricMessage {
         return collectTime;
     }
 
-    public String getSeqID() {
-        return seqID;
-    }
+    // public String getSeqID() {
+    // return seqID;
+    // }
 
-    public void setSeqID(String seqID) {
-        this.seqID = seqID;
-    }
+    // public void setSeqID(String seqID) {
+    // this.seqID = seqID;
+    // }
 
 }
